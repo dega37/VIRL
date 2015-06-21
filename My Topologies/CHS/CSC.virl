@@ -1,0 +1,1716 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<topology xmlns="http://www.cisco.com/VIRL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" schemaVersion="0.9" xsi:schemaLocation="http://www.cisco.com/VIRL https://raw.github.com/CiscoVIRL/schema/v0.9/virl.xsd">
+    <extensions>
+        <entry key="AutoNetkit.ipv4_loopback_subnet" type="String">10.5.0.0</entry>
+        <entry key="AutoNetkit.ipv4_infra_subnet" type="String">10.5.0.0</entry>
+        <entry key="AutoNetkit.ipv4_infra_prefix" type="String">16</entry>
+        <entry key="AutoNetkit.ipv4_loopback_prefix" type="String">24</entry>
+        <entry key="AutoNetkit.enable_routing" type="Boolean">true</entry>
+        <entry key="AutoNetkit.IGP" type="String">eigrp</entry>
+        <entry key="AutoNetkit.enable_cdp" type="Boolean">true</entry>
+    </extensions>
+    <node name="CSCWAGGA" type="SIMPLE" subtype="IOSv" location="264,205" ipv4="10.5.0.248">
+        <extensions>
+            <entry key="AutoNetkit.IGP" type="String">eigrp</entry>
+            <entry key="AutoNetkit.ibgp_role" type="String">RR</entry>
+            <entry key="AutoNetkit.mgmt_ip" type="string"></entry>
+            <entry key="AutoNetkit.RR_cluster" type="String">CSC</entry>
+            <entry key="config" type="String">! IOS Config generated on 2015-04-20 23:28
+! by autonetkit_0.15.1
+!
+hostname CSCWAGGA
+boot-start-marker
+boot-end-marker
+!
+no aaa new-model
+!
+!
+ip cef
+ipv6 unicast-routing
+ipv6 cef
+!
+!
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+no service config
+enable password cisco
+ip classless
+ip subnet-zero
+no ip domain lookup
+line vty 0 4
+ transport input ssh telnet
+ exec-timeout 720 0
+ password cisco
+ login
+line con 0
+ password cisco
+!
+cdp run
+!
+!
+interface Loopback0
+  description Loopback
+  ip address 10.5.0.248 255.255.255.255
+!
+interface GigabitEthernet0/0
+  description OOB Management
+  ! Configured on launch
+  no ip address
+  cdp enable
+  duplex auto
+  speed auto
+  no shutdown
+!
+interface GigabitEthernet0/1
+  description to INETINT
+  ip address 10.5.0.33 255.255.255.252
+  cdp enable
+  duplex auto
+  speed auto
+  no shutdown
+!
+interface GigabitEthernet0/2
+  description to CSCWAGGB
+  ip address 10.5.128.13 255.255.255.252
+  cdp enable
+  duplex auto
+  speed auto
+  no shutdown
+!
+interface GigabitEthernet0/3
+  description to CSCWAGGB
+  ip address 10.5.0.13 255.255.255.252
+  cdp enable
+  duplex auto
+  speed auto
+  no shutdown
+!
+interface GigabitEthernet0/4
+  description to CSCCoreA
+  ip address 10.5.128.6 255.255.255.252
+  cdp enable
+  duplex auto
+  speed auto
+  no shutdown
+!
+interface GigabitEthernet0/5
+  description to CSCCoreB
+  ip address 10.5.0.41 255.255.255.252
+  cdp enable
+  duplex auto
+  speed auto
+  no shutdown
+!
+interface GigabitEthernet0/6
+  description to CSCASR1006A
+  ip address 10.5.0.50 255.255.255.252
+  cdp enable
+  duplex auto
+  speed auto
+  no shutdown
+!
+interface GigabitEthernet0/7
+  description to CSCASR1006B
+  ip address 10.5.0.58 255.255.255.252
+  cdp enable
+  duplex auto
+  speed auto
+  no shutdown
+!
+!
+!
+router eigrp as1
+ !
+ address-family ipv4 unicast autonomous-system 1
+  !
+  topology base
+  exit-af-topology
+  network 10.5.0.12 0.0.0.3
+  network 10.5.0.32 0.0.0.3
+  network 10.5.0.40 0.0.0.3
+  network 10.5.0.48 0.0.0.3
+  network 10.5.0.56 0.0.0.3
+  network 10.5.0.248 0.0.0.0
+  network 10.5.128.4 0.0.0.3
+  network 10.5.128.12 0.0.0.3
+ exit-address-family
+ !
+!
+!
+router bgp 1
+  bgp router-id 10.5.0.248
+  no synchronization
+! ibgp
+  ! ibgp clients
+  !
+  neighbor 10.5.0.211 remote-as 1
+  neighbor 10.5.0.211 description rr client CSCASR1006A
+  neighbor 10.5.0.211 update-source Loopback0
+  !
+  neighbor 10.5.0.215 remote-as 1
+  neighbor 10.5.0.215 description rr client CSCASR1006B
+  neighbor 10.5.0.215 update-source Loopback0
+  !
+  neighbor 10.5.0.194 remote-as 1
+  neighbor 10.5.0.194 description rr client CSCCoreA
+  neighbor 10.5.0.194 update-source Loopback0
+  !
+  neighbor 10.5.0.195 remote-as 1
+  neighbor 10.5.0.195 description rr client CSCCoreB
+  neighbor 10.5.0.195 update-source Loopback0
+  !
+  neighbor 10.5.0.216 remote-as 1
+  neighbor 10.5.0.216 description rr client INETINT
+  neighbor 10.5.0.216 update-source Loopback0
+  ! ibgp peers
+  !
+  neighbor 10.5.0.249 remote-as 1
+  neighbor 10.5.0.249 description iBGP peer CSCWAGGB
+  neighbor 10.5.0.249 update-source Loopback0
+!
+!
+ !
+ address-family ipv4
+  network 10.5.0.248 mask 255.255.255.255
+  neighbor 10.5.0.249 activate
+  neighbor 10.5.0.211 activate
+  neighbor 10.5.0.211 route-reflector-client
+  neighbor 10.5.0.215 activate
+  neighbor 10.5.0.215 route-reflector-client
+  neighbor 10.5.0.194 activate
+  neighbor 10.5.0.194 route-reflector-client
+  neighbor 10.5.0.195 activate
+  neighbor 10.5.0.195 route-reflector-client
+  neighbor 10.5.0.216 activate
+  neighbor 10.5.0.216 route-reflector-client
+ exit-address-family
+!
+!
+!
+end
+</entry>
+        </extensions>
+        <interface id="0" name="GigabitEthernet0/1" ipv4="10.5.0.33" netPrefixLenV4="30"/>
+        <interface id="1" name="GigabitEthernet0/2" ipv4="10.5.128.13" netPrefixLenV4="30"/>
+        <interface id="2" name="GigabitEthernet0/3" ipv4="10.5.0.13" netPrefixLenV4="30"/>
+        <interface id="3" name="GigabitEthernet0/4" ipv4="10.5.128.6" netPrefixLenV4="30"/>
+        <interface id="4" name="GigabitEthernet0/5" ipv4="10.5.0.41" netPrefixLenV4="30"/>
+        <interface id="5" name="GigabitEthernet0/6" ipv4="10.5.0.50" netPrefixLenV4="30"/>
+        <interface id="6" name="GigabitEthernet0/7" ipv4="10.5.0.58" netPrefixLenV4="30"/>
+    </node>
+    <node name="CSCWAGGB" type="SIMPLE" subtype="IOSv" location="264,300" ipv4="10.5.0.249">
+        <extensions>
+            <entry key="AutoNetkit.IGP" type="String">eigrp</entry>
+            <entry key="AutoNetkit.ibgp_role" type="String">RR</entry>
+            <entry key="AutoNetkit.mgmt_ip" type="string"></entry>
+            <entry key="AutoNetkit.RR_cluster" type="String">CSC</entry>
+            <entry key="config" type="String">! IOS Config generated on 2015-04-20 23:28
+! by autonetkit_0.15.1
+!
+hostname CSCWAGGB
+boot-start-marker
+boot-end-marker
+!
+no aaa new-model
+!
+!
+ip cef
+ipv6 unicast-routing
+ipv6 cef
+!
+!
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+no service config
+enable password cisco
+ip classless
+ip subnet-zero
+no ip domain lookup
+line vty 0 4
+ transport input ssh telnet
+ exec-timeout 720 0
+ password cisco
+ login
+line con 0
+ password cisco
+!
+cdp run
+!
+!
+interface Loopback0
+  description Loopback
+  ip address 10.5.0.249 255.255.255.255
+!
+interface GigabitEthernet0/0
+  description OOB Management
+  ! Configured on launch
+  no ip address
+  cdp enable
+  duplex auto
+  speed auto
+  no shutdown
+!
+interface GigabitEthernet0/1
+  description to INETINT
+  ip address 10.5.0.5 255.255.255.252
+  cdp enable
+  duplex auto
+  speed auto
+  no shutdown
+!
+interface GigabitEthernet0/2
+  description to CSCWAGGA
+  ip address 10.5.128.14 255.255.255.252
+  cdp enable
+  duplex auto
+  speed auto
+  no shutdown
+!
+interface GigabitEthernet0/3
+  description to CSCWAGGA
+  ip address 10.5.0.14 255.255.255.252
+  cdp enable
+  duplex auto
+  speed auto
+  no shutdown
+!
+interface GigabitEthernet0/4
+  description to CSCCoreA
+  ip address 10.5.0.46 255.255.255.252
+  cdp enable
+  duplex auto
+  speed auto
+  no shutdown
+!
+interface GigabitEthernet0/5
+  description to CSCCoreB
+  ip address 10.5.128.2 255.255.255.252
+  cdp enable
+  duplex auto
+  speed auto
+  no shutdown
+!
+interface GigabitEthernet0/6
+  description to CSCASR1006A
+  ip address 10.5.0.62 255.255.255.252
+  cdp enable
+  duplex auto
+  speed auto
+  no shutdown
+!
+interface GigabitEthernet0/7
+  description to CSCASR1006B
+  ip address 10.5.0.54 255.255.255.252
+  cdp enable
+  duplex auto
+  speed auto
+  no shutdown
+!
+!
+!
+router eigrp as1
+ !
+ address-family ipv4 unicast autonomous-system 1
+  !
+  topology base
+  exit-af-topology
+  network 10.5.0.4 0.0.0.3
+  network 10.5.0.12 0.0.0.3
+  network 10.5.0.44 0.0.0.3
+  network 10.5.0.52 0.0.0.3
+  network 10.5.0.60 0.0.0.3
+  network 10.5.0.249 0.0.0.0
+  network 10.5.128.0 0.0.0.3
+  network 10.5.128.12 0.0.0.3
+ exit-address-family
+ !
+!
+!
+router bgp 1
+  bgp router-id 10.5.0.249
+  no synchronization
+! ibgp
+  ! ibgp clients
+  !
+  neighbor 10.5.0.211 remote-as 1
+  neighbor 10.5.0.211 description rr client CSCASR1006A
+  neighbor 10.5.0.211 update-source Loopback0
+  !
+  neighbor 10.5.0.215 remote-as 1
+  neighbor 10.5.0.215 description rr client CSCASR1006B
+  neighbor 10.5.0.215 update-source Loopback0
+  !
+  neighbor 10.5.0.194 remote-as 1
+  neighbor 10.5.0.194 description rr client CSCCoreA
+  neighbor 10.5.0.194 update-source Loopback0
+  !
+  neighbor 10.5.0.195 remote-as 1
+  neighbor 10.5.0.195 description rr client CSCCoreB
+  neighbor 10.5.0.195 update-source Loopback0
+  !
+  neighbor 10.5.0.216 remote-as 1
+  neighbor 10.5.0.216 description rr client INETINT
+  neighbor 10.5.0.216 update-source Loopback0
+  ! ibgp peers
+  !
+  neighbor 10.5.0.248 remote-as 1
+  neighbor 10.5.0.248 description iBGP peer CSCWAGGA
+  neighbor 10.5.0.248 update-source Loopback0
+!
+!
+ !
+ address-family ipv4
+  network 10.5.0.249 mask 255.255.255.255
+  neighbor 10.5.0.248 activate
+  neighbor 10.5.0.211 activate
+  neighbor 10.5.0.211 route-reflector-client
+  neighbor 10.5.0.215 activate
+  neighbor 10.5.0.215 route-reflector-client
+  neighbor 10.5.0.194 activate
+  neighbor 10.5.0.194 route-reflector-client
+  neighbor 10.5.0.195 activate
+  neighbor 10.5.0.195 route-reflector-client
+  neighbor 10.5.0.216 activate
+  neighbor 10.5.0.216 route-reflector-client
+ exit-address-family
+!
+!
+!
+end
+</entry>
+        </extensions>
+        <interface id="0" name="GigabitEthernet0/1" ipv4="10.5.0.5" netPrefixLenV4="30"/>
+        <interface id="1" name="GigabitEthernet0/2" ipv4="10.5.128.14" netPrefixLenV4="30"/>
+        <interface id="2" name="GigabitEthernet0/3" ipv4="10.5.0.14" netPrefixLenV4="30"/>
+        <interface id="3" name="GigabitEthernet0/4" ipv4="10.5.0.46" netPrefixLenV4="30"/>
+        <interface id="4" name="GigabitEthernet0/5" ipv4="10.5.128.2" netPrefixLenV4="30"/>
+        <interface id="5" name="GigabitEthernet0/6" ipv4="10.5.0.62" netPrefixLenV4="30"/>
+        <interface id="6" name="GigabitEthernet0/7" ipv4="10.5.0.54" netPrefixLenV4="30"/>
+    </node>
+    <node name="CSCN7KDistA" type="SIMPLE" subtype="NX-OSv" location="24,210" ipv4="10.5.0.246">
+        <extensions>
+            <entry key="AutoNetkit.IGP" type="String">eigrp</entry>
+            <entry key="AutoNetkit.mgmt_ip" type="string"></entry>
+            <entry key="config" type="String">! NX-OSv Config generated on 2015-04-20 23:28
+! by autonetkit_0.15.1
+!
+version 6.2(1)
+license grace-period
+!
+hostname CSCN7KDistA
+vdc CSCN7KDistA id 1
+  allocate interface Ethernet2/1-48
+  allocate interface Ethernet3/1-48
+  limit-resource vlan minimum 16 maximum 4094
+  limit-resource vrf minimum 2 maximum 4096
+  limit-resource port-channel minimum 0 maximum 768
+  limit-resource u4route-mem minimum 96 maximum 96
+  limit-resource u6route-mem minimum 24 maximum 24
+  limit-resource m4route-mem minimum 58 maximum 58
+  limit-resource m6route-mem minimum 8 maximum 8
+
+feature telnet
+
+feature eigrp
+feature bgp
+
+username adminbackup password 5 ! role network-operator
+username admin password 5 $1$KuOSBsvW$Cy0TSD..gEBGBPjzpDgf51 role network-admin
+username cisco password 5 $1$Nk7ZkwH0$fyiRmMMfIheqE3BqvcL0C1 role network-operator
+username cisco role network-admin
+username lab password 5 $1$buoy/oqy$.EXQz8rCn72ii8qtdldj00 role network-admin
+no password strength-check
+ip domain-lookup
+copp profile strict
+snmp-server user lab network-admin auth md5 0x5ceb414591539ee35159fca86fdfa101 priv 0x5ceb414591539ee35159fca86fdfa101 localizedkey
+snmp-server user admin network-admin auth md5 0x328945d53e05e8e7207f8c20b142f0b7 priv 0x328945d53e05e8e7207f8c20b142f0b7 localizedkey
+snmp-server user cisco network-operator auth md5 0x55b3c64a53fb95518e75358ee75e82e9 priv 0x55b3c64a53fb95518e75358ee75e82e9 localizedkey
+snmp-server user cisco network-admin
+rmon event 1 log trap public description FATAL(1) owner PMON@FATAL
+rmon event 2 log trap public description CRITICAL(2) owner PMON@CRITICAL
+rmon event 3 log trap public description ERROR(3) owner PMON@ERROR
+rmon event 4 log trap public description WARNING(4) owner PMON@WARNING
+rmon event 5 log trap public description INFORMATION(5) owner PMON@INFO
+
+
+vlan 1
+
+vrf context management
+hardware forwarding unicast trace
+
+interface Loopback0
+  description Loopback
+  ip address 10.5.0.246/32
+  ip router eigrp 1
+
+interface Ethernet2/1
+  description to CSCCoreA
+  ip address 10.5.0.17/30
+  ip router eigrp 1
+  no mac-address
+  no shutdown
+
+interface Ethernet2/2
+  description to CSCCoreB
+  ip address 10.5.0.25/30
+  ip router eigrp 1
+  no mac-address
+  no shutdown
+
+interface mgmt0
+  description OOB Management
+  ! Configured on launch
+  no ip address
+  no mac-address
+  no shutdown
+  vrf member management
+
+
+line console
+line vty
+router eigrp 1
+ autonomous-system 1
+ router-id 10.5.0.246
+ address-family ipv4 unicast
+router bgp 1
+  router-id 10.5.0.246
+  address-family ipv4 unicast
+    network 10.5.0.246/32
+  !
+! iBGP
+!
+        </entry>
+            <entry key="AutoNetkit.ibgp_role" type="String">Disabled</entry>
+        </extensions>
+        <interface id="0" name="Ethernet2/1" ipv4="10.5.0.17" netPrefixLenV4="30"/>
+        <interface id="1" name="Ethernet2/2" ipv4="10.5.0.25" netPrefixLenV4="30"/>
+    </node>
+    <node name="CSCN7KDistB" type="SIMPLE" subtype="NX-OSv" location="24,305" ipv4="10.5.0.247">
+        <extensions>
+            <entry key="AutoNetkit.IGP" type="String">eigrp</entry>
+            <entry key="AutoNetkit.mgmt_ip" type="string"></entry>
+            <entry key="config" type="String">! NX-OSv Config generated on 2015-04-20 23:28
+! by autonetkit_0.15.1
+!
+version 6.2(1)
+license grace-period
+!
+hostname CSCN7KDistB
+vdc CSCN7KDistB id 1
+  allocate interface Ethernet2/1-48
+  allocate interface Ethernet3/1-48
+  limit-resource vlan minimum 16 maximum 4094
+  limit-resource vrf minimum 2 maximum 4096
+  limit-resource port-channel minimum 0 maximum 768
+  limit-resource u4route-mem minimum 96 maximum 96
+  limit-resource u6route-mem minimum 24 maximum 24
+  limit-resource m4route-mem minimum 58 maximum 58
+  limit-resource m6route-mem minimum 8 maximum 8
+
+feature telnet
+
+feature eigrp
+feature bgp
+
+username adminbackup password 5 ! role network-operator
+username admin password 5 $1$KuOSBsvW$Cy0TSD..gEBGBPjzpDgf51 role network-admin
+username cisco password 5 $1$Nk7ZkwH0$fyiRmMMfIheqE3BqvcL0C1 role network-operator
+username cisco role network-admin
+username lab password 5 $1$buoy/oqy$.EXQz8rCn72ii8qtdldj00 role network-admin
+no password strength-check
+ip domain-lookup
+copp profile strict
+snmp-server user lab network-admin auth md5 0x5ceb414591539ee35159fca86fdfa101 priv 0x5ceb414591539ee35159fca86fdfa101 localizedkey
+snmp-server user admin network-admin auth md5 0x328945d53e05e8e7207f8c20b142f0b7 priv 0x328945d53e05e8e7207f8c20b142f0b7 localizedkey
+snmp-server user cisco network-operator auth md5 0x55b3c64a53fb95518e75358ee75e82e9 priv 0x55b3c64a53fb95518e75358ee75e82e9 localizedkey
+snmp-server user cisco network-admin
+rmon event 1 log trap public description FATAL(1) owner PMON@FATAL
+rmon event 2 log trap public description CRITICAL(2) owner PMON@CRITICAL
+rmon event 3 log trap public description ERROR(3) owner PMON@ERROR
+rmon event 4 log trap public description WARNING(4) owner PMON@WARNING
+rmon event 5 log trap public description INFORMATION(5) owner PMON@INFO
+
+
+vlan 1
+
+vrf context management
+hardware forwarding unicast trace
+
+interface Loopback0
+  description Loopback
+  ip address 10.5.0.247/32
+  ip router eigrp 1
+
+interface Ethernet2/1
+  description to CSCCoreA
+  ip address 10.5.0.29/30
+  ip router eigrp 1
+  no mac-address
+  no shutdown
+
+interface Ethernet2/2
+  description to CSCCoreB
+  ip address 10.5.0.21/30
+  ip router eigrp 1
+  no mac-address
+  no shutdown
+
+interface mgmt0
+  description OOB Management
+  ! Configured on launch
+  no ip address
+  no mac-address
+  no shutdown
+  vrf member management
+
+
+line console
+line vty
+router eigrp 1
+ autonomous-system 1
+ router-id 10.5.0.247
+ address-family ipv4 unicast
+router bgp 1
+  router-id 10.5.0.247
+  address-family ipv4 unicast
+    network 10.5.0.247/32
+  !
+! iBGP
+!
+        </entry>
+            <entry key="AutoNetkit.ibgp_role" type="String">Disabled</entry>
+        </extensions>
+        <interface id="0" name="Ethernet2/1" ipv4="10.5.0.29" netPrefixLenV4="30"/>
+        <interface id="1" name="Ethernet2/2" ipv4="10.5.0.21" netPrefixLenV4="30"/>
+    </node>
+    <node name="INETINT" type="SIMPLE" subtype="IOSv" location="277,118" ipv4="10.5.0.216">
+        <extensions>
+            <entry key="AutoNetkit.IGP" type="String">eigrp</entry>
+            <entry key="AutoNetkit.ibgp_role" type="String">RRC</entry>
+            <entry key="AutoNetkit.mgmt_ip" type="string"></entry>
+            <entry key="AutoNetkit.RR_cluster" type="String">CSC</entry>
+            <entry key="config" type="String">!
+! Last configuration change at 23:35:25 UTC Mon Apr 20 2015
+!
+version 15.5
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname INETINT
+!
+boot-start-marker
+boot-end-marker
+!
+!
+enable password cisco
+!
+no aaa new-model
+ethernet lmi ce
+!
+!
+!
+bsd-client server url https://cloudsso.cisco.com/as/token.oauth2
+mmi polling-interval 60
+no mmi auto-configure
+no mmi pvc
+mmi snmp-timeout 180
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+no ip domain lookup
+ip cef
+ipv6 unicast-routing
+ipv6 cef
+!
+multilink bundle-name authenticated
+!
+!
+cts logging verbose
+!
+!
+!
+redundancy
+!
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Loopback0
+ description Loopback
+ ip address 10.5.0.216 255.255.255.255
+!
+interface GigabitEthernet0/0
+ description OOB Management
+ ip address 10.255.0.28 255.255.0.0
+ duplex auto
+ speed auto
+ media-type rj45
+!
+interface GigabitEthernet0/1
+ description to CSCWAGGA
+ ip address 10.5.0.34 255.255.255.252
+ duplex auto
+ speed auto
+ media-type rj45
+!
+interface GigabitEthernet0/2
+ description to CSCWAGGB
+ ip address 10.5.0.6 255.255.255.252
+ duplex auto
+ speed auto
+ media-type rj45
+!
+interface GigabitEthernet0/3
+ description to CSCINETGWA
+ ip address 10.5.128.9 255.255.255.252
+ duplex auto
+ speed auto
+ media-type rj45
+!
+interface GigabitEthernet0/4
+ description to CSCINETGWB
+ ip address 10.5.0.37 255.255.255.252
+ duplex auto
+ speed auto
+ media-type rj45
+!
+!
+router eigrp as1
+ !
+ address-family ipv4 unicast autonomous-system 1
+  !
+  topology base
+  exit-af-topology
+  network 10.5.0.4 0.0.0.3
+  network 10.5.0.32 0.0.0.3
+  network 10.5.0.216 0.0.0.0
+ exit-address-family
+!
+router bgp 1
+ bgp router-id 10.5.0.216
+ bgp log-neighbor-changes
+ neighbor 10.5.0.38 remote-as 29766
+ neighbor 10.5.0.38 description eBGP to CSCINETGWB
+ neighbor 10.5.0.248 remote-as 1
+ neighbor 10.5.0.248 description rr parent CSCWAGGA
+ neighbor 10.5.0.248 update-source Loopback0
+ neighbor 10.5.0.249 remote-as 1
+ neighbor 10.5.0.249 description rr parent CSCWAGGB
+ neighbor 10.5.0.249 update-source Loopback0
+ neighbor 10.5.128.10 remote-as 29766
+ neighbor 10.5.128.10 description eBGP to CSCINETGWA
+ !
+ address-family ipv4
+  network 10.5.0.0 mask 255.255.255.192
+  network 10.5.0.216 mask 255.255.255.255
+  network 10.5.128.0 mask 255.255.255.240
+  neighbor 10.5.0.38 activate
+  neighbor 10.5.0.38 send-community
+  neighbor 10.5.0.38 next-hop-self
+  neighbor 10.5.0.248 activate
+  neighbor 10.5.0.248 next-hop-self
+  neighbor 10.5.0.249 activate
+  neighbor 10.5.0.249 next-hop-self
+  neighbor 10.5.128.10 activate
+  neighbor 10.5.128.10 send-community
+  neighbor 10.5.128.10 next-hop-self
+ exit-address-family
+!
+ip forward-protocol nd
+!
+!
+no ip http server
+no ip http secure-server
+ip route 10.5.0.0 255.255.255.192 Null0 254
+ip route 10.5.128.0 255.255.255.240 Null0 254
+!
+!
+!
+!
+control-plane
+!
+banner exec `
+**************************************************************************
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+* education. IOSv is provided as-is and is not supported by Cisco's      *
+* Technical Advisory Center. Any use or disclosure, in whole or in part, *
+* of the IOSv Software or Documentation to any third party for any       *
+* purposes is expressly prohibited except as otherwise authorized by     *
+* Cisco in writing.                                                      *
+**************************************************************************`
+banner incoming `
+**************************************************************************
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+* education. IOSv is provided as-is and is not supported by Cisco's      *
+* Technical Advisory Center. Any use or disclosure, in whole or in part, *
+* of the IOSv Software or Documentation to any third party for any       *
+* purposes is expressly prohibited except as otherwise authorized by     *
+* Cisco in writing.                                                      *
+**************************************************************************`
+banner login `
+**************************************************************************
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+* education. IOSv is provided as-is and is not supported by Cisco's      *
+* Technical Advisory Center. Any use or disclosure, in whole or in part, *
+* of the IOSv Software or Documentation to any third party for any       *
+* purposes is expressly prohibited except as otherwise authorized by     *
+* Cisco in writing.                                                      *
+**************************************************************************`
+!
+line con 0
+ password cisco
+line aux 0
+line vty 0 4
+ exec-timeout 720 0
+ password cisco
+ login
+ transport input telnet ssh
+!
+no scheduler allocate
+!
+end</entry>
+        </extensions>
+        <interface id="0" name="GigabitEthernet0/1" ipv4="10.5.0.34" netPrefixLenV4="30"/>
+        <interface id="1" name="GigabitEthernet0/2" ipv4="10.5.0.6" netPrefixLenV4="30"/>
+        <interface id="2" name="GigabitEthernet0/3" ipv4="10.5.128.9" netPrefixLenV4="30"/>
+        <interface id="3" name="GigabitEthernet0/4" ipv4="10.5.0.37" netPrefixLenV4="30"/>
+    </node>
+    <node name="CSCINETGWA" type="SIMPLE" subtype="CSR1000v" location="185,9" ipv4="204.227.131.192">
+        <extensions>
+            <entry key="AutoNetkit.ASN" type="Integer">29766</entry>
+            <entry key="AutoNetkit.mgmt_ip" type="string"></entry>
+            <entry key="config" type="String">! IOS Config generated on 2015-04-20 23:28
+! by autonetkit_0.15.1
+!
+hostname CSCINETGWA
+boot-start-marker
+boot-end-marker
+!
+license accept end user agreement
+license boot level premium
+!
+!
+no aaa new-model
+!
+!
+ipv6 unicast-routing
+!
+!
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+no service config
+enable password cisco
+enable secret 4 tnhtc92DXBhelxjYk8LWJrPV36S2i4ntXrpb4RFmfqY
+ip classless
+ip subnet-zero
+no ip domain lookup
+line vty 0 4
+ transport input ssh telnet
+ exec-timeout 720 0
+ password cisco
+ login
+line con 0
+ password cisco
+!
+cdp run
+!
+!
+interface Loopback0
+  description Loopback
+  ip address 204.227.131.192 255.255.255.255
+!
+interface GigabitEthernet1
+  description OOB Management
+  ! Configured on launch
+  no ip address
+  cdp enable
+  no shutdown
+!
+interface GigabitEthernet2
+  description to INETINT
+  ip address 10.5.128.10 255.255.255.252
+  cdp enable
+  no shutdown
+!
+!
+!
+router eigrp as29766
+ !
+ address-family ipv4 unicast autonomous-system 29766
+  !
+  topology base
+  exit-af-topology
+  network 204.227.131.192 0.0.0.0
+ exit-address-family
+ !
+!
+!
+router bgp 29766
+  bgp router-id 204.227.131.192
+  no synchronization
+! ibgp
+  ! ibgp peers
+  !
+  neighbor 204.227.131.193 remote-as 29766
+  neighbor 204.227.131.193 description iBGP peer CSCINETGWB
+  neighbor 204.227.131.193 update-source Loopback0
+!
+! ebgp
+  !
+  neighbor 10.5.128.9 remote-as 1
+  neighbor 10.5.128.9 description eBGP to INETINT
+!
+!
+ !
+ address-family ipv4
+  network 204.227.131.192 mask 255.255.255.255
+  neighbor 204.227.131.193 activate
+  neighbor 204.227.131.193 next-hop-self
+  neighbor 10.5.128.9 activate
+  neighbor 10.5.128.9 send-community
+  neighbor 10.5.128.9 next-hop-self
+ exit-address-family
+!
+!
+!
+end
+</entry>
+        </extensions>
+        <interface id="0" name="GigabitEthernet2" ipv4="10.5.128.10" netPrefixLenV4="30"/>
+    </node>
+    <node name="CSCASR1006A" type="SIMPLE" subtype="CSR1000v" location="384,203" ipv4="10.5.0.211">
+        <extensions>
+            <entry key="AutoNetkit.IGP" type="String">eigrp</entry>
+            <entry key="AutoNetkit.ibgp_role" type="String">RRC</entry>
+            <entry key="AutoNetkit.mgmt_ip" type="string"></entry>
+            <entry key="AutoNetkit.RR_cluster" type="String">CSC</entry>
+            <entry key="config" type="String">!
+! Last configuration change at 23:42:21 UTC Mon Apr 20 2015
+!
+version 15.5
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no platform punt-keepalive disable-kernel-core
+platform console serial
+!
+hostname CSCASR1006A
+!
+boot-start-marker
+boot-end-marker
+!
+!
+vrf definition Mgmt-intf
+ !
+ address-family ipv4
+ exit-address-family
+ !
+ address-family ipv6
+ exit-address-family
+!
+enable secret 4 tnhtc92DXBhelxjYk8LWJrPV36S2i4ntXrpb4RFmfqY
+enable password cisco
+!
+no aaa new-model
+!
+!
+!
+!
+!
+!
+!
+!
+!
+
+
+no ip domain lookup
+
+!
+!
+!
+ipv6 unicast-routing
+!
+!
+!
+!
+!
+!
+!
+subscriber templating
+!
+multilink bundle-name authenticated
+!
+!
+crypto pki trustpoint TP-self-signed-735869561
+ enrollment selfsigned
+ subject-name cn=IOS-Self-Signed-Certificate-735869561
+ revocation-check none
+ rsakeypair TP-self-signed-735869561
+!
+!
+crypto pki certificate chain TP-self-signed-735869561
+ certificate self-signed 01 nvram:IOS-Self-Sig#1.cer
+license udi pid CSR1000V sn 9KCB2X5ANSN
+license accept end user agreement
+license boot level ax
+spanning-tree extend system-id
+!
+username cisco privilege 15 secret 5 $1$4onh$VeS1a9Ej8Q6Ih0YnxFrem0
+!
+redundancy
+!
+!
+!
+!
+!
+cdp run
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+! 
+! 
+!
+interface Loopback0
+ description Loopback
+ ip address 10.5.0.211 255.255.255.255
+!
+interface GigabitEthernet1
+ description OOB Management
+ ip address 10.255.0.26 255.255.0.0
+ negotiation auto
+!
+interface GigabitEthernet2
+ description to CSCWAGGA
+ ip address 10.5.0.49 255.255.255.252
+ negotiation auto
+ cdp enable
+!
+interface GigabitEthernet3
+ description to CSCWAGGB
+ ip address 10.5.0.61 255.255.255.252
+ negotiation auto
+ cdp enable
+!
+interface GigabitEthernet4
+ description to flat-1
+ ip address 172.16.1.65 255.255.255.0
+ negotiation auto
+ cdp enable
+!
+!
+router eigrp as1
+ !
+ address-family ipv4 unicast autonomous-system 1
+  !
+  topology base
+  exit-af-topology
+  network 10.5.0.48 0.0.0.3
+  network 10.5.0.60 0.0.0.3
+  network 10.5.0.211 0.0.0.0
+ exit-address-family
+!
+router bgp 1
+ bgp router-id 10.5.0.211
+ bgp log-neighbor-changes
+ neighbor 10.5.0.248 remote-as 1
+ neighbor 10.5.0.248 description rr parent CSCWAGGA
+ neighbor 10.5.0.248 update-source Loopback0
+ neighbor 10.5.0.249 remote-as 1
+ neighbor 10.5.0.249 description rr parent CSCWAGGB
+ neighbor 10.5.0.249 update-source Loopback0
+ !
+ address-family ipv4
+  network 10.5.0.211 mask 255.255.255.255
+  neighbor 10.5.0.248 activate
+  neighbor 10.5.0.249 activate
+ exit-address-family
+!
+!
+virtual-service csr_mgmt
+!
+ip forward-protocol nd
+!
+no ip http server
+ip http secure-server
+!
+!
+!
+!
+control-plane
+!
+!
+line con 0
+ password cisco
+ stopbits 1
+line vty 0
+ exec-timeout 720 0
+ password cisco
+ login
+ transport input telnet ssh
+line vty 1
+ exec-timeout 720 0
+ password cisco
+ login
+ length 0
+ transport input telnet ssh
+line vty 2 4
+ exec-timeout 720 0
+ password cisco
+ login
+ transport input telnet ssh
+!
+!
+end</entry>
+        </extensions>
+        <interface id="0" name="GigabitEthernet2" ipv4="10.5.0.49" netPrefixLenV4="30"/>
+        <interface id="1" name="GigabitEthernet3" ipv4="10.5.0.61" netPrefixLenV4="30"/>
+        <interface id="2" name="GigabitEthernet4"/>
+    </node>
+    <node name="CSCINETGWB" type="SIMPLE" subtype="CSR1000v" location="340,9" ipv4="204.227.131.193">
+        <extensions>
+            <entry key="AutoNetkit.ASN" type="Integer">29766</entry>
+            <entry key="AutoNetkit.mgmt_ip" type="string"></entry>
+            <entry key="config" type="String">! IOS Config generated on 2015-04-20 23:28
+! by autonetkit_0.15.1
+!
+hostname CSCINETGWB
+boot-start-marker
+boot-end-marker
+!
+license accept end user agreement
+license boot level premium
+!
+!
+no aaa new-model
+!
+!
+ipv6 unicast-routing
+!
+!
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+no service config
+enable password cisco
+enable secret 4 tnhtc92DXBhelxjYk8LWJrPV36S2i4ntXrpb4RFmfqY
+ip classless
+ip subnet-zero
+no ip domain lookup
+line vty 0 4
+ transport input ssh telnet
+ exec-timeout 720 0
+ password cisco
+ login
+line con 0
+ password cisco
+!
+cdp run
+!
+!
+interface Loopback0
+  description Loopback
+  ip address 204.227.131.193 255.255.255.255
+!
+interface GigabitEthernet1
+  description OOB Management
+  ! Configured on launch
+  no ip address
+  cdp enable
+  no shutdown
+!
+interface GigabitEthernet2
+  description to INETINT
+  ip address 10.5.0.38 255.255.255.252
+  cdp enable
+  no shutdown
+!
+!
+!
+router eigrp as29766
+ !
+ address-family ipv4 unicast autonomous-system 29766
+  !
+  topology base
+  exit-af-topology
+  network 204.227.131.193 0.0.0.0
+ exit-address-family
+ !
+!
+!
+router bgp 29766
+  bgp router-id 204.227.131.193
+  no synchronization
+! ibgp
+  ! ibgp peers
+  !
+  neighbor 204.227.131.192 remote-as 29766
+  neighbor 204.227.131.192 description iBGP peer CSCINETGWA
+  neighbor 204.227.131.192 update-source Loopback0
+!
+! ebgp
+  !
+  neighbor 10.5.0.37 remote-as 1
+  neighbor 10.5.0.37 description eBGP to INETINT
+!
+!
+ !
+ address-family ipv4
+  network 204.227.131.193 mask 255.255.255.255
+  neighbor 204.227.131.192 activate
+  neighbor 204.227.131.192 next-hop-self
+  neighbor 10.5.0.37 activate
+  neighbor 10.5.0.37 send-community
+  neighbor 10.5.0.37 next-hop-self
+ exit-address-family
+!
+!
+!
+end
+</entry>
+        </extensions>
+        <interface id="0" name="GigabitEthernet2" ipv4="10.5.0.38" netPrefixLenV4="30"/>
+    </node>
+    <node name="CSCASR1006B" type="SIMPLE" subtype="CSR1000v" location="384,298" ipv4="10.5.0.215">
+        <extensions>
+            <entry key="AutoNetkit.IGP" type="String">eigrp</entry>
+            <entry key="AutoNetkit.ibgp_role" type="String">RRC</entry>
+            <entry key="AutoNetkit.mgmt_ip" type="string"></entry>
+            <entry key="AutoNetkit.RR_cluster" type="String">CSC</entry>
+            <entry key="config" type="String">!
+! Last configuration change at 23:42:22 UTC Mon Apr 20 2015
+!
+version 15.5
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no platform punt-keepalive disable-kernel-core
+platform console serial
+!
+hostname CSCASR1006B
+!
+boot-start-marker
+boot-end-marker
+!
+!
+enable secret 4 tnhtc92DXBhelxjYk8LWJrPV36S2i4ntXrpb4RFmfqY
+enable password cisco
+!
+no aaa new-model
+!
+!
+!
+!
+!
+!
+!
+!
+!
+
+
+no ip domain lookup
+
+!
+!
+!
+ipv6 unicast-routing
+!
+!
+!
+!
+!
+!
+!
+subscriber templating
+!
+multilink bundle-name authenticated
+!
+!
+crypto pki trustpoint TP-self-signed-2912459252
+ enrollment selfsigned
+ subject-name cn=IOS-Self-Signed-Certificate-2912459252
+ revocation-check none
+ rsakeypair TP-self-signed-2912459252
+!
+!
+crypto pki certificate chain TP-self-signed-2912459252
+ certificate self-signed 01 nvram:IOS-Self-Sig#1.cer
+license udi pid CSR1000V sn 9CFWE2LQD4H
+license accept end user agreement
+license boot level ax
+spanning-tree extend system-id
+!
+username cisco privilege 15 secret 5 $1$cxIs$o06N7bySOLYq.0RueS7t6.
+!
+redundancy
+!
+!
+!
+!
+!
+cdp run
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+! 
+! 
+!
+interface Loopback0
+ description Loopback
+ ip address 10.5.0.215 255.255.255.255
+!
+interface GigabitEthernet1
+ description OOB Management
+ ip address 10.255.0.24 255.255.0.0
+ negotiation auto
+!
+interface GigabitEthernet2
+ description to CSCWAGGA
+ ip address 10.5.0.57 255.255.255.252
+ negotiation auto
+ cdp enable
+!
+interface GigabitEthernet3
+ description to CSCWAGGB
+ ip address 10.5.0.53 255.255.255.252
+ negotiation auto
+ cdp enable
+!
+interface GigabitEthernet4
+ description GigabitEthernet4
+ no ip address
+ negotiation auto
+ cdp enable
+!
+!
+router eigrp as1
+ !
+ address-family ipv4 unicast autonomous-system 1
+  !
+  topology base
+  exit-af-topology
+  network 10.5.0.52 0.0.0.3
+  network 10.5.0.56 0.0.0.3
+  network 10.5.0.215 0.0.0.0
+ exit-address-family
+!
+router bgp 1
+ bgp router-id 10.5.0.215
+ bgp log-neighbor-changes
+ neighbor 10.5.0.248 remote-as 1
+ neighbor 10.5.0.248 description rr parent CSCWAGGA
+ neighbor 10.5.0.248 update-source Loopback0
+ neighbor 10.5.0.249 remote-as 1
+ neighbor 10.5.0.249 description rr parent CSCWAGGB
+ neighbor 10.5.0.249 update-source Loopback0
+ !
+ address-family ipv4
+  network 10.5.0.215 mask 255.255.255.255
+  neighbor 10.5.0.248 activate
+  neighbor 10.5.0.249 activate
+ exit-address-family
+!
+!
+!
+ip forward-protocol nd
+!
+no ip http server
+ip http secure-server
+!
+!
+!
+!
+control-plane
+!
+!
+line con 0
+ password cisco
+ stopbits 1
+line vty 0 4
+ exec-timeout 720 0
+ password cisco
+ login
+ transport input telnet ssh
+!
+!
+end</entry>
+        </extensions>
+        <interface id="0" name="GigabitEthernet2" ipv4="10.5.0.57" netPrefixLenV4="30"/>
+        <interface id="1" name="GigabitEthernet3" ipv4="10.5.0.53" netPrefixLenV4="30"/>
+        <interface id="2" name="GigabitEthernet4"/>
+    </node>
+    <node name="CSCCoreA" type="SIMPLE" subtype="IOSv" location="144,205" ipv4="10.5.0.194">
+        <extensions>
+            <entry key="AutoNetkit.IGP" type="String">eigrp</entry>
+            <entry key="AutoNetkit.ibgp_role" type="String">RRC</entry>
+            <entry key="AutoNetkit.mgmt_ip" type="string"></entry>
+            <entry key="AutoNetkit.RR_cluster" type="String">CSC</entry>
+            <entry key="config" type="String">! IOS Config generated on 2015-04-20 23:28
+! by autonetkit_0.15.1
+!
+hostname CSCCoreA
+boot-start-marker
+boot-end-marker
+!
+no aaa new-model
+!
+!
+ip cef
+ipv6 unicast-routing
+ipv6 cef
+!
+!
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+no service config
+enable password cisco
+ip classless
+ip subnet-zero
+no ip domain lookup
+line vty 0 4
+ transport input ssh telnet
+ exec-timeout 720 0
+ password cisco
+ login
+line con 0
+ password cisco
+!
+cdp run
+!
+!
+interface Loopback0
+  description Loopback
+  ip address 10.5.0.194 255.255.255.255
+!
+interface GigabitEthernet0/0
+  description OOB Management
+  ! Configured on launch
+  no ip address
+  cdp enable
+  duplex auto
+  speed auto
+  no shutdown
+!
+interface GigabitEthernet0/1
+  description to CSCWAGGA
+  ip address 10.5.128.5 255.255.255.252
+  cdp enable
+  duplex auto
+  speed auto
+  no shutdown
+!
+interface GigabitEthernet0/2
+  description to CSCWAGGB
+  ip address 10.5.0.45 255.255.255.252
+  cdp enable
+  duplex auto
+  speed auto
+  no shutdown
+!
+interface GigabitEthernet0/3
+  description to CSCCoreB
+  ip address 10.5.0.1 255.255.255.252
+  cdp enable
+  duplex auto
+  speed auto
+  no shutdown
+!
+interface GigabitEthernet0/4
+  description to CSCCoreB
+  ip address 10.5.0.10 255.255.255.252
+  cdp enable
+  duplex auto
+  speed auto
+  no shutdown
+!
+interface GigabitEthernet0/5
+  description to CSCN7KDistA
+  ip address 10.5.0.18 255.255.255.252
+  cdp enable
+  duplex auto
+  speed auto
+  no shutdown
+!
+interface GigabitEthernet0/6
+  description to CSCN7KDistB
+  ip address 10.5.0.30 255.255.255.252
+  cdp enable
+  duplex auto
+  speed auto
+  no shutdown
+!
+!
+!
+router eigrp as1
+ !
+ address-family ipv4 unicast autonomous-system 1
+  !
+  topology base
+  exit-af-topology
+  network 10.5.0.0 0.0.0.3
+  network 10.5.0.8 0.0.0.3
+  network 10.5.0.16 0.0.0.3
+  network 10.5.0.28 0.0.0.3
+  network 10.5.0.44 0.0.0.3
+  network 10.5.0.194 0.0.0.0
+  network 10.5.128.4 0.0.0.3
+ exit-address-family
+ !
+!
+!
+router bgp 1
+  bgp router-id 10.5.0.194
+  no synchronization
+! ibgp
+  ! ibgp route reflector servers
+  !
+  neighbor 10.5.0.248 remote-as 1
+  neighbor 10.5.0.248 description rr parent CSCWAGGA
+  neighbor 10.5.0.248 update-source Loopback0
+  !
+  neighbor 10.5.0.249 remote-as 1
+  neighbor 10.5.0.249 description rr parent CSCWAGGB
+  neighbor 10.5.0.249 update-source Loopback0
+!
+!
+ !
+ address-family ipv4
+  network 10.5.0.194 mask 255.255.255.255
+  neighbor 10.5.0.248 activate
+  neighbor 10.5.0.249 activate
+ exit-address-family
+!
+!
+!
+end
+</entry>
+        </extensions>
+        <interface id="0" name="GigabitEthernet0/1" ipv4="10.5.128.5" netPrefixLenV4="30"/>
+        <interface id="1" name="GigabitEthernet0/2" ipv4="10.5.0.45" netPrefixLenV4="30"/>
+        <interface id="2" name="GigabitEthernet0/3" ipv4="10.5.0.1" netPrefixLenV4="30"/>
+        <interface id="3" name="GigabitEthernet0/4" ipv4="10.5.0.10" netPrefixLenV4="30"/>
+        <interface id="4" name="GigabitEthernet0/5" ipv4="10.5.0.18" netPrefixLenV4="30"/>
+        <interface id="5" name="GigabitEthernet0/6" ipv4="10.5.0.30" netPrefixLenV4="30"/>
+    </node>
+    <node name="CSCCoreB" type="SIMPLE" subtype="IOSv" location="144,300" ipv4="10.5.0.195">
+        <extensions>
+            <entry key="AutoNetkit.IGP" type="String">eigrp</entry>
+            <entry key="AutoNetkit.ibgp_role" type="String">RRC</entry>
+            <entry key="AutoNetkit.mgmt_ip" type="string"></entry>
+            <entry key="AutoNetkit.RR_cluster" type="String">CSC</entry>
+            <entry key="config" type="String">! IOS Config generated on 2015-04-20 23:28
+! by autonetkit_0.15.1
+!
+hostname CSCCoreB
+boot-start-marker
+boot-end-marker
+!
+no aaa new-model
+!
+!
+ip cef
+ipv6 unicast-routing
+ipv6 cef
+!
+!
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+no service config
+enable password cisco
+ip classless
+ip subnet-zero
+no ip domain lookup
+line vty 0 4
+ transport input ssh telnet
+ exec-timeout 720 0
+ password cisco
+ login
+line con 0
+ password cisco
+!
+cdp run
+!
+!
+interface Loopback0
+  description Loopback
+  ip address 10.5.0.195 255.255.255.255
+!
+interface GigabitEthernet0/0
+  description OOB Management
+  ! Configured on launch
+  no ip address
+  cdp enable
+  duplex auto
+  speed auto
+  no shutdown
+!
+interface GigabitEthernet0/1
+  description to CSCWAGGA
+  ip address 10.5.0.42 255.255.255.252
+  cdp enable
+  duplex auto
+  speed auto
+  no shutdown
+!
+interface GigabitEthernet0/2
+  description to CSCWAGGB
+  ip address 10.5.128.1 255.255.255.252
+  cdp enable
+  duplex auto
+  speed auto
+  no shutdown
+!
+interface GigabitEthernet0/3
+  description to CSCCoreA
+  ip address 10.5.0.2 255.255.255.252
+  cdp enable
+  duplex auto
+  speed auto
+  no shutdown
+!
+interface GigabitEthernet0/4
+  description to CSCCoreA
+  ip address 10.5.0.9 255.255.255.252
+  cdp enable
+  duplex auto
+  speed auto
+  no shutdown
+!
+interface GigabitEthernet0/5
+  description to CSCN7KDistA
+  ip address 10.5.0.26 255.255.255.252
+  cdp enable
+  duplex auto
+  speed auto
+  no shutdown
+!
+interface GigabitEthernet0/6
+  description to CSCN7KDistB
+  ip address 10.5.0.22 255.255.255.252
+  cdp enable
+  duplex auto
+  speed auto
+  no shutdown
+!
+!
+!
+router eigrp as1
+ !
+ address-family ipv4 unicast autonomous-system 1
+  !
+  topology base
+  exit-af-topology
+  network 10.5.0.0 0.0.0.3
+  network 10.5.0.8 0.0.0.3
+  network 10.5.0.20 0.0.0.3
+  network 10.5.0.24 0.0.0.3
+  network 10.5.0.40 0.0.0.3
+  network 10.5.0.195 0.0.0.0
+  network 10.5.128.0 0.0.0.3
+ exit-address-family
+ !
+!
+!
+router bgp 1
+  bgp router-id 10.5.0.195
+  no synchronization
+! ibgp
+  ! ibgp route reflector servers
+  !
+  neighbor 10.5.0.248 remote-as 1
+  neighbor 10.5.0.248 description rr parent CSCWAGGA
+  neighbor 10.5.0.248 update-source Loopback0
+  !
+  neighbor 10.5.0.249 remote-as 1
+  neighbor 10.5.0.249 description rr parent CSCWAGGB
+  neighbor 10.5.0.249 update-source Loopback0
+!
+!
+ !
+ address-family ipv4
+  network 10.5.0.195 mask 255.255.255.255
+  neighbor 10.5.0.248 activate
+  neighbor 10.5.0.249 activate
+ exit-address-family
+!
+!
+!
+end
+</entry>
+        </extensions>
+        <interface id="0" name="GigabitEthernet0/1" ipv4="10.5.0.42" netPrefixLenV4="30"/>
+        <interface id="1" name="GigabitEthernet0/2" ipv4="10.5.128.1" netPrefixLenV4="30"/>
+        <interface id="2" name="GigabitEthernet0/3" ipv4="10.5.0.2" netPrefixLenV4="30"/>
+        <interface id="3" name="GigabitEthernet0/4" ipv4="10.5.0.9" netPrefixLenV4="30"/>
+        <interface id="4" name="GigabitEthernet0/5" ipv4="10.5.0.26" netPrefixLenV4="30"/>
+        <interface id="5" name="GigabitEthernet0/6" ipv4="10.5.0.22" netPrefixLenV4="30"/>
+    </node>
+    <node name="flat-1" type="ASSET" subtype="FLAT" location="565,208">
+        <interface id="0" name="link0"/>
+        <interface id="1" name="link1"/>
+    </node>
+    <connection dst="/virl:topology/virl:node[5]/virl:interface[1]" src="/virl:topology/virl:node[1]/virl:interface[1]"/>
+    <connection dst="/virl:topology/virl:node[5]/virl:interface[2]" src="/virl:topology/virl:node[2]/virl:interface[1]"/>
+    <connection dst="/virl:topology/virl:node[2]/virl:interface[2]" src="/virl:topology/virl:node[1]/virl:interface[2]"/>
+    <connection dst="/virl:topology/virl:node[2]/virl:interface[3]" src="/virl:topology/virl:node[1]/virl:interface[3]"/>
+    <connection dst="/virl:topology/virl:node[10]/virl:interface[1]" src="/virl:topology/virl:node[1]/virl:interface[4]"/>
+    <connection dst="/virl:topology/virl:node[11]/virl:interface[1]" src="/virl:topology/virl:node[1]/virl:interface[5]"/>
+    <connection dst="/virl:topology/virl:node[10]/virl:interface[2]" src="/virl:topology/virl:node[2]/virl:interface[4]"/>
+    <connection dst="/virl:topology/virl:node[11]/virl:interface[2]" src="/virl:topology/virl:node[2]/virl:interface[5]"/>
+    <connection dst="/virl:topology/virl:node[11]/virl:interface[3]" src="/virl:topology/virl:node[10]/virl:interface[3]"/>
+    <connection dst="/virl:topology/virl:node[11]/virl:interface[4]" src="/virl:topology/virl:node[10]/virl:interface[4]"/>
+    <connection dst="/virl:topology/virl:node[3]/virl:interface[1]" src="/virl:topology/virl:node[10]/virl:interface[5]"/>
+    <connection dst="/virl:topology/virl:node[4]/virl:interface[1]" src="/virl:topology/virl:node[10]/virl:interface[6]"/>
+    <connection dst="/virl:topology/virl:node[3]/virl:interface[2]" src="/virl:topology/virl:node[11]/virl:interface[5]"/>
+    <connection dst="/virl:topology/virl:node[4]/virl:interface[2]" src="/virl:topology/virl:node[11]/virl:interface[6]"/>
+    <connection dst="/virl:topology/virl:node[6]/virl:interface[1]" src="/virl:topology/virl:node[5]/virl:interface[3]"/>
+    <connection dst="/virl:topology/virl:node[8]/virl:interface[1]" src="/virl:topology/virl:node[5]/virl:interface[4]"/>
+    <connection dst="/virl:topology/virl:node[7]/virl:interface[1]" src="/virl:topology/virl:node[1]/virl:interface[6]"/>
+    <connection dst="/virl:topology/virl:node[9]/virl:interface[1]" src="/virl:topology/virl:node[1]/virl:interface[7]"/>
+    <connection dst="/virl:topology/virl:node[7]/virl:interface[2]" src="/virl:topology/virl:node[2]/virl:interface[6]"/>
+    <connection dst="/virl:topology/virl:node[9]/virl:interface[2]" src="/virl:topology/virl:node[2]/virl:interface[7]"/>
+    <connection dst="/virl:topology/virl:node[12]/virl:interface[1]" src="/virl:topology/virl:node[7]/virl:interface[3]"/>
+</topology>

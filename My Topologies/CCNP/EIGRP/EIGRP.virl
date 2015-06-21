@@ -1,0 +1,409 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<topology xmlns="http://www.cisco.com/VIRL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" schemaVersion="0.9" xsi:schemaLocation="http://www.cisco.com/VIRL https://raw.github.com/CiscoVIRL/schema/v0.9/virl.xsd">
+    <node name="R1" type="SIMPLE" subtype="IOSv" location="237,21">
+        <interface id="0" name="GigabitEthernet0/1"/>
+        <interface id="1" name="GigabitEthernet0/2"/>
+        <interface id="2" name="GigabitEthernet0/3"/>
+    </node>
+    <node name="R2" type="SIMPLE" subtype="IOSv" location="237,94">
+        <interface id="0" name="GigabitEthernet0/1"/>
+        <interface id="1" name="GigabitEthernet0/2"/>
+    </node>
+    <node name="R3" type="SIMPLE" subtype="IOSv" location="282,274">
+        <interface id="0" name="GigabitEthernet0/1"/>
+        <interface id="1" name="GigabitEthernet0/2"/>
+    </node>
+    <node name="R4" type="SIMPLE" subtype="IOSv" location="348,331">
+        <interface id="0" name="GigabitEthernet0/1"/>
+        <interface id="1" name="GigabitEthernet0/2"/>
+        <interface id="2" name="GigabitEthernet0/3"/>
+    </node>
+    <node name="SW1" type="SIMPLE" subtype="IOSvL2" location="58,161">
+        <extensions>
+            <entry key="config" type="String">enable&#xD;
+config t&#xD;
+!&#xD;
+no service pad&#xD;
+service timestamps debug datetime msec&#xD;
+service timestamps log datetime msec&#xD;
+no service password-encryption&#xD;
+!&#xD;
+hostname Sw-1&#xD;
+!&#xD;
+boot-start-marker&#xD;
+boot-end-marker&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+no aaa new-model&#xD;
+system mtu routing 1500&#xD;
+vtp file vlan.dat&#xD;
+no ip domain-lookup&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+spanning-tree mode pvst&#xD;
+spanning-tree extend system-id&#xD;
+!&#xD;
+vlan internal allocation policy ascending&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+interface GigabitEthernet0/1&#xD;
+ switchport mode access&#xD;
+ switchport access vlan 1&#xD;
+ spanning-tree portfast&#xD;
+!&#xD;
+interface GigabitEthernet0/2&#xD;
+ switchport mode access&#xD;
+ switchport access vlan 1&#xD;
+ spanning-tree portfast&#xD;
+!&#xD;
+interface GigabitEthernet0/3&#xD;
+ shutdown&#xD;
+!&#xD;
+interface GigabitEthernet0/4&#xD;
+ shutdown&#xD;
+!&#xD;
+interface GigabitEthernet0/5&#xD;
+ shutdown&#xD;
+!&#xD;
+interface GigabitEthernet0/6&#xD;
+ shutdown&#xD;
+!&#xD;
+interface GigabitEthernet0/7&#xD;
+ shutdown&#xD;
+!&#xD;
+interface GigabitEthernet0/8&#xD;
+ shutdown&#xD;
+!&#xD;
+interface GigabitEthernet0/9&#xD;
+ shutdown&#xD;
+!&#xD;
+interface GigabitEthernet0/10&#xD;
+ shutdown&#xD;
+!&#xD;
+interface GigabitEthernet0/11&#xD;
+ shutdown&#xD;
+!&#xD;
+interface GigabitEthernet0/12&#xD;
+ shutdown&#xD;
+!&#xD;
+interface GigabitEthernet0/13&#xD;
+ shutdown&#xD;
+!&#xD;
+interface GigabitEthernet0/14&#xD;
+ shutdown&#xD;
+!&#xD;
+interface GigabitEthernet0/15&#xD;
+ shutdown&#xD;
+!&#xD;
+interface GigabitEthernet0/16&#xD;
+ shutdown&#xD;
+!&#xD;
+interface GigabitEthernet0/17&#xD;
+ shutdown&#xD;
+!&#xD;
+interface GigabitEthernet0/18&#xD;
+ shutdown&#xD;
+!&#xD;
+interface GigabitEthernet0/19&#xD;
+ shutdown&#xD;
+!&#xD;
+interface GigabitEthernet0/20&#xD;
+ shutdown&#xD;
+!&#xD;
+interface GigabitEthernet0/21&#xD;
+ shutdown&#xD;
+!&#xD;
+interface GigabitEthernet0/22&#xD;
+ shutdown&#xD;
+!&#xD;
+interface GigabitEthernet0/23&#xD;
+ shutdown&#xD;
+!&#xD;
+interface GigabitEthernet0/24&#xD;
+ shutdown&#xD;
+!&#xD;
+interface GigabitEthernet0/1&#xD;
+!&#xD;
+interface GigabitEthernet0/2&#xD;
+!&#xD;
+interface Vlan1&#xD;
+ no ip address&#xD;
+ no ip route-cache&#xD;
+!&#xD;
+ip classless&#xD;
+ip http server&#xD;
+ip http secure-server&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+line con 0&#xD;
+ exec-timeout 0 0&#xD;
+ logging synchronous level 0 limit 20&#xD;
+line vty 0 4&#xD;
+ login&#xD;
+line vty 5 15&#xD;
+ login&#xD;
+!&#xD;
+end&#xD;
+&#xD;
+</entry>
+        </extensions>
+        <interface id="0" name="GigabitEthernet0/1"/>
+        <interface id="1" name="GigabitEthernet0/2"/>
+        <interface id="2" name="GigabitEthernet0/3"/>
+        <interface id="3" name="GigabitEthernet1/0"/>
+        <interface id="4" name="GigabitEthernet1/1"/>
+        <interface id="5" name="GigabitEthernet1/2"/>
+        <interface id="6" name="GigabitEthernet1/3"/>
+        <interface id="7" name="GigabitEthernet2/0"/>
+        <interface id="8" name="GigabitEthernet2/1"/>
+        <interface id="9" name="GigabitEthernet2/2"/>
+        <interface id="10" name="GigabitEthernet2/3"/>
+    </node>
+    <node name="SW2" type="SIMPLE" subtype="IOSvL2" location="392,155">
+        <extensions>
+            <entry key="config" type="String">enable&#xD;
+config t&#xD;
+!&#xD;
+no service pad&#xD;
+service timestamps debug datetime msec&#xD;
+service timestamps log datetime msec&#xD;
+no service password-encryption&#xD;
+!&#xD;
+hostname Sw-2&#xD;
+!&#xD;
+!&#xD;
+no aaa new-model&#xD;
+ip subnet-zero&#xD;
+no ip domain-lookup&#xD;
+!&#xD;
+!&#xD;
+vtp file vlan.dat&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+spanning-tree mode pvst&#xD;
+spanning-tree etherchannel guard misconfig&#xD;
+spanning-tree extend system-id&#xD;
+!&#xD;
+vlan internal allocation policy ascending&#xD;
+!&#xD;
+!&#xD;
+! &#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+interface GigabitEthernet0/1&#xD;
+ switchport mode access&#xD;
+ spanning-tree portfast&#xD;
+!&#xD;
+interface GigabitEthernet0/2&#xD;
+ switchport mode dynamic desirable&#xD;
+ shutdown&#xD;
+!&#xD;
+interface GigabitEthernet0/3&#xD;
+ switchport mode dynamic desirable&#xD;
+ shutdown&#xD;
+!&#xD;
+interface GigabitEthernet1/0&#xD;
+ switchport mode access&#xD;
+ spanning-tree portfast&#xD;
+!&#xD;
+interface range Gi1/1-3&#xD;
+ switchport mode dynamic desirable&#xD;
+ shutdown&#xD;
+!&#xD;
+interface Gi0/3&#xD;
+ switchport mode dynamic desirable&#xD;
+ shutdown&#xD;
+!&#xD;
+interface range Gi2/0-3&#xD;
+ switchport mode dynamic desirable&#xD;
+ shutdown&#xD;
+!&#xD;
+interface range Gi3/0-3&#xD;
+ switchport mode dynamic desirable&#xD;
+ shutdown&#xD;
+!&#xD;
+interface Vlan1&#xD;
+ no ip address&#xD;
+ no ip route-cache&#xD;
+ shutdown&#xD;
+!&#xD;
+ip classless&#xD;
+ip http server&#xD;
+ip http secure-server&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+control-plane&#xD;
+!&#xD;
+!&#xD;
+line con 0&#xD;
+ exec-timeout 0 0&#xD;
+ logging synchronous level 0 limit 20&#xD;
+line vty 0 4&#xD;
+ login&#xD;
+line vty 5 15&#xD;
+ login&#xD;
+!&#xD;
+end&#xD;
+&#xD;
+Sw-2#</entry>
+        </extensions>
+        <interface id="0" name="GigabitEthernet0/1"/>
+        <interface id="1" name="GigabitEthernet0/2"/>
+        <interface id="2" name="GigabitEthernet0/3"/>
+        <interface id="3" name="GigabitEthernet1/0"/>
+        <interface id="4" name="GigabitEthernet1/1"/>
+        <interface id="5" name="GigabitEthernet1/2"/>
+        <interface id="6" name="GigabitEthernet1/3"/>
+        <interface id="7" name="GigabitEthernet2/0"/>
+        <interface id="8" name="GigabitEthernet2/1"/>
+        <interface id="9" name="GigabitEthernet2/2"/>
+        <interface id="10" name="GigabitEthernet2/3"/>
+        <interface id="11" name="GigabitEthernet3/0"/>
+        <interface id="12" name="GigabitEthernet3/1"/>
+        <interface id="13" name="GigabitEthernet3/2"/>
+    </node>
+    <node name="SW3" type="SIMPLE" subtype="IOSvL2" location="58,287">
+        <extensions>
+            <entry key="config" type="String">enable&#xD;
+config t&#xD;
+!&#xD;
+no service pad&#xD;
+service timestamps debug datetime msec&#xD;
+service timestamps log datetime msec&#xD;
+no service password-encryption&#xD;
+!&#xD;
+hostname Switch-3&#xD;
+!&#xD;
+!&#xD;
+no aaa new-model&#xD;
+ip subnet-zero&#xD;
+!&#xD;
+!&#xD;
+vtp file vlan.dat&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+spanning-tree mode pvst&#xD;
+spanning-tree etherchannel guard misconfig&#xD;
+spanning-tree extend system-id&#xD;
+!&#xD;
+vlan internal allocation policy ascending&#xD;
+!&#xD;
+!&#xD;
+! &#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+interface GigabitEthernet0/1&#xD;
+ switchport mode dynamic desirable&#xD;
+ shutdown&#xD;
+!&#xD;
+interface GigabitEthernet0/2&#xD;
+ switchport mode dynamic desirable&#xD;
+ shutdown&#xD;
+!&#xD;
+interface GigabitEthernet0/3&#xD;
+ switchport mode dynamic desirable&#xD;
+ shutdown&#xD;
+!&#xD;
+interface GigabitEthernet1/0&#xD;
+ switchport mode dynamic desirable&#xD;
+ shutdown&#xD;
+!&#xD;
+interface range Gi1/1-3&#xD;
+ switchport mode dynamic desirable&#xD;
+ shutdown&#xD;
+!&#xD;
+interface Gi0/3&#xD;
+ switchport mode dynamic desirable&#xD;
+ shutdown&#xD;
+!&#xD;
+interface range Gi2/0-3&#xD;
+ switchport mode dynamic desirable&#xD;
+ shutdown&#xD;
+!&#xD;
+interface range Gi3/0-3&#xD;
+ switchport mode dynamic desirable&#xD;
+ shutdown&#xD;
+!&#xD;
+interface Vlan1&#xD;
+ no ip address&#xD;
+ no ip route-cache&#xD;
+ shutdown&#xD;
+!&#xD;
+ip classless&#xD;
+ip http server&#xD;
+ip http secure-server&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+control-plane&#xD;
+!&#xD;
+!&#xD;
+line con 0&#xD;
+ exec-timeout 0 0&#xD;
+ logging synchronous level 0 limit 20&#xD;
+line vty 0 4&#xD;
+ login&#xD;
+line vty 5 15&#xD;
+ login&#xD;
+!&#xD;
+end&#xD;
+&#xD;
+Switch-3#</entry>
+        </extensions>
+        <interface id="0" name="GigabitEthernet0/1"/>
+        <interface id="1" name="GigabitEthernet0/2"/>
+        <interface id="2" name="GigabitEthernet0/3"/>
+        <interface id="3" name="GigabitEthernet1/0"/>
+        <interface id="4" name="GigabitEthernet1/1"/>
+        <interface id="5" name="GigabitEthernet1/2"/>
+        <interface id="6" name="GigabitEthernet1/3"/>
+        <interface id="7" name="GigabitEthernet2/0"/>
+        <interface id="8" name="GigabitEthernet2/1"/>
+        <interface id="9" name="GigabitEthernet2/2"/>
+        <interface id="10" name="GigabitEthernet2/3"/>
+        <interface id="11" name="GigabitEthernet3/0"/>
+        <interface id="12" name="GigabitEthernet3/1"/>
+        <interface id="13" name="GigabitEthernet3/2"/>
+    </node>
+    <connection dst="/virl:topology/virl:node[5]/virl:interface[1]" src="/virl:topology/virl:node[1]/virl:interface[1]"/>
+    <connection dst="/virl:topology/virl:node[6]/virl:interface[2]" src="/virl:topology/virl:node[1]/virl:interface[2]"/>
+    <connection dst="/virl:topology/virl:node[6]/virl:interface[3]" src="/virl:topology/virl:node[3]/virl:interface[1]"/>
+    <connection dst="/virl:topology/virl:node[7]/virl:interface[1]" src="/virl:topology/virl:node[3]/virl:interface[2]"/>
+    <connection dst="/virl:topology/virl:node[7]/virl:interface[2]" src="/virl:topology/virl:node[4]/virl:interface[1]"/>
+    <connection dst="/virl:topology/virl:node[6]/virl:interface[4]" src="/virl:topology/virl:node[4]/virl:interface[2]"/>
+    <connection dst="/virl:topology/virl:node[5]/virl:interface[5]" src="/virl:topology/virl:node[6]/virl:interface[5]"/>
+    <connection dst="/virl:topology/virl:node[5]/virl:interface[6]" src="/virl:topology/virl:node[6]/virl:interface[6]"/>
+    <connection dst="/virl:topology/virl:node[5]/virl:interface[7]" src="/virl:topology/virl:node[6]/virl:interface[7]"/>
+    <connection dst="/virl:topology/virl:node[7]/virl:interface[8]" src="/virl:topology/virl:node[5]/virl:interface[8]"/>
+    <connection dst="/virl:topology/virl:node[5]/virl:interface[9]" src="/virl:topology/virl:node[7]/virl:interface[9]"/>
+    <connection dst="/virl:topology/virl:node[5]/virl:interface[10]" src="/virl:topology/virl:node[7]/virl:interface[10]"/>
+    <connection dst="/virl:topology/virl:node[7]/virl:interface[12]" src="/virl:topology/virl:node[6]/virl:interface[12]"/>
+    <connection dst="/virl:topology/virl:node[6]/virl:interface[13]" src="/virl:topology/virl:node[7]/virl:interface[13]"/>
+    <connection dst="/virl:topology/virl:node[6]/virl:interface[14]" src="/virl:topology/virl:node[7]/virl:interface[14]"/>
+    <connection dst="/virl:topology/virl:node[5]/virl:interface[2]" src="/virl:topology/virl:node[2]/virl:interface[2]"/>
+    <connection dst="/virl:topology/virl:node[6]/virl:interface[1]" src="/virl:topology/virl:node[2]/virl:interface[1]"/>
+    <connection dst="/virl:topology/virl:node[4]/virl:interface[3]" src="/virl:topology/virl:node[1]/virl:interface[3]"/>
+</topology>

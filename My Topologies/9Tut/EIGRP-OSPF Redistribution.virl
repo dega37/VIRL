@@ -1,0 +1,392 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<topology xmlns="http://www.cisco.com/VIRL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" schemaVersion="0.9" xsi:schemaLocation="http://www.cisco.com/VIRL https://raw.github.com/CiscoVIRL/schema/v0.9/virl.xsd">
+    <node name="iosv-1" type="SIMPLE" subtype="IOSv" location="242,14">
+        <extensions>
+            <entry key="config" type="String">!&#xD;
+!&#xD;
+version 12.4&#xD;
+service timestamps debug datetime msec&#xD;
+service timestamps log datetime msec&#xD;
+no service password-encryption&#xD;
+!&#xD;
+hostname R1&#xD;
+!&#xD;
+boot-start-marker&#xD;
+boot-end-marker&#xD;
+!&#xD;
+!&#xD;
+no aaa new-model&#xD;
+memory-size iomem 5&#xD;
+!&#xD;
+!&#xD;
+ip cef&#xD;
+no ip domain lookup&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+! &#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+interface GigabitEthernet0/3&#xD;
+ bandwidth 1544&#xD;
+ ip address 192.168.1.1 255.255.255.0&#xD;
+!&#xD;
+router eigrp 100&#xD;
+ network 192.168.1.0&#xD;
+ auto-summary&#xD;
+!&#xD;
+no ip http server&#xD;
+no ip http secure-server&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+control-plane&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+line con 0&#xD;
+ exec-timeout 0 0&#xD;
+ logging synchronous&#xD;
+line aux 0&#xD;
+line vty 0 4&#xD;
+!&#xD;
+!&#xD;
+end&#xD;
+</entry>
+        </extensions>
+        <interface id="0" name="GigabitEthernet0/1"/>
+        <interface id="1" name="GigabitEthernet0/2"/>
+        <interface id="2" name="GigabitEthernet0/3"/>
+    </node>
+    <node name="iosv-2" type="SIMPLE" subtype="IOSv" location="241,107">
+        <extensions>
+            <entry key="config" type="String">!&#xD;
+!&#xD;
+version 12.4&#xD;
+service timestamps debug datetime msec&#xD;
+service timestamps log datetime msec&#xD;
+no service password-encryption&#xD;
+!&#xD;
+hostname R2&#xD;
+!&#xD;
+boot-start-marker&#xD;
+boot-end-marker&#xD;
+!&#xD;
+!&#xD;
+no aaa new-model&#xD;
+memory-size iomem 5&#xD;
+!&#xD;
+!&#xD;
+ip cef&#xD;
+no ip domain lookup&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+! &#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+interface GigabitEthernet0/1&#xD;
+bandwidth 1544&#xD;
+ ip address 192.168.3.2 255.255.255.0&#xD;
+ serial restart-delay 0&#xD;
+!&#xD;
+interface GigabitEthernet0/3&#xD;
+bandwidth 1544&#xD;
+ ip address 192.168.1.2 255.255.255.0&#xD;
+ serial restart-delay 0&#xD;
+!&#xD;
+interface GigabitEthernet0/2&#xD;
+bandwidth 100000&#xD;
+ ip address 192.168.2.2 255.255.255.0&#xD;
+ duplex auto&#xD;
+ speed auto&#xD;
+!&#xD;
+router eigrp 100&#xD;
+ network 192.168.1.0&#xD;
+ network 192.168.2.0&#xD;
+ auto-summary&#xD;
+!&#xD;
+router ospf 1&#xD;
+ log-adjacency-changes&#xD;
+ network 192.168.3.0 0.0.0.255 area 24&#xD;
+!&#xD;
+no ip http server&#xD;
+no ip http secure-server&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+control-plane&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+line con 0&#xD;
+ exec-timeout 0 0&#xD;
+ logging synchronous&#xD;
+line aux 0&#xD;
+line vty 0 4&#xD;
+ login&#xD;
+!&#xD;
+!&#xD;
+end&#xD;
+</entry>
+        </extensions>
+        <interface id="0" name="GigabitEthernet0/1"/>
+        <interface id="1" name="GigabitEthernet0/2"/>
+        <interface id="2" name="GigabitEthernet0/3"/>
+        <interface id="3" name="GigabitEthernet0/4"/>
+    </node>
+    <node name="iosv-3" type="SIMPLE" subtype="IOSv" location="241,217">
+        <extensions>
+            <entry key="config" type="String">!&#xD;
+!&#xD;
+version 12.4&#xD;
+service timestamps debug datetime msec&#xD;
+service timestamps log datetime msec&#xD;
+no service password-encryption&#xD;
+!&#xD;
+hostname R3&#xD;
+!&#xD;
+boot-start-marker&#xD;
+boot-end-marker&#xD;
+!&#xD;
+!&#xD;
+no aaa new-model&#xD;
+memory-size iomem 5&#xD;
+!&#xD;
+!&#xD;
+ip cef&#xD;
+no ip domain lookup&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+! &#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+interface GigabitEthernet0/2&#xD;
+bandwidth 100000&#xD;
+ ip address 192.168.2.3 255.255.255.0&#xD;
+ duplex auto&#xD;
+ speed auto&#xD;
+!&#xD;
+interface GigabitEthernet0/3&#xD;
+bandwidth 100000&#xD;
+ ip address 192.168.4.3 255.255.255.0&#xD;
+ duplex auto&#xD;
+ speed auto&#xD;
+!&#xD;
+router eigrp 100&#xD;
+ network 192.168.2.0&#xD;
+ auto-summary&#xD;
+!&#xD;
+router ospf 1&#xD;
+ log-adjacency-changes&#xD;
+ network 192.168.4.0 0.0.0.255 area 34&#xD;
+!&#xD;
+no ip http server&#xD;
+no ip http secure-server&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+control-plane&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+line con 0&#xD;
+ exec-timeout 0 0&#xD;
+ logging synchronous&#xD;
+line aux 0&#xD;
+line vty 0 4&#xD;
+!&#xD;
+!&#xD;
+end&#xD;
+</entry>
+        </extensions>
+        <interface id="0" name="GigabitEthernet0/1"/>
+        <interface id="1" name="GigabitEthernet0/2"/>
+        <interface id="2" name="GigabitEthernet0/3"/>
+    </node>
+    <node name="iosv-4" type="SIMPLE" subtype="IOSv" location="69,104">
+        <extensions>
+            <entry key="config" type="String">!&#xD;
+!&#xD;
+version 12.4&#xD;
+service timestamps debug datetime msec&#xD;
+service timestamps log datetime msec&#xD;
+no service password-encryption&#xD;
+!&#xD;
+hostname R4&#xD;
+!&#xD;
+boot-start-marker&#xD;
+boot-end-marker&#xD;
+!&#xD;
+!&#xD;
+no aaa new-model&#xD;
+memory-size iomem 5&#xD;
+!&#xD;
+!&#xD;
+ip cef&#xD;
+no ip domain lookup&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+! &#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+interface Loopback0&#xD;
+ ip address 172.16.100.1 255.255.255.0&#xD;
+!&#xD;
+interface GigabitEthernet0/1&#xD;
+bandwidth 1544&#xD;
+ ip address 192.168.3.4 255.255.255.0&#xD;
+ serial restart-delay 0&#xD;
+!&#xD;
+!&#xD;
+interface GigabitEthernet0/3&#xD;
+bandwidth 100000&#xD;
+ ip address 192.168.4.4 255.255.255.0&#xD;
+ duplex auto&#xD;
+ speed auto&#xD;
+!&#xD;
+router ospf 1&#xD;
+ log-adjacency-changes&#xD;
+ network 172.16.100.0 0.0.0.255 area 0&#xD;
+ network 192.168.3.0 0.0.0.255 area 24&#xD;
+ network 192.168.4.0 0.0.0.255 area 34&#xD;
+!&#xD;
+no ip http server&#xD;
+no ip http secure-server&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+control-plane&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+!&#xD;
+line con 0&#xD;
+ exec-timeout 0 0&#xD;
+ logging synchronous&#xD;
+line aux 0&#xD;
+line vty 0 4&#xD;
+ login&#xD;
+!&#xD;
+!&#xD;
+end&#xD;
+</entry>
+        </extensions>
+        <interface id="0" name="GigabitEthernet0/1"/>
+        <interface id="1" name="GigabitEthernet0/2"/>
+        <interface id="2" name="GigabitEthernet0/3"/>
+    </node>
+    <connection dst="/virl:topology/virl:node[2]/virl:interface[1]" src="/virl:topology/virl:node[4]/virl:interface[1]"/>
+    <connection dst="/virl:topology/virl:node[2]/virl:interface[2]" src="/virl:topology/virl:node[3]/virl:interface[2]"/>
+    <connection dst="/virl:topology/virl:node[3]/virl:interface[3]" src="/virl:topology/virl:node[4]/virl:interface[3]"/>
+    <connection dst="/virl:topology/virl:node[1]/virl:interface[3]" src="/virl:topology/virl:node[2]/virl:interface[3]"/>
+</topology>

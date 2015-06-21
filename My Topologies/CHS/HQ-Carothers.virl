@@ -1,0 +1,1796 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<topology xmlns="http://www.cisco.com/VIRL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" schemaVersion="0.9" xsi:schemaLocation="http://www.cisco.com/VIRL https://raw.github.com/CiscoVIRL/schema/v0.9/virl.xsd">
+    <node name="CSCASR" type="SIMPLE" subtype="CSR1000v" location="348,70" ipv4="192.168.0.2">
+        <extensions>
+            <entry key="AutoNetkit.IGP" type="String">eigrp</entry>
+            <entry key="AutoNetkit.ASN" type="Integer">1</entry>
+            <entry key="AutoNetkit.ibgp_role" type="String">RRC</entry>
+            <entry key="AutoNetkit.mgmt_ip" type="string"></entry>
+            <entry key="config" type="String">Building configuration...
+
+Current configuration : 4515 bytes
+!
+! Last configuration change at 21:30:18 UTC Fri Apr 24 2015
+!
+version 15.5
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no platform punt-keepalive disable-kernel-core
+platform console serial
+!
+hostname CSCASR
+!
+boot-start-marker
+boot-end-marker
+!
+!
+vrf definition Mgmt-intf
+ !
+ address-family ipv4
+ exit-address-family
+ !
+ address-family ipv6
+ exit-address-family
+!
+enable secret 4 tnhtc92DXBhelxjYk8LWJrPV36S2i4ntXrpb4RFmfqY
+enable password cisco
+!
+no aaa new-model
+!
+!
+!
+!
+!
+!
+!
+!
+!
+
+
+no ip domain lookup
+
+!
+!
+!
+ipv6 unicast-routing
+!         
+!
+!
+!
+!
+!
+!
+subscriber templating
+!
+multilink bundle-name authenticated
+!
+!
+crypto pki trustpoint TP-self-signed-1220724806
+ enrollment selfsigned
+ subject-name cn=IOS-Self-Signed-Certificate-1220724806
+ revocation-check none
+ rsakeypair TP-self-signed-1220724806
+!
+crypto pki trustpoint TP-self-signed-1227722587
+ enrollment selfsigned
+ subject-name cn=IOS-Self-Signed-Certificate-1227722587
+ revocation-check none
+ rsakeypair TP-self-signed-1227722587
+!         
+!
+crypto pki certificate chain TP-self-signed-1220724806
+ certificate self-signed 01
+  3082022B 30820194 A0030201 02020101 300D0609 2A864886 F70D0101 05050030 
+  31312F30 2D060355 04031326 494F532D 53656C66 2D536967 6E65642D 43657274 
+  69666963 6174652D 31323230 37323438 3036301E 170D3135 30343234 32303132 
+  35395A17 0D323030 31303130 30303030 305A3031 312F302D 06035504 03132649 
+  4F532D53 656C662D 5369676E 65642D43 65727469 66696361 74652D31 32323037 
+  32343830 3630819F 300D0609 2A864886 F70D0101 01050003 818D0030 81890281 
+  8100E0FE 81BC4DD7 460F086F 5E76F93F 6A5751EE 8BB5A475 526DB414 F9BCE650 
+  95C3CAEA 001688B8 05392930 5C70D30F 8D94D5F9 4858D43F AD7D042B CBB7C0D2 
+  6C2E1BA8 DFC9FF14 713D04FF 7D8FE02D D67B4DE7 FB052918 10C581FA 902EFB16 
+  1E44101C 46069C3F A994C6BF BBE58258 4F501DAF A7ED5207 3D91EC32 FE726F9F 
+  F8FF0203 010001A3 53305130 0F060355 1D130101 FF040530 030101FF 301F0603 
+  551D2304 18301680 145E27BA 832BB703 1639A2DD E99CE3E5 251C9765 B6301D06 
+  03551D0E 04160414 5E27BA83 2BB70316 39A2DDE9 9CE3E525 1C9765B6 300D0609 
+  2A864886 F70D0101 05050003 818100B9 A6E3D095 1B3CCBD4 007BD8D3 139708EA 
+  1774D291 D8109F37 763FA2FA F289531C 1E7F81BF 02B50FD4 8731DD6B 5BE682A0 
+  BA4AFFFB 3C8CF9E6 94DFB455 6927593C 101C0C16 178099BC E0715F3E 6EE45006 
+  AE4CAA8D CA29BC40 CFE9FFC9 58D32453 E2A04AF1 CF9B1E6E 8E91836E B6691AFA 
+  427131AF 862BF98C BF817236 DD8596
+        quit
+crypto pki certificate chain TP-self-signed-1227722587
+license udi pid CSR1000V sn 9BM87SUULDA
+license accept end user agreement
+license boot level ax
+spanning-tree extend system-id
+!
+username cisco privilege 15 secret 5 $1$UGuL$FWqxH3ng2crkc6v8120jS0
+!
+redundancy
+!
+!
+!
+!
+!
+cdp run
+!
+! 
+!
+!
+!
+!
+!
+!
+!         
+!
+!
+!
+!
+!
+! 
+! 
+!
+interface Loopback0
+ description Loopback
+ ip address 192.168.0.2 255.255.255.255
+!
+interface GigabitEthernet1
+ description OOB Management
+ ip address 10.255.0.31 255.255.0.0
+ negotiation auto
+!
+interface GigabitEthernet2
+ description to HQWAN
+ ip address 10.1.128.1 255.255.128.0
+ negotiation auto
+ cdp enable
+!         
+interface GigabitEthernet3
+ description to WAGG
+ ip address 10.0.128.5 255.255.255.252
+ negotiation auto
+ cdp enable
+!
+!
+router eigrp as1
+ !
+ address-family ipv4 unicast autonomous-system 1
+  !
+  topology base
+   redistribute bgp 1 metric 1000 100 255 1 1500
+  exit-af-topology
+  network 10.0.128.5 0.0.0.0
+  network 192.168.0.2 0.0.0.0
+ exit-address-family
+!
+router bgp 1
+ bgp router-id 192.168.0.2
+ bgp log-neighbor-changes
+ neighbor 192.168.0.10 remote-as 2
+ neighbor 192.168.0.10 description eBGP to HQWAN
+ neighbor 192.168.0.10 update-source Loopback0
+ neighbor 192.168.0.4 remote-as 1
+ neighbor 192.168.0.4 description iBGP to WAGG
+ neighbor 192.168.0.4 update-source Loopback0
+ !
+ address-family ipv4
+  redistribute eigrp 1
+  neighbor 192.168.0.10 activate
+  neighbor 192.168.0.10 send-community
+  neighbor 192.168.0.10 next-hop-self
+  neighbor 192.168.0.4 activate
+  neighbor 192.168.0.4 next-hop-self
+ exit-address-family
+!
+!
+virtual-service csr_mgmt
+!
+ip forward-protocol nd
+!
+no ip http server
+ip http secure-server
+ip route 192.168.0.10 255.255.255.255 GigabitEthernet2 10.1.128.2
+!         
+!
+!
+!
+control-plane
+!
+!
+line con 0
+ exec-timeout 0 0
+ password cisco
+ logging synchronous
+ stopbits 1
+line vty 0
+ exec-timeout 720 0
+ password cisco
+ login
+ transport input telnet ssh
+line vty 1
+ exec-timeout 720 0
+ password cisco
+ login
+ length 0
+ transport input telnet ssh
+line vty 2 4
+ exec-timeout 720 0
+ password cisco
+ login
+ transport input telnet ssh
+!
+!
+end
+</entry>
+        </extensions>
+        <interface id="0" name="GigabitEthernet2" ipv4="10.1.128.1" netPrefixLenV4="17"/>
+        <interface id="1" name="GigabitEthernet3" ipv4="10.0.128.5" netPrefixLenV4="30"/>
+    </node>
+    <node name="Dist7K" type="SIMPLE" subtype="NX-OSv" location="96,186" ipv4="192.168.0.1">
+        <extensions>
+            <entry key="AutoNetkit.ASN" type="Integer">1</entry>
+            <entry key="AutoNetkit.IGP" type="String">eigrp</entry>
+            <entry key="AutoNetkit.ibgp_role" type="String">Disabled</entry>
+            <entry key="config" type="string">!Command: show running-config
+!Time: Sat Apr 25 02:01:17 2015
+
+version 7.2(0)D1(1)
+power redundancy-mode redundant
+license grace-period
+
+hostname Dist7K
+vdc Dist7K id 1
+  limit-resource module-type m1 m1xl m2xl f2e 
+  allocate interface Ethernet2/1-48
+  allocate interface Ethernet3/1-48
+  allocate interface Ethernet4/1-48
+  limit-resource vlan minimum 16 maximum 4094
+  limit-resource vrf minimum 2 maximum 4096
+  limit-resource port-channel minimum 0 maximum 768
+  limit-resource u4route-mem minimum 96 maximum 96
+  limit-resource u6route-mem minimum 24 maximum 24
+  limit-resource m4route-mem minimum 58 maximum 58
+  limit-resource m6route-mem minimum 8 maximum 8
+
+feature telnet
+feature eigrp
+
+username admin password 5 $1$KuOSBsvW$Cy0TSD..gEBGBPjzpDgf51  role network-admin
+username adminbackup password 5 !  role network-operator
+username adminbackup passphrase  lifetime 99999 warntime 14 gracetime 3
+username cisco password 5 $1$Nk7ZkwH0$fyiRmMMfIheqE3BqvcL0C1  role network-operator
+username cisco role network-admin
+username cisco passphrase  lifetime 99999 warntime 14 gracetime 3
+username lab password 5 $1$buoy/oqy$.EXQz8rCn72ii8qtdldj00  role network-admin
+username lab passphrase  lifetime 99999 warntime 14 gracetime 3
+no password strength-check
+ip domain-lookup
+vlan dot1Q tag native
+system default switchport
+system jumbomtu 0
+no logging event trunk-status enable
+copp profile strict
+snmp-server user lab network-admin auth md5 0x5ceb414591539ee35159fca86fdfa101 priv 0x5ceb414591539ee35159fca86fdfa101 localizedkey
+snmp-server user admin network-admin auth md5 0x328945d53e05e8e7207f8c20b142f0b7 priv 0x328945d53e05e8e7207f8c20b142f0b7 localizedkey
+snmp-server user cisco network-admin 
+snmp-server user cisco network-operator
+snmp-server user admin auth md5 0x328945d53e05e8e7207f8c20b142f0b7 priv 0x328945d53e05e8e7207f8c20b142f0b7 localizedkey engineID 128:0:0:9:3:0:0:0:0:0:0
+rmon event 1 log trap public description FATAL(1) owner PMON@FATAL
+rmon event 2 log trap public description CRITICAL(2) owner PMON@CRITICAL
+rmon event 3 log trap public description ERROR(3) owner PMON@ERROR
+rmon event 4 log trap public description WARNING(4) owner PMON@WARNING
+rmon event 5 log trap public description INFORMATION(5) owner PMON@INFO
+snmp-server enable traps link
+snmp-server enable traps link cisco-xcvr-mon-status-chg
+
+vlan 1
+
+vrf context management
+hardware forwarding unicast trace
+
+
+interface mgmt0
+  description OOB Management
+  no cdp enable
+  vrf member management
+  ip address 10.255.0.53/16
+
+interface Ethernet2/1
+  description to Core
+  no switchport
+  mac-address 0000.0000.002f
+  ip address 10.0.128.1/30
+  ip router eigrp 1
+  no shutdown
+
+interface Ethernet2/2
+  shutdown
+  no switchport
+  mac-address 0000.0000.002f
+
+interface Ethernet2/3
+  shutdown
+  no switchport
+  mac-address 0000.0000.002f
+
+interface Ethernet2/4
+  shutdown
+  no switchport
+  mac-address 0000.0000.002f
+
+interface Ethernet2/5
+  shutdown
+  no switchport
+  mac-address 0000.0000.002f
+
+interface Ethernet2/6
+  shutdown
+  no switchport
+  mac-address 0000.0000.002f
+
+interface Ethernet2/7
+  shutdown
+  no switchport
+  mac-address 0000.0000.002f
+
+interface Ethernet2/8
+  shutdown
+  no switchport
+  mac-address 0000.0000.002f
+
+interface Ethernet2/9
+  shutdown
+  no switchport
+  mac-address 0000.0000.002f
+
+interface Ethernet2/10
+  shutdown
+  no switchport
+  mac-address 0000.0000.002f
+
+interface Ethernet2/11
+  shutdown
+  no switchport
+  mac-address 0000.0000.002f
+
+interface Ethernet2/12
+  shutdown
+  no switchport
+  mac-address 0000.0000.002f
+
+interface Ethernet2/13
+  shutdown
+  no switchport
+  mac-address 0000.0000.002f
+
+interface Ethernet2/14
+  shutdown
+  no switchport
+  mac-address 0000.0000.002f
+
+interface Ethernet2/15
+  shutdown
+  no switchport
+  mac-address 0000.0000.002f
+
+interface Ethernet2/16
+  shutdown
+  no switchport
+  mac-address 0000.0000.002f
+
+interface Ethernet2/17
+  shutdown
+  no switchport
+  mac-address 0000.0000.002f
+
+interface Ethernet2/18
+  shutdown
+  no switchport
+  mac-address 0000.0000.002f
+
+interface Ethernet2/19
+  shutdown
+  no switchport
+  mac-address 0000.0000.002f
+
+interface Ethernet2/20
+  shutdown
+  no switchport
+  mac-address 0000.0000.002f
+
+interface Ethernet2/21
+  shutdown
+  no switchport
+  mac-address 0000.0000.002f
+
+interface Ethernet2/22
+  shutdown
+  no switchport
+  mac-address 0000.0000.002f
+
+interface Ethernet2/23
+  shutdown
+  no switchport
+  mac-address 0000.0000.002f
+
+interface Ethernet2/24
+  shutdown
+  no switchport
+  mac-address 0000.0000.002f
+
+interface Ethernet2/25
+  shutdown
+  no switchport
+  mac-address 0000.0000.002f
+
+interface Ethernet2/26
+  shutdown
+  no switchport
+  mac-address 0000.0000.002f
+
+interface Ethernet2/27
+  shutdown
+  no switchport
+  mac-address 0000.0000.002f
+
+interface Ethernet2/28
+  shutdown
+  no switchport
+  mac-address 0000.0000.002f
+
+interface Ethernet2/29
+  shutdown
+  no switchport
+  mac-address 0000.0000.002f
+
+interface Ethernet2/30
+  shutdown
+  no switchport
+  mac-address 0000.0000.002f
+
+interface Ethernet2/31
+  shutdown
+  no switchport
+  mac-address 0000.0000.002f
+
+interface Ethernet2/32
+  shutdown
+  no switchport
+  mac-address 0000.0000.002f
+
+interface Ethernet2/33
+  shutdown
+  no switchport
+  mac-address 0000.0000.002f
+
+interface Ethernet2/34
+  shutdown
+  no switchport
+  mac-address 0000.0000.002f
+
+interface Ethernet2/35
+  shutdown
+  no switchport
+  mac-address 0000.0000.002f
+
+interface Ethernet2/36
+  shutdown
+  no switchport
+  mac-address 0000.0000.002f
+
+interface Ethernet2/37
+  shutdown
+  no switchport
+  mac-address 0000.0000.002f
+
+interface Ethernet2/38
+  shutdown
+  no switchport
+  mac-address 0000.0000.002f
+
+interface Ethernet2/39
+  shutdown
+  no switchport
+  mac-address 0000.0000.002f
+
+interface Ethernet2/40
+  shutdown
+  no switchport
+  mac-address 0000.0000.002f
+
+interface Ethernet2/41
+  shutdown
+  no switchport
+  mac-address 0000.0000.002f
+
+interface Ethernet2/42
+  shutdown
+  no switchport
+  mac-address 0000.0000.002f
+
+interface Ethernet2/43
+  shutdown
+  no switchport
+  mac-address 0000.0000.002f
+
+interface Ethernet2/44
+  shutdown
+  no switchport
+  mac-address 0000.0000.002f
+
+interface Ethernet2/45
+  shutdown
+  no switchport
+  mac-address 0000.0000.002f
+
+interface Ethernet2/46
+  shutdown
+  no switchport
+  mac-address 0000.0000.002f
+
+interface Ethernet2/47
+  shutdown
+  no switchport
+  mac-address 0000.0000.002f
+
+interface Ethernet2/48
+  shutdown
+  no switchport
+  mac-address 0000.0000.002f
+
+interface Ethernet3/1
+  switchport
+  no shutdown
+
+interface Ethernet3/2
+  switchport
+  no shutdown
+
+interface Ethernet3/3
+  switchport
+  no shutdown
+
+interface Ethernet3/4
+  switchport
+  no shutdown
+
+interface Ethernet3/5
+  switchport
+  no shutdown
+
+interface Ethernet3/6
+  switchport
+  no shutdown
+
+interface Ethernet3/7
+  switchport
+  no shutdown
+
+interface Ethernet3/8
+  switchport
+  no shutdown
+
+interface Ethernet3/9
+  switchport
+  no shutdown
+
+interface Ethernet3/10
+  switchport
+  no shutdown
+
+interface Ethernet3/11
+  switchport
+  no shutdown
+
+interface Ethernet3/12
+  switchport
+  no shutdown
+
+interface Ethernet3/13
+  switchport
+  no shutdown
+
+interface Ethernet3/14
+  switchport
+  no shutdown
+
+interface Ethernet3/15
+  switchport
+  no shutdown
+
+interface Ethernet3/16
+  switchport
+  no shutdown
+
+interface Ethernet3/17
+  switchport
+  no shutdown
+
+interface Ethernet3/18
+  switchport
+  no shutdown
+
+interface Ethernet3/19
+  switchport
+  no shutdown
+
+interface Ethernet3/20
+  switchport
+  no shutdown
+
+interface Ethernet3/21
+  switchport
+  no shutdown
+
+interface Ethernet3/22
+  switchport
+  no shutdown
+
+interface Ethernet3/23
+  switchport
+  no shutdown
+
+interface Ethernet3/24
+  switchport
+  no shutdown
+
+interface Ethernet3/25
+  switchport
+  no shutdown
+
+interface Ethernet3/26
+  switchport
+  no shutdown
+
+interface Ethernet3/27
+  switchport
+  no shutdown
+
+interface Ethernet3/28
+  switchport
+  no shutdown
+
+interface Ethernet3/29
+  switchport
+  no shutdown
+
+interface Ethernet3/30
+  switchport
+  no shutdown
+
+interface Ethernet3/31
+  switchport
+  no shutdown
+
+interface Ethernet3/32
+  switchport
+  no shutdown
+
+interface Ethernet3/33
+  switchport
+  no shutdown
+
+interface Ethernet3/34
+  switchport
+  no shutdown
+
+interface Ethernet3/35
+  switchport
+  no shutdown
+
+interface Ethernet3/36
+  switchport
+  no shutdown
+
+interface Ethernet3/37
+  switchport
+  no shutdown
+
+interface Ethernet3/38
+  switchport
+  no shutdown
+
+interface Ethernet3/39
+  switchport
+  no shutdown
+
+interface Ethernet3/40
+  switchport
+  no shutdown
+
+interface Ethernet3/41
+  switchport
+  no shutdown
+
+interface Ethernet3/42
+  switchport
+  no shutdown
+
+interface Ethernet3/43
+  switchport
+  no shutdown
+
+interface Ethernet3/44
+  switchport
+  no shutdown
+
+interface Ethernet3/45
+  switchport
+  no shutdown
+
+interface Ethernet3/46
+  switchport
+  no shutdown
+
+interface Ethernet3/47
+  switchport
+  no shutdown
+
+interface Ethernet3/48
+  switchport
+  no shutdown
+
+interface Ethernet4/1
+  switchport
+  no shutdown
+
+interface Ethernet4/2
+  switchport
+  no shutdown
+
+interface Ethernet4/3
+  switchport
+  no shutdown
+
+interface Ethernet4/4
+  switchport
+  no shutdown
+
+interface Ethernet4/5
+  switchport
+  no shutdown
+
+interface Ethernet4/6
+  switchport
+  no shutdown
+
+interface Ethernet4/7
+  switchport
+  no shutdown
+
+interface Ethernet4/8
+  switchport
+  no shutdown
+
+interface Ethernet4/9
+  switchport
+  no shutdown
+
+interface Ethernet4/10
+  switchport
+  no shutdown
+
+interface Ethernet4/11
+  switchport
+  no shutdown
+
+interface Ethernet4/12
+  switchport
+  no shutdown
+
+interface Ethernet4/13
+  switchport
+  no shutdown
+
+interface Ethernet4/14
+  switchport
+  no shutdown
+
+interface Ethernet4/15
+  switchport
+  no shutdown
+
+interface Ethernet4/16
+  switchport
+  no shutdown
+
+interface Ethernet4/17
+  switchport
+  no shutdown
+
+interface Ethernet4/18
+  switchport
+  no shutdown
+
+interface Ethernet4/19
+  switchport
+  no shutdown
+
+interface Ethernet4/20
+  switchport
+  no shutdown
+
+interface Ethernet4/21
+  switchport
+  no shutdown
+
+interface Ethernet4/22
+  switchport
+  no shutdown
+
+interface Ethernet4/23
+  switchport
+  no shutdown
+
+interface Ethernet4/24
+  switchport
+  no shutdown
+
+interface Ethernet4/25
+  switchport
+  no shutdown
+
+interface Ethernet4/26
+  switchport
+  no shutdown
+
+interface Ethernet4/27
+  switchport
+  no shutdown
+
+interface Ethernet4/28
+  switchport
+  no shutdown
+
+interface Ethernet4/29
+  switchport
+  no shutdown
+
+interface Ethernet4/30
+  switchport
+  no shutdown
+
+interface Ethernet4/31
+  switchport
+  no shutdown
+
+interface Ethernet4/32
+  switchport
+  no shutdown
+
+interface Ethernet4/33
+  switchport
+  no shutdown
+
+interface Ethernet4/34
+  switchport
+  no shutdown
+
+interface Ethernet4/35
+  switchport
+  no shutdown
+
+interface Ethernet4/36
+  switchport
+  no shutdown
+
+interface Ethernet4/37
+  switchport
+  no shutdown
+
+interface Ethernet4/38
+  switchport
+  no shutdown
+
+interface Ethernet4/39
+  switchport
+  no shutdown
+
+interface Ethernet4/40
+  switchport
+  no shutdown
+
+interface Ethernet4/41
+  switchport
+  no shutdown
+
+interface Ethernet4/42
+  switchport
+  no shutdown
+
+interface Ethernet4/43
+  switchport
+  no shutdown
+
+interface Ethernet4/44
+  switchport
+  no shutdown
+
+interface Ethernet4/45
+  switchport
+  no shutdown
+
+interface Ethernet4/46
+  switchport
+  no shutdown
+
+interface Ethernet4/47
+  switchport
+  no shutdown
+
+interface Ethernet4/48
+  switchport
+  no shutdown
+
+interface loopback0
+  description Loopback
+  ip address 192.168.0.1/32
+  ip router eigrp 1
+line console
+  exec-timeout 0
+line vty
+boot kickstart bootflash:/titanium-d1-kickstart.7.2.0.ZD.0.120.bin sup-1
+boot system bootflash:/titanium-d1.7.2.0.ZD.0.120.bin sup-1
+router eigrp 1
+  autonomous-system 1
+  router-id 192.168.0.1</entry>
+            <entry key="AutoNetkit.mgmt_ip" type="string"></entry>
+        </extensions>
+        <interface id="0" name="Ethernet2/1" ipv4="10.0.128.1" netPrefixLenV4="30"/>
+    </node>
+    <node name="HQWAN" type="SIMPLE" subtype="IOSv" location="489,72" ipv4="192.168.0.10">
+        <extensions>
+            <entry key="AutoNetkit.IGP" type="String">eigrp</entry>
+            <entry key="AutoNetkit.ASN" type="Integer">2</entry>
+            <entry key="AutoNetkit.ibgp_role" type="String">Peer</entry>
+            <entry key="AutoNetkit.mgmt_ip" type="string"></entry>
+            <entry key="config" type="String">!
+! Last configuration change at 00:13:05 UTC Sat Apr 25 2015
+!
+version 15.5
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname HQWAN
+!
+boot-start-marker
+boot-end-marker
+!
+!
+enable password cisco
+!
+no aaa new-model
+ethernet lmi ce
+!
+!
+!
+bsd-client server url https://cloudsso.cisco.com/as/token.oauth2
+mmi polling-interval 60
+no mmi auto-configure
+no mmi pvc
+mmi snmp-timeout 180
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+no ip domain lookup
+ip cef
+ipv6 unicast-routing
+ipv6 cef
+!
+multilink bundle-name authenticated
+!
+!
+cts logging verbose
+!
+!
+!
+redundancy
+!
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Loopback0
+ description Loopback
+ ip address 192.168.0.10 255.255.255.255
+!
+interface GigabitEthernet0/0
+ description OOB Management
+ ip address 10.255.0.48 255.255.0.0
+ duplex auto
+ speed auto
+ media-type rj45
+ no cdp enable
+!
+interface GigabitEthernet0/1
+ description to CSCASR
+ ip address 10.1.128.2 255.255.128.0
+ duplex auto
+ speed auto
+ media-type rj45
+!
+interface GigabitEthernet0/2
+ description to HQDist
+ ip address 10.6.0.1 255.255.255.0
+ duplex auto
+ speed auto
+ media-type rj45
+!
+!
+router eigrp as1
+ !
+ address-family ipv4 unicast autonomous-system 1
+  !
+  af-interface GigabitEthernet0/2
+   summary-address 0.0.0.0 0.0.0.0 leak-map Zero
+  exit-af-interface
+  !
+  topology base
+   redistribute bgp 2 metric 1000 100 255 1 1500
+  exit-af-topology
+  network 10.6.0.0 0.0.255.255
+  network 192.168.0.10 0.0.0.0
+ exit-address-family
+!
+router bgp 2
+ bgp router-id 192.168.0.10
+ bgp log-neighbor-changes
+ neighbor 192.168.0.2 remote-as 1
+ neighbor 192.168.0.2 ebgp-multihop 2
+ neighbor 192.168.0.2 update-source Loopback0
+ !
+ address-family ipv4
+  redistribute eigrp 1
+  neighbor 192.168.0.2 activate
+  neighbor 192.168.0.2 send-community
+  neighbor 192.168.0.2 next-hop-self
+ exit-address-family
+!
+ip forward-protocol nd
+!
+!
+no ip http server
+no ip http secure-server
+ip route 10.1.0.0 255.255.0.0 Null0 254
+ip route 192.168.0.2 255.255.255.255 GigabitEthernet0/1 10.1.128.1
+!
+ip access-list standard Zero
+!
+!
+ip prefix-list Zero seq 5 permit 0.0.0.0/0 le 32
+!
+route-map Zero permit 10
+ match ip address prefix-list Zero
+!
+!
+access-list 100 permit tcp host 192.168.0.10 host 192.168.0.2
+access-list 100 permit tcp any host 192.168.0.10
+access-list 100 permit tcp host 192.168.0.2 host 192.168.0.10
+access-list 100 permit tcp any host 192.168.0.2
+!
+control-plane
+!
+banner exec `
+**************************************************************************
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+* education. IOSv is provided as-is and is not supported by Cisco's      *
+* Technical Advisory Center. Any use or disclosure, in whole or in part, *
+* of the IOSv Software or Documentation to any third party for any       *
+* purposes is expressly prohibited except as otherwise authorized by     *
+* Cisco in writing.                                                      *
+**************************************************************************`
+banner incoming `
+**************************************************************************
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+* education. IOSv is provided as-is and is not supported by Cisco's      *
+* Technical Advisory Center. Any use or disclosure, in whole or in part, *
+* of the IOSv Software or Documentation to any third party for any       *
+* purposes is expressly prohibited except as otherwise authorized by     *
+* Cisco in writing.                                                      *
+**************************************************************************`
+banner login `
+**************************************************************************
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+* education. IOSv is provided as-is and is not supported by Cisco's      *
+* Technical Advisory Center. Any use or disclosure, in whole or in part, *
+* of the IOSv Software or Documentation to any third party for any       *
+* purposes is expressly prohibited except as otherwise authorized by     *
+* Cisco in writing.                                                      *
+**************************************************************************`
+!
+line con 0
+ exec-timeout 0 0
+ password cisco
+ logging synchronous
+line aux 0
+line vty 0 4
+ exec-timeout 720 0
+ password cisco
+ login
+ transport input telnet ssh
+!
+no scheduler allocate
+!
+end</entry>
+        </extensions>
+        <interface id="0" name="GigabitEthernet0/1" ipv4="10.1.128.2" netPrefixLenV4="17"/>
+        <interface id="1" name="GigabitEthernet0/2" ipv4="10.1.0.1" netPrefixLenV4="17"/>
+    </node>
+    <node name="HQDist" type="SIMPLE" subtype="IOSv" location="493,181" ipv4="192.168.0.9">
+        <extensions>
+            <entry key="AutoNetkit.IGP" type="String">eigrp</entry>
+            <entry key="AutoNetkit.ASN" type="Integer">2</entry>
+            <entry key="AutoNetkit.mgmt_ip" type="string"></entry>
+            <entry key="config" type="String">!
+! Last configuration change at 01:48:53 UTC Sat Apr 25 2015
+!
+version 15.5
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname HQDist
+!
+boot-start-marker
+boot-end-marker
+!
+!
+enable password cisco
+!
+no aaa new-model
+ethernet lmi ce
+!
+!
+!
+bsd-client server url https://cloudsso.cisco.com/as/token.oauth2
+mmi polling-interval 60
+no mmi auto-configure
+no mmi pvc
+mmi snmp-timeout 180
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+no ip domain lookup
+ip cef
+ipv6 unicast-routing
+ipv6 cef
+!
+multilink bundle-name authenticated
+!
+!
+cts logging verbose
+!
+!
+!
+redundancy
+!
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Loopback0
+ description Loopback
+ ip address 192.168.0.9 255.255.255.255
+!
+interface GigabitEthernet0/0
+ description OOB Management
+ ip address 10.255.0.49 255.255.0.0
+ duplex auto
+ speed auto
+ media-type rj45
+ no cdp enable
+!
+interface GigabitEthernet0/1
+ description to Core
+ ip address 10.0.0.2 255.255.255.252
+ duplex auto
+ speed auto
+ media-type rj45
+!
+interface GigabitEthernet0/2
+ description to HQWAN
+ ip address 10.6.0.2 255.255.255.0
+ duplex auto
+ speed auto
+ media-type rj45
+!
+interface GigabitEthernet0/3
+ description to HQLAN
+ ip address 10.6.3.2 255.255.255.0
+ duplex auto
+ speed auto
+ media-type rj45
+!
+!
+router eigrp as1
+ !
+ address-family ipv4 unicast autonomous-system 1
+  !
+  topology base
+  exit-af-topology
+  network 10.0.0.2 0.0.0.0
+  network 10.6.0.0 0.0.255.255
+  network 192.168.0.9 0.0.0.0
+ exit-address-family
+!
+ip forward-protocol nd
+!
+!
+no ip http server
+no ip http secure-server
+!
+!
+!
+access-list 99 deny   0.0.0.0 log DenyZero
+access-list 99 permit 10.6.0.0 0.0.127.255 log PermitHQ
+!
+control-plane
+!
+banner exec `
+**************************************************************************
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+* education. IOSv is provided as-is and is not supported by Cisco's      *
+* Technical Advisory Center. Any use or disclosure, in whole or in part, *
+* of the IOSv Software or Documentation to any third party for any       *
+* purposes is expressly prohibited except as otherwise authorized by     *
+* Cisco in writing.                                                      *
+**************************************************************************`
+banner incoming `
+**************************************************************************
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+* education. IOSv is provided as-is and is not supported by Cisco's      *
+* Technical Advisory Center. Any use or disclosure, in whole or in part, *
+* of the IOSv Software or Documentation to any third party for any       *
+* purposes is expressly prohibited except as otherwise authorized by     *
+* Cisco in writing.                                                      *
+**************************************************************************`
+banner login `
+**************************************************************************
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+* education. IOSv is provided as-is and is not supported by Cisco's      *
+* Technical Advisory Center. Any use or disclosure, in whole or in part, *
+* of the IOSv Software or Documentation to any third party for any       *
+* purposes is expressly prohibited except as otherwise authorized by     *
+* Cisco in writing.                                                      *
+**************************************************************************`
+!
+line con 0
+ exec-timeout 0 0
+ password cisco
+ logging synchronous
+line aux 0
+line vty 0 4
+ exec-timeout 720 0
+ password cisco
+ login
+ transport input telnet ssh
+!
+no scheduler allocate
+!
+end</entry>
+        </extensions>
+        <interface id="0" name="GigabitEthernet0/1" ipv4="10.0.0.2" netPrefixLenV4="30"/>
+        <interface id="1" name="GigabitEthernet0/2" ipv4="10.1.0.2" netPrefixLenV4="17"/>
+        <interface id="2" name="GigabitEthernet0/3"/>
+    </node>
+    <node name="WAGG" type="SIMPLE" subtype="IOSv" location="210,72" ipv4="192.168.0.4">
+        <extensions>
+            <entry key="AutoNetkit.IGP" type="String">eigrp</entry>
+            <entry key="AutoNetkit.ASN" type="Integer">1</entry>
+            <entry key="AutoNetkit.RR_cluster" type="String">CSC</entry>
+            <entry key="AutoNetkit.ibgp_role" type="String">RR</entry>
+            <entry key="AutoNetkit.mgmt_ip" type="string"></entry>
+            <entry key="config" type="String">!
+! Last configuration change at 21:46:53 UTC Fri Apr 24 2015
+!
+version 15.5
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname WAGG
+!
+boot-start-marker
+boot-end-marker
+!
+!
+enable password cisco
+!
+no aaa new-model
+ethernet lmi ce
+!
+!
+!
+bsd-client server url https://cloudsso.cisco.com/as/token.oauth2
+mmi polling-interval 60
+no mmi auto-configure
+no mmi pvc
+mmi snmp-timeout 180
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+no ip domain lookup
+ip cef
+ipv6 unicast-routing
+ipv6 cef
+!
+multilink bundle-name authenticated
+!
+!
+cts logging verbose
+!
+!
+!
+redundancy
+!
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Loopback0
+ description Loopback
+ ip address 192.168.0.4 255.255.255.255
+!
+interface GigabitEthernet0/0
+ description OOB Management
+ ip address 10.255.0.50 255.255.0.0
+ duplex auto
+ speed auto
+ media-type rj45
+ no cdp enable
+!
+interface GigabitEthernet0/1
+ description to CSCASR
+ ip address 10.0.128.6 255.255.255.252
+ duplex auto
+ speed auto
+ media-type rj45
+!
+interface GigabitEthernet0/2
+ description to Core
+ ip address 10.0.0.5 255.255.255.252
+ duplex auto
+ speed auto
+ media-type rj45
+!
+!
+router eigrp as1
+ !
+ address-family ipv4 unicast autonomous-system 1
+  !
+  topology base
+  exit-af-topology
+  network 10.0.0.4 0.0.0.3
+  network 10.0.128.4 0.0.0.3
+  network 192.168.0.4 0.0.0.0
+ exit-address-family
+!
+router bgp 1
+ bgp router-id 192.168.0.4
+ bgp log-neighbor-changes
+ neighbor 192.168.0.2 remote-as 1
+ neighbor 192.168.0.3 remote-as 1
+ neighbor 192.168.0.3 description rr client Core
+ neighbor 192.168.0.3 update-source Loopback0
+ !
+ address-family ipv4
+  neighbor 192.168.0.2 activate
+  neighbor 192.168.0.2 route-reflector-client
+  neighbor 192.168.0.3 activate
+  neighbor 192.168.0.3 route-reflector-client
+ exit-address-family
+!
+ip forward-protocol nd
+!
+!
+no ip http server
+no ip http secure-server
+!
+!
+!
+!
+control-plane
+!
+banner exec `
+**************************************************************************
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+* education. IOSv is provided as-is and is not supported by Cisco's      *
+* Technical Advisory Center. Any use or disclosure, in whole or in part, *
+* of the IOSv Software or Documentation to any third party for any       *
+* purposes is expressly prohibited except as otherwise authorized by     *
+* Cisco in writing.                                                      *
+**************************************************************************`
+banner incoming `
+**************************************************************************
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+* education. IOSv is provided as-is and is not supported by Cisco's      *
+* Technical Advisory Center. Any use or disclosure, in whole or in part, *
+* of the IOSv Software or Documentation to any third party for any       *
+* purposes is expressly prohibited except as otherwise authorized by     *
+* Cisco in writing.                                                      *
+**************************************************************************`
+banner login `
+**************************************************************************
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+* education. IOSv is provided as-is and is not supported by Cisco's      *
+* Technical Advisory Center. Any use or disclosure, in whole or in part, *
+* of the IOSv Software or Documentation to any third party for any       *
+* purposes is expressly prohibited except as otherwise authorized by     *
+* Cisco in writing.                                                      *
+**************************************************************************`
+!
+line con 0
+ exec-timeout 0 0
+ password cisco
+ logging synchronous
+line aux 0
+line vty 0 4
+ exec-timeout 720 0
+ password cisco
+ login
+ transport input telnet ssh
+!
+no scheduler allocate
+!
+end</entry>
+        </extensions>
+        <interface id="0" name="GigabitEthernet0/1" ipv4="10.0.128.6" netPrefixLenV4="30"/>
+        <interface id="1" name="GigabitEthernet0/2" ipv4="10.0.0.5" netPrefixLenV4="30"/>
+    </node>
+    <node name="Core" type="SIMPLE" subtype="IOSv" location="216,181" ipv4="192.168.0.3">
+        <extensions>
+            <entry key="AutoNetkit.IGP" type="String">eigrp</entry>
+            <entry key="AutoNetkit.ASN" type="Integer">1</entry>
+            <entry key="AutoNetkit.RR_cluster" type="String">CSC</entry>
+            <entry key="AutoNetkit.ibgp_role" type="String">RRC</entry>
+            <entry key="config" type="string">!
+! Last configuration change at 21:46:51 UTC Fri Apr 24 2015
+!
+version 15.5
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname Core
+!
+boot-start-marker
+boot-end-marker
+!
+!
+enable password cisco
+!
+no aaa new-model
+ethernet lmi ce
+!
+!
+!
+bsd-client server url https://cloudsso.cisco.com/as/token.oauth2
+mmi polling-interval 60
+no mmi auto-configure
+no mmi pvc
+mmi snmp-timeout 180
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+no ip domain lookup
+ip cef
+ipv6 unicast-routing
+ipv6 cef
+!
+multilink bundle-name authenticated
+!
+!
+cts logging verbose
+!
+!
+!
+redundancy
+!
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Loopback0
+ description Loopback
+ ip address 192.168.0.3 255.255.255.255
+!
+interface GigabitEthernet0/0
+ description OOB Management
+ ip address 10.255.0.52 255.255.0.0
+ duplex auto
+ speed auto
+ media-type rj45
+ no cdp enable
+!
+interface GigabitEthernet0/1
+ description to HQDist
+ ip address 10.0.0.1 255.255.255.252
+ duplex auto
+ speed auto
+ media-type rj45
+!
+interface GigabitEthernet0/2
+ description to WAGG
+ ip address 10.0.0.6 255.255.255.252
+ duplex auto
+ speed auto
+ media-type rj45
+!
+interface GigabitEthernet0/3
+ description to Dist7K
+ ip address 10.0.128.2 255.255.255.252
+ duplex auto
+ speed auto
+ media-type rj45
+!
+!
+router eigrp as1
+ !
+ address-family ipv4 unicast autonomous-system 1
+  !
+  topology base
+  exit-af-topology
+  network 10.0.0.1 0.0.0.0
+  network 10.0.0.4 0.0.0.3
+  network 10.0.128.0 0.0.0.3
+  network 192.168.0.3 0.0.0.0
+ exit-address-family
+!
+router bgp 1
+ bgp router-id 192.168.0.3
+ bgp log-neighbor-changes
+ neighbor 192.168.0.4 remote-as 1
+ neighbor 192.168.0.4 description rr parent WAGG
+ neighbor 192.168.0.4 update-source Loopback0
+ !
+ address-family ipv4
+  neighbor 192.168.0.4 activate
+  neighbor 192.168.0.4 next-hop-self
+ exit-address-family
+!
+ip forward-protocol nd
+!
+!
+no ip http server
+no ip http secure-server
+ip route 10.0.0.0 255.255.0.0 Null0 254
+!
+!
+!
+!
+control-plane
+!
+banner exec `
+**************************************************************************
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+* education. IOSv is provided as-is and is not supported by Cisco's      *
+* Technical Advisory Center. Any use or disclosure, in whole or in part, *
+* of the IOSv Software or Documentation to any third party for any       *
+* purposes is expressly prohibited except as otherwise authorized by     *
+* Cisco in writing.                                                      *
+**************************************************************************`
+banner incoming `
+**************************************************************************
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+* education. IOSv is provided as-is and is not supported by Cisco's      *
+* Technical Advisory Center. Any use or disclosure, in whole or in part, *
+* of the IOSv Software or Documentation to any third party for any       *
+* purposes is expressly prohibited except as otherwise authorized by     *
+* Cisco in writing.                                                      *
+**************************************************************************`
+banner login `
+**************************************************************************
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+* education. IOSv is provided as-is and is not supported by Cisco's      *
+* Technical Advisory Center. Any use or disclosure, in whole or in part, *
+* of the IOSv Software or Documentation to any third party for any       *
+* purposes is expressly prohibited except as otherwise authorized by     *
+* Cisco in writing.                                                      *
+**************************************************************************`
+!
+line con 0
+ exec-timeout 0 0
+ password cisco
+ logging synchronous
+line aux 0
+line vty 0 4
+ exec-timeout 720 0
+ password cisco
+ login
+ transport input telnet ssh
+!
+no scheduler allocate
+!
+end</entry>
+            <entry key="AutoNetkit.mgmt_ip" type="string"></entry>
+        </extensions>
+        <interface id="0" name="GigabitEthernet0/1" ipv4="10.0.0.1" netPrefixLenV4="30"/>
+        <interface id="1" name="GigabitEthernet0/2" ipv4="10.0.0.6" netPrefixLenV4="30"/>
+        <interface id="2" name="GigabitEthernet0/3" ipv4="10.0.128.2" netPrefixLenV4="30"/>
+    </node>
+    <node name="R1" type="SIMPLE" subtype="IOSv" location="630,181">
+        <extensions>
+            <entry key="config" type="String">!
+! Last configuration change at 21:27:37 UTC Fri Apr 24 2015
+!
+version 15.5
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname R1
+!
+boot-start-marker
+boot-end-marker
+!
+!
+!
+no aaa new-model
+ethernet lmi ce
+!
+!
+!
+bsd-client server url https://cloudsso.cisco.com/as/token.oauth2
+mmi polling-interval 60
+no mmi auto-configure
+no mmi pvc
+mmi snmp-timeout 180
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+no ip domain lookup
+ip cef
+no ipv6 cef
+!
+multilink bundle-name authenticated
+!
+!
+cts logging verbose
+!
+!
+!
+redundancy
+!
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface GigabitEthernet0/0
+ no ip address
+ shutdown
+ duplex auto
+ speed auto
+ media-type rj45
+!
+interface GigabitEthernet0/1
+ no ip address
+ shutdown
+ duplex auto
+ speed auto
+ media-type rj45
+!
+ip forward-protocol nd
+!
+!
+no ip http server
+no ip http secure-server
+!
+!
+!
+!
+control-plane
+!
+line con 0
+ exec-timeout 0 0
+ logging synchronous
+line aux 0
+line vty 0 4
+ login
+ transport input none
+!
+no scheduler allocate
+!
+end</entry>
+        </extensions>
+        <interface id="0" name="GigabitEthernet0/1"/>
+    </node>
+    <connection dst="/virl:topology/virl:node[3]/virl:interface[1]" src="/virl:topology/virl:node[1]/virl:interface[1]"/>
+    <connection dst="/virl:topology/virl:node[1]/virl:interface[2]" src="/virl:topology/virl:node[5]/virl:interface[1]"/>
+    <connection dst="/virl:topology/virl:node[4]/virl:interface[1]" src="/virl:topology/virl:node[6]/virl:interface[1]"/>
+    <connection dst="/virl:topology/virl:node[5]/virl:interface[2]" src="/virl:topology/virl:node[6]/virl:interface[2]"/>
+    <connection dst="/virl:topology/virl:node[6]/virl:interface[3]" src="/virl:topology/virl:node[2]/virl:interface[1]"/>
+    <connection dst="/virl:topology/virl:node[3]/virl:interface[2]" src="/virl:topology/virl:node[4]/virl:interface[2]"/>
+    <connection dst="/virl:topology/virl:node[7]/virl:interface[1]" src="/virl:topology/virl:node[4]/virl:interface[3]"/>
+</topology>
