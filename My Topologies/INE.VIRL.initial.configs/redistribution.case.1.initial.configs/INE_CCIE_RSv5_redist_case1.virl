@@ -1770,7 +1770,7 @@ copy run bootflash:redistribution.case.1.cfg
         <interface id="9" name="link10"/>
         <interface id="10" name="link11"/>
     </node>
-    <node name="SW1" type="SIMPLE" subtype="IOSvL2" location="195,217">
+    <node name="SW1" type="SIMPLE" subtype="IOSvL2" location="195,217" excludeFromLaunch="true">
         <interface id="0" name="GigabitEthernet0/1"/>
         <interface id="1" name="GigabitEthernet0/2"/>
         <interface id="2" name="GigabitEthernet0/3"/>
@@ -1779,7 +1779,7 @@ copy run bootflash:redistribution.case.1.cfg
         <interface id="5" name="GigabitEthernet1/2"/>
         <interface id="6" name="GigabitEthernet1/3"/>
     </node>
-    <node name="SW2" type="SIMPLE" subtype="IOSvL2" location="356,217">
+    <node name="SW2" type="SIMPLE" subtype="IOSvL2" location="356,217" excludeFromLaunch="true">
         <interface id="0" name="GigabitEthernet0/1"/>
         <interface id="1" name="GigabitEthernet0/2"/>
         <interface id="2" name="GigabitEthernet0/3"/>
@@ -1787,7 +1787,7 @@ copy run bootflash:redistribution.case.1.cfg
         <interface id="4" name="GigabitEthernet1/1"/>
         <interface id="5" name="GigabitEthernet1/2"/>
     </node>
-    <node name="SW3" type="SIMPLE" subtype="IOSvL2" location="196,303">
+    <node name="SW3" type="SIMPLE" subtype="IOSvL2" location="196,303" excludeFromLaunch="true">
         <interface id="0" name="GigabitEthernet0/1"/>
         <interface id="1" name="GigabitEthernet0/2"/>
         <interface id="2" name="GigabitEthernet0/3"/>
@@ -1795,7 +1795,7 @@ copy run bootflash:redistribution.case.1.cfg
         <interface id="4" name="GigabitEthernet1/1"/>
         <interface id="5" name="GigabitEthernet1/2"/>
     </node>
-    <node name="SW4" type="SIMPLE" subtype="IOSvL2" location="357,303">
+    <node name="SW4" type="SIMPLE" subtype="IOSvL2" location="357,303" excludeFromLaunch="true">
         <interface id="0" name="GigabitEthernet0/1"/>
         <interface id="1" name="GigabitEthernet0/2"/>
         <interface id="2" name="GigabitEthernet0/3"/>
