@@ -1,0 +1,1571 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<topology xmlns="http://www.cisco.com/VIRL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" schemaVersion="0.9" xsi:schemaLocation="http://www.cisco.com/VIRL https://raw.github.com/CiscoVIRL/schema/v0.9/virl.xsd">
+    <extensions>
+        <entry type="Boolean" key="AutoNetkit.enable_cdp">true</entry>
+        <entry type="String" key="AutoNetkit.IGP">eigrp</entry>
+        <entry type="Boolean" key="AutoNetkit.enable_routing">true</entry>
+    </extensions>
+    <node ipv4="192.168.0.1" location="327,278" subtype="IOSv" type="SIMPLE" name="HRouter">
+        <extensions>
+            <entry type="Integer" key="AutoNetkit.ASN">10</entry>
+            <entry type="String" key="AutoNetkit.IGP">eigrp</entry>
+            <entry type="string" key="config">! IOS Config generated on 2015-08-17 20:14
+! by autonetkit_0.15.3
+!
+hostname HRouter
+boot-start-marker
+boot-end-marker
+!
+no aaa new-model
+!
+!
+ip cef
+ipv6 unicast-routing
+ipv6 cef
+!
+!
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+no service config
+enable password cisco
+ip classless
+ip subnet-zero
+no ip domain lookup
+line vty 0 4
+ transport input ssh telnet
+ exec-timeout 720 0
+ password cisco
+ login
+line con 0
+ password cisco
+!
+cdp run
+!
+!
+interface Loopback0
+  description Loopback
+  ip address 192.168.0.1 255.255.255.255
+!
+interface GigabitEthernet0/0
+  description OOB Management
+  ! Configured on launch
+  no ip address
+  cdp enable
+  duplex auto
+  speed auto
+  no shutdown
+!
+interface GigabitEthernet0/1
+  description to HCore
+  ip address 10.1.0.1 255.255.255.252
+  cdp enable
+  duplex auto
+  speed auto
+  no shutdown
+!
+interface GigabitEthernet0/2
+  description to Verizon
+  ip address 10.1.0.5 255.255.255.252
+  cdp enable
+  duplex auto
+  speed auto
+  no shutdown
+!
+!
+!
+router eigrp as10
+ !
+ address-family ipv4 unicast autonomous-system 10
+  !
+  topology base
+  exit-af-topology
+  network 10.1.0.0 0.0.0.3
+  network 192.168.0.1 0.0.0.0
+ exit-address-family
+ !
+!
+!
+router bgp 10
+  bgp router-id 192.168.0.1
+  no synchronization
+! ibgp
+  ! ibgp peers
+  !
+  neighbor 192.168.0.2 remote-as 10
+  neighbor 192.168.0.2 description iBGP peer HASAR
+  neighbor 192.168.0.2 update-source Loopback0
+  !
+  neighbor 192.168.0.3 remote-as 10
+  neighbor 192.168.0.3 description iBGP peer HCore
+  neighbor 192.168.0.3 update-source Loopback0
+!
+! ebgp
+  !
+  neighbor 10.1.0.6 remote-as 65000
+  neighbor 10.1.0.6 description eBGP to Verizon
+!
+!
+ !
+ address-family ipv4
+  network 192.168.0.1 mask 255.255.255.255
+  network 10.1.0.0 mask 255.255.0.0
+  neighbor 192.168.0.2 activate
+  neighbor 192.168.0.2 next-hop-self
+  neighbor 192.168.0.3 activate
+  neighbor 192.168.0.3 next-hop-self
+  neighbor 10.1.0.6 activate
+  neighbor 10.1.0.6 send-community
+  neighbor 10.1.0.6 next-hop-self
+ exit-address-family
+!
+!
+ip route 10.1.0.0 255.255.0.0 Null0 254
+!
+end
+</entry>
+            <entry type="string" key="AutoNetkit.mgmt_ip"></entry>
+        </extensions>
+        <interface netPrefixLenV4="30" ipv4="10.1.0.1" name="GigabitEthernet0/1" id="0"/>
+        <interface netPrefixLenV4="30" ipv4="10.1.0.5" name="GigabitEthernet0/2" id="1"/>
+    </node>
+    <node ipv4="192.168.0.3" location="254,359" subtype="IOSv" type="SIMPLE" name="HCore">
+        <extensions>
+            <entry type="Integer" key="AutoNetkit.ASN">10</entry>
+            <entry type="String" key="AutoNetkit.IGP">eigrp</entry>
+            <entry type="string" key="config">! IOS Config generated on 2015-08-17 20:14
+! by autonetkit_0.15.3
+!
+hostname HCore
+boot-start-marker
+boot-end-marker
+!
+no aaa new-model
+!
+!
+ip cef
+ipv6 unicast-routing
+ipv6 cef
+!
+!
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+no service config
+enable password cisco
+ip classless
+ip subnet-zero
+no ip domain lookup
+line vty 0 4
+ transport input ssh telnet
+ exec-timeout 720 0
+ password cisco
+ login
+line con 0
+ password cisco
+!
+cdp run
+!
+!
+interface Loopback0
+  description Loopback
+  ip address 192.168.0.3 255.255.255.255
+!
+interface GigabitEthernet0/0
+  description OOB Management
+  ! Configured on launch
+  no ip address
+  cdp enable
+  duplex auto
+  speed auto
+  no shutdown
+!
+interface GigabitEthernet0/1
+  description to HRouter
+  ip address 10.1.0.2 255.255.255.252
+  cdp enable
+  duplex auto
+  speed auto
+  no shutdown
+!
+interface GigabitEthernet0/2
+  description to HASAR
+  ip address 10.1.128.2 255.255.255.252
+  cdp enable
+  duplex auto
+  speed auto
+  no shutdown
+!
+interface GigabitEthernet0/3
+  description GigabitEthernet0/3
+  no ip address
+  cdp enable
+  duplex auto
+  speed auto
+  no shutdown
+!
+!
+!
+router eigrp as10
+ !
+ address-family ipv4 unicast autonomous-system 10
+  !
+  topology base
+  exit-af-topology
+  network 10.1.0.0 0.0.0.3
+  network 10.1.128.0 0.0.0.3
+  network 192.168.0.3 0.0.0.0
+ exit-address-family
+ !
+!
+!
+router bgp 10
+  bgp router-id 192.168.0.3
+  no synchronization
+! ibgp
+  ! ibgp peers
+  !
+  neighbor 192.168.0.2 remote-as 10
+  neighbor 192.168.0.2 description iBGP peer HASAR
+  neighbor 192.168.0.2 update-source Loopback0
+  !
+  neighbor 192.168.0.1 remote-as 10
+  neighbor 192.168.0.1 description iBGP peer HRouter
+  neighbor 192.168.0.1 update-source Loopback0
+!
+!
+ !
+ address-family ipv4
+  network 192.168.0.3 mask 255.255.255.255
+  neighbor 192.168.0.2 activate
+  neighbor 192.168.0.1 activate
+ exit-address-family
+!
+!
+!
+end
+</entry>
+            <entry type="string" key="AutoNetkit.mgmt_ip"></entry>
+        </extensions>
+        <interface netPrefixLenV4="30" ipv4="10.1.0.2" name="GigabitEthernet0/1" id="0"/>
+        <interface netPrefixLenV4="30" ipv4="10.1.128.2" name="GigabitEthernet0/2" id="1"/>
+        <interface name="GigabitEthernet0/3" id="2"/>
+    </node>
+    <node ipv4="192.168.0.2" location="166,359" subtype="IOSv" type="SIMPLE" name="HASAR">
+        <extensions>
+            <entry type="Integer" key="AutoNetkit.ASN">10</entry>
+            <entry type="String" key="AutoNetkit.IGP">eigrp</entry>
+            <entry type="string" key="config">! IOS Config generated on 2015-08-17 20:14
+! by autonetkit_0.15.3
+!
+hostname HASAR
+boot-start-marker
+boot-end-marker
+!
+no aaa new-model
+!
+!
+ip cef
+ipv6 unicast-routing
+ipv6 cef
+!
+!
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+no service config
+enable password cisco
+ip classless
+ip subnet-zero
+no ip domain lookup
+line vty 0 4
+ transport input ssh telnet
+ exec-timeout 720 0
+ password cisco
+ login
+line con 0
+ password cisco
+!
+cdp run
+!
+!
+interface Loopback0
+  description Loopback
+  ip address 192.168.0.2 255.255.255.255
+!
+interface GigabitEthernet0/0
+  description OOB Management
+  ! Configured on launch
+  no ip address
+  cdp enable
+  duplex auto
+  speed auto
+  no shutdown
+!
+interface GigabitEthernet0/1
+  description to HCore
+  ip address 10.1.128.1 255.255.255.252
+  cdp enable
+  duplex auto
+  speed auto
+  no shutdown
+!
+!
+!
+router eigrp as10
+ !
+ address-family ipv4 unicast autonomous-system 10
+  !
+  topology base
+  exit-af-topology
+  network 10.1.128.0 0.0.0.3
+  network 192.168.0.2 0.0.0.0
+ exit-address-family
+ !
+!
+!
+router bgp 10
+  bgp router-id 192.168.0.2
+  no synchronization
+! ibgp
+  ! ibgp peers
+  !
+  neighbor 192.168.0.3 remote-as 10
+  neighbor 192.168.0.3 description iBGP peer HCore
+  neighbor 192.168.0.3 update-source Loopback0
+  !
+  neighbor 192.168.0.1 remote-as 10
+  neighbor 192.168.0.1 description iBGP peer HRouter
+  neighbor 192.168.0.1 update-source Loopback0
+!
+!
+ !
+ address-family ipv4
+  network 192.168.0.2 mask 255.255.255.255
+  neighbor 192.168.0.3 activate
+  neighbor 192.168.0.1 activate
+ exit-address-family
+!
+!
+!
+end
+</entry>
+            <entry type="string" key="AutoNetkit.mgmt_ip"></entry>
+        </extensions>
+        <interface netPrefixLenV4="30" ipv4="10.1.128.1" name="GigabitEthernet0/1" id="0"/>
+    </node>
+    <node ipv4="192.168.0.30" location="425,183" subtype="IOSv" type="SIMPLE" name="Verizon">
+        <extensions>
+            <entry type="Integer" key="AutoNetkit.ASN">65000</entry>
+            <entry type="string" key="config">! IOS Config generated on 2015-08-17 20:14
+! by autonetkit_0.15.3
+!
+hostname Verizon
+boot-start-marker
+boot-end-marker
+!
+no aaa new-model
+!
+!
+ip cef
+ipv6 unicast-routing
+ipv6 cef
+!
+!
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+no service config
+enable password cisco
+ip classless
+ip subnet-zero
+no ip domain lookup
+line vty 0 4
+ transport input ssh telnet
+ exec-timeout 720 0
+ password cisco
+ login
+line con 0
+ password cisco
+!
+cdp run
+!
+!
+interface Loopback0
+  description Loopback
+  ip address 192.168.0.30 255.255.255.255
+!
+interface GigabitEthernet0/0
+  description OOB Management
+  ! Configured on launch
+  no ip address
+  cdp enable
+  duplex auto
+  speed auto
+  no shutdown
+!
+interface GigabitEthernet0/1
+  description to HRouter
+  ip address 10.1.0.6 255.255.255.252
+  cdp enable
+  duplex auto
+  speed auto
+  no shutdown
+!
+interface GigabitEthernet0/2
+  description to DCASR
+  ip address 10.4.0.2 255.255.255.252
+  cdp enable
+  duplex auto
+  speed auto
+  no shutdown
+!
+interface GigabitEthernet0/3
+  description to BDCASR
+  ip address 10.0.128.2 255.255.128.0
+  cdp enable
+  duplex auto
+  speed auto
+  no shutdown
+!
+interface GigabitEthernet0/4
+  description to HMAVerizon
+  ip address 10.5.0.1 255.255.128.0
+  cdp enable
+  duplex auto
+  speed auto
+  no shutdown
+!
+interface GigabitEthernet0/5
+  description to HRouter2
+  ip address 10.5.128.2 255.255.128.0
+  cdp enable
+  duplex auto
+  speed auto
+  no shutdown
+!
+!
+!
+router eigrp as65000
+ !
+ address-family ipv4 unicast autonomous-system 65000
+  !
+  topology base
+  exit-af-topology
+  network 10.5.0.0 0.0.127.255
+  network 192.168.0.30 0.0.0.0
+ exit-address-family
+ !
+!
+!
+router bgp 65000
+  bgp router-id 192.168.0.30
+  no synchronization
+! ibgp
+  ! ibgp peers
+  !
+  neighbor 192.168.0.29 remote-as 65000
+  neighbor 192.168.0.29 description iBGP peer HMAVerizon
+  neighbor 192.168.0.29 update-source Loopback0
+!
+! ebgp
+  !
+  neighbor 10.0.128.1 remote-as 1
+  neighbor 10.0.128.1 description eBGP to BDCASR
+  !
+  neighbor 10.1.0.5 remote-as 10
+  neighbor 10.1.0.5 description eBGP to HRouter
+  !
+  neighbor 10.5.128.1 remote-as 11
+  neighbor 10.5.128.1 description eBGP to HRouter2
+  !
+  neighbor 10.4.0.1 remote-as 998
+  neighbor 10.4.0.1 description eBGP to DCASR
+!
+!
+ !
+ address-family ipv4
+  network 192.168.0.30 mask 255.255.255.255
+  network 10.5.0.0 mask 255.255.0.0
+  neighbor 192.168.0.29 activate
+  neighbor 192.168.0.29 next-hop-self
+  neighbor 10.0.128.1 activate
+  neighbor 10.0.128.1 send-community
+  neighbor 10.0.128.1 next-hop-self
+  neighbor 10.1.0.5 activate
+  neighbor 10.1.0.5 send-community
+  neighbor 10.1.0.5 next-hop-self
+  neighbor 10.5.128.1 activate
+  neighbor 10.5.128.1 send-community
+  neighbor 10.5.128.1 next-hop-self
+  neighbor 10.4.0.1 activate
+  neighbor 10.4.0.1 send-community
+  neighbor 10.4.0.1 next-hop-self
+ exit-address-family
+!
+!
+ip route 10.5.0.0 255.255.0.0 Null0 254
+!
+end
+</entry>
+            <entry type="string" key="AutoNetkit.mgmt_ip"></entry>
+        </extensions>
+        <interface netPrefixLenV4="30" ipv4="10.1.0.6" name="GigabitEthernet0/1" id="0"/>
+        <interface netPrefixLenV4="30" ipv4="10.4.0.2" name="GigabitEthernet0/2" id="1"/>
+        <interface netPrefixLenV4="17" ipv4="10.0.128.2" name="GigabitEthernet0/3" id="2"/>
+        <interface netPrefixLenV4="17" ipv4="10.5.0.1" name="GigabitEthernet0/4" id="3"/>
+        <interface netPrefixLenV4="17" ipv4="10.5.128.2" name="GigabitEthernet0/5" id="4"/>
+    </node>
+    <node ipv4="192.168.0.18" location="426,89" subtype="CSR1000v" type="SIMPLE" name="DCASR">
+        <extensions>
+            <entry type="Integer" key="AutoNetkit.ASN">998</entry>
+            <entry type="string" key="config">! IOS Config generated on 2015-08-17 20:14
+! by autonetkit_0.15.3
+!
+hostname DCASR
+boot-start-marker
+boot-end-marker
+!
+license accept end user agreement
+license boot level premium
+!
+!
+no aaa new-model
+!
+!
+ipv6 unicast-routing
+!
+!
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+no service config
+enable password cisco
+enable secret 4 tnhtc92DXBhelxjYk8LWJrPV36S2i4ntXrpb4RFmfqY
+ip classless
+ip subnet-zero
+no ip domain lookup
+line vty 0 4
+ transport input ssh telnet
+ exec-timeout 720 0
+ password cisco
+ login
+line con 0
+ password cisco
+!
+cdp run
+!
+!
+interface Loopback0
+  description Loopback
+  ip address 192.168.0.18 255.255.255.255
+!
+interface GigabitEthernet1
+  description OOB Management
+  ! Configured on launch
+  no ip address
+  cdp enable
+  no shutdown
+!
+interface GigabitEthernet2
+  description to Verizon
+  ip address 10.4.0.1 255.255.255.252
+  cdp enable
+  no shutdown
+!
+interface GigabitEthernet3
+  description to 7k-AGG1
+  ip address 10.4.0.6 255.255.255.252
+  cdp enable
+  no shutdown
+!
+!
+!
+router eigrp as998
+ !
+ address-family ipv4 unicast autonomous-system 998
+  !
+  topology base
+  exit-af-topology
+  network 10.4.0.4 0.0.0.3
+  network 192.168.0.18 0.0.0.0
+ exit-address-family
+ !
+!
+!
+router bgp 998
+  bgp router-id 192.168.0.18
+  no synchronization
+! ibgp
+  ! ibgp peers
+  !
+  neighbor 192.168.0.17 remote-as 998
+  neighbor 192.168.0.17 description iBGP peer 7k-AGG1
+  neighbor 192.168.0.17 update-source Loopback0
+  !
+  neighbor 192.168.0.19 remote-as 998
+  neighbor 192.168.0.19 description iBGP peer PALO
+  neighbor 192.168.0.19 update-source Loopback0
+!
+! ebgp
+  !
+  neighbor 10.4.0.2 remote-as 65000
+  neighbor 10.4.0.2 description eBGP to Verizon
+!
+!
+ !
+ address-family ipv4
+  network 192.168.0.18 mask 255.255.255.255
+  network 10.4.0.0 mask 255.255.0.0
+  neighbor 192.168.0.17 activate
+  neighbor 192.168.0.17 next-hop-self
+  neighbor 192.168.0.19 activate
+  neighbor 192.168.0.19 next-hop-self
+  neighbor 10.4.0.2 activate
+  neighbor 10.4.0.2 send-community
+  neighbor 10.4.0.2 next-hop-self
+ exit-address-family
+!
+!
+ip route 10.4.0.0 255.255.0.0 Null0 254
+!
+end
+</entry>
+            <entry type="string" key="AutoNetkit.mgmt_ip"></entry>
+        </extensions>
+        <interface netPrefixLenV4="30" ipv4="10.4.0.1" name="GigabitEthernet2" id="0"/>
+        <interface netPrefixLenV4="30" ipv4="10.4.0.6" name="GigabitEthernet3" id="1"/>
+    </node>
+    <node ipv4="192.168.0.17" location="420,33" subtype="NX-OSv" type="SIMPLE" name="7k-AGG1">
+        <extensions>
+            <entry type="Integer" key="AutoNetkit.ASN">998</entry>
+            <entry type="string" key="config">! NX-OSv Config generated on 2015-08-17 20:14
+! by autonetkit_0.15.3
+!
+version 6.2(1)
+license grace-period
+!
+hostname 7k-AGG1
+vdc 7k-AGG1 id 1
+  allocate interface Ethernet2/1-48
+  allocate interface Ethernet3/1-48
+  limit-resource vlan minimum 16 maximum 4094
+  limit-resource vrf minimum 2 maximum 4096
+  limit-resource port-channel minimum 0 maximum 768
+  limit-resource u4route-mem minimum 96 maximum 96
+  limit-resource u6route-mem minimum 24 maximum 24
+  limit-resource m4route-mem minimum 58 maximum 58
+  limit-resource m6route-mem minimum 8 maximum 8
+
+feature telnet
+
+feature eigrp
+feature bgp
+
+username adminbackup password 5 ! role network-operator
+username admin password 5 $1$KuOSBsvW$Cy0TSD..gEBGBPjzpDgf51 role network-admin
+username cisco password 5 $1$Nk7ZkwH0$fyiRmMMfIheqE3BqvcL0C1 role network-operator
+username cisco role network-admin
+username lab password 5 $1$buoy/oqy$.EXQz8rCn72ii8qtdldj00 role network-admin
+no password strength-check
+ip domain-lookup
+copp profile strict
+snmp-server user lab network-admin auth md5 0x5ceb414591539ee35159fca86fdfa101 priv 0x5ceb414591539ee35159fca86fdfa101 localizedkey
+snmp-server user admin network-admin auth md5 0x328945d53e05e8e7207f8c20b142f0b7 priv 0x328945d53e05e8e7207f8c20b142f0b7 localizedkey
+snmp-server user cisco network-operator auth md5 0x55b3c64a53fb95518e75358ee75e82e9 priv 0x55b3c64a53fb95518e75358ee75e82e9 localizedkey
+snmp-server user cisco network-admin
+rmon event 1 log trap public description FATAL(1) owner PMON@FATAL
+rmon event 2 log trap public description CRITICAL(2) owner PMON@CRITICAL
+rmon event 3 log trap public description ERROR(3) owner PMON@ERROR
+rmon event 4 log trap public description WARNING(4) owner PMON@WARNING
+rmon event 5 log trap public description INFORMATION(5) owner PMON@INFO
+
+ip route 10.4.0.0 255.255.0.0 Null0 254
+
+vlan 1
+
+vrf context management
+hardware forwarding unicast trace
+
+interface Loopback0
+  description Loopback
+  ip address 192.168.0.17/32
+  ip router eigrp 998
+
+interface Ethernet2/1
+  description to DCASR
+  ip address 10.4.0.5/30
+  ip router eigrp 998
+  no mac-address
+  no shutdown
+
+interface Ethernet2/2
+  description to HMAVerizon
+  ip address 10.4.128.1/30
+  no mac-address
+  no shutdown
+
+interface Ethernet2/3
+  description to PALO
+  ip address 10.4.128.5/30
+  no mac-address
+  no shutdown
+
+interface mgmt0
+  description OOB Management
+  ! Configured on launch
+  no ip address
+  no mac-address
+  no shutdown
+  vrf member management
+
+
+line console
+line vty
+router eigrp 998
+ autonomous-system 998
+ router-id 192.168.0.17
+ address-family ipv4 unicast
+router bgp 998
+  router-id 192.168.0.17
+  address-family ipv4 unicast
+    network 192.168.0.17/32
+    network 10.4.0.0/16
+  !
+! iBGP
+!
+! iBGP peers
+  !
+  neighbor 192.168.0.18 remote-as 998
+    description iBGP peer DCASR
+    update-source Loopback0
+    address-family ipv4 unicast
+      next-hop-self
+    !
+    !
+  !
+  neighbor 192.168.0.19 remote-as 998
+    description iBGP peer PALO
+    update-source Loopback0
+    address-family ipv4 unicast
+      next-hop-self
+    !
+    !
+! eBGP peers
+  !
+  neighbor 10.4.128.2 remote-as 65000
+    description eBGP peer HMAVerizon
+    address-family ipv4 unicast
+      send-community standard
+      next-hop-self
+        </entry>
+            <entry type="string" key="AutoNetkit.mgmt_ip"></entry>
+        </extensions>
+        <interface netPrefixLenV4="30" ipv4="10.4.0.5" name="Ethernet2/1" id="0"/>
+        <interface netPrefixLenV4="30" ipv4="10.4.128.1" name="Ethernet2/2" id="1"/>
+        <interface netPrefixLenV4="30" ipv4="10.4.128.5" name="Ethernet2/3" id="2"/>
+    </node>
+    <node ipv4="192.168.0.25" location="131,26" subtype="CSR1000v" type="SIMPLE" name="BDCASR">
+        <extensions>
+            <entry type="Integer" key="AutoNetkit.ASN">1</entry>
+            <entry type="string" key="config">! IOS Config generated on 2015-08-17 20:14
+! by autonetkit_0.15.3
+!
+hostname BDCASR
+boot-start-marker
+boot-end-marker
+!
+license accept end user agreement
+license boot level premium
+!
+!
+no aaa new-model
+!
+!
+ipv6 unicast-routing
+!
+!
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+no service config
+enable password cisco
+enable secret 4 tnhtc92DXBhelxjYk8LWJrPV36S2i4ntXrpb4RFmfqY
+ip classless
+ip subnet-zero
+no ip domain lookup
+line vty 0 4
+ transport input ssh telnet
+ exec-timeout 720 0
+ password cisco
+ login
+line con 0
+ password cisco
+!
+cdp run
+!
+!
+interface Loopback0
+  description Loopback
+  ip address 192.168.0.25 255.255.255.255
+!
+interface GigabitEthernet1
+  description OOB Management
+  ! Configured on launch
+  no ip address
+  cdp enable
+  no shutdown
+!
+interface GigabitEthernet2
+  description to Verizon
+  ip address 10.0.128.1 255.255.128.0
+  cdp enable
+  no shutdown
+!
+interface GigabitEthernet3
+  description to HMAVerizon
+  ip address 10.0.0.1 255.255.128.0
+  cdp enable
+  no shutdown
+!
+interface GigabitEthernet4
+  description to INet
+  ip address 10.3.0.1 255.255.0.0
+  cdp enable
+  no shutdown
+!
+!
+!
+router eigrp as1
+ !
+ address-family ipv4 unicast autonomous-system 1
+  !
+  topology base
+  exit-af-topology
+  network 192.168.0.25 0.0.0.0
+ exit-address-family
+ !
+!
+!
+router bgp 1
+  bgp router-id 192.168.0.25
+  no synchronization
+! ibgp
+!
+! ebgp
+  !
+  neighbor 10.3.0.2 remote-as 100
+  neighbor 10.3.0.2 description eBGP to INet
+  !
+  neighbor 10.0.0.2 remote-as 65000
+  neighbor 10.0.0.2 description eBGP to HMAVerizon
+  !
+  neighbor 10.0.128.2 remote-as 65000
+  neighbor 10.0.128.2 description eBGP to Verizon
+!
+!
+ !
+ address-family ipv4
+  network 192.168.0.25 mask 255.255.255.255
+  network 10.0.0.0 mask 255.255.0.0
+  neighbor 10.3.0.2 activate
+  neighbor 10.3.0.2 send-community
+  neighbor 10.3.0.2 next-hop-self
+  neighbor 10.0.0.2 activate
+  neighbor 10.0.0.2 send-community
+  neighbor 10.0.0.2 next-hop-self
+  neighbor 10.0.128.2 activate
+  neighbor 10.0.128.2 send-community
+  neighbor 10.0.128.2 next-hop-self
+ exit-address-family
+!
+!
+ip route 10.0.0.0 255.255.0.0 Null0 254
+!
+end
+</entry>
+            <entry type="string" key="AutoNetkit.mgmt_ip"></entry>
+        </extensions>
+        <interface netPrefixLenV4="17" ipv4="10.0.128.1" name="GigabitEthernet2" id="0"/>
+        <interface netPrefixLenV4="17" ipv4="10.0.0.1" name="GigabitEthernet3" id="1"/>
+        <interface netPrefixLenV4="16" ipv4="10.3.0.1" name="GigabitEthernet4" id="2"/>
+    </node>
+    <node ipv4="192.168.0.29" location="300,26" subtype="CSR1000v" type="SIMPLE" name="HMAVerizon">
+        <extensions>
+            <entry type="Integer" key="AutoNetkit.ASN">65000</entry>
+            <entry type="string" key="config">! IOS Config generated on 2015-08-17 20:14
+! by autonetkit_0.15.3
+!
+hostname HMAVerizon
+boot-start-marker
+boot-end-marker
+!
+license accept end user agreement
+license boot level premium
+!
+!
+no aaa new-model
+!
+!
+ipv6 unicast-routing
+!
+!
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+no service config
+enable password cisco
+enable secret 4 tnhtc92DXBhelxjYk8LWJrPV36S2i4ntXrpb4RFmfqY
+ip classless
+ip subnet-zero
+no ip domain lookup
+line vty 0 4
+ transport input ssh telnet
+ exec-timeout 720 0
+ password cisco
+ login
+line con 0
+ password cisco
+!
+cdp run
+!
+!
+interface Loopback0
+  description Loopback
+  ip address 192.168.0.29 255.255.255.255
+!
+interface GigabitEthernet1
+  description OOB Management
+  ! Configured on launch
+  no ip address
+  cdp enable
+  no shutdown
+!
+interface GigabitEthernet2
+  description to BDCASR
+  ip address 10.0.0.2 255.255.128.0
+  cdp enable
+  no shutdown
+!
+interface GigabitEthernet3
+  description to 7k-AGG1
+  ip address 10.4.128.2 255.255.255.252
+  cdp enable
+  no shutdown
+!
+interface GigabitEthernet4
+  description to Verizon
+  ip address 10.5.0.2 255.255.128.0
+  cdp enable
+  no shutdown
+!
+!
+!
+router eigrp as65000
+ !
+ address-family ipv4 unicast autonomous-system 65000
+  !
+  topology base
+  exit-af-topology
+  network 10.5.0.0 0.0.127.255
+  network 192.168.0.29 0.0.0.0
+ exit-address-family
+ !
+!
+!
+router bgp 65000
+  bgp router-id 192.168.0.29
+  no synchronization
+! ibgp
+  ! ibgp peers
+  !
+  neighbor 192.168.0.30 remote-as 65000
+  neighbor 192.168.0.30 description iBGP peer Verizon
+  neighbor 192.168.0.30 update-source Loopback0
+!
+! ebgp
+  !
+  neighbor 10.0.0.1 remote-as 1
+  neighbor 10.0.0.1 description eBGP to BDCASR
+  !
+  neighbor 10.4.128.1 remote-as 998
+  neighbor 10.4.128.1 description eBGP to 7k-AGG1
+!
+!
+ !
+ address-family ipv4
+  network 192.168.0.29 mask 255.255.255.255
+  network 10.5.0.0 mask 255.255.0.0
+  neighbor 192.168.0.30 activate
+  neighbor 192.168.0.30 next-hop-self
+  neighbor 10.0.0.1 activate
+  neighbor 10.0.0.1 send-community
+  neighbor 10.0.0.1 next-hop-self
+  neighbor 10.4.128.1 activate
+  neighbor 10.4.128.1 send-community
+  neighbor 10.4.128.1 next-hop-self
+ exit-address-family
+!
+!
+ip route 10.5.0.0 255.255.0.0 Null0 254
+!
+end
+</entry>
+            <entry type="string" key="AutoNetkit.mgmt_ip"></entry>
+        </extensions>
+        <interface netPrefixLenV4="17" ipv4="10.0.0.2" name="GigabitEthernet2" id="0"/>
+        <interface netPrefixLenV4="30" ipv4="10.4.128.2" name="GigabitEthernet3" id="1"/>
+        <interface netPrefixLenV4="17" ipv4="10.5.0.2" name="GigabitEthernet4" id="2"/>
+    </node>
+    <node ipv4="192.168.0.9" location="18,28" subtype="IOSv" type="SIMPLE" name="INet">
+        <extensions>
+            <entry type="Integer" key="AutoNetkit.ASN">100</entry>
+            <entry type="string" key="config">! IOS Config generated on 2015-08-17 20:14
+! by autonetkit_0.15.3
+!
+hostname INet
+boot-start-marker
+boot-end-marker
+!
+no aaa new-model
+!
+!
+ip cef
+ipv6 unicast-routing
+ipv6 cef
+!
+!
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+no service config
+enable password cisco
+ip classless
+ip subnet-zero
+no ip domain lookup
+line vty 0 4
+ transport input ssh telnet
+ exec-timeout 720 0
+ password cisco
+ login
+line con 0
+ password cisco
+!
+cdp run
+!
+!
+interface Loopback0
+  description Loopback
+  ip address 192.168.0.9 255.255.255.255
+!
+interface GigabitEthernet0/0
+  description OOB Management
+  ! Configured on launch
+  no ip address
+  cdp enable
+  duplex auto
+  speed auto
+  no shutdown
+!
+interface GigabitEthernet0/1
+  description to BDCASR
+  ip address 10.3.0.2 255.255.0.0
+  cdp enable
+  duplex auto
+  speed auto
+  no shutdown
+!
+!
+!
+router eigrp as100
+ !
+ address-family ipv4 unicast autonomous-system 100
+  !
+  topology base
+  exit-af-topology
+  network 192.168.0.9 0.0.0.0
+ exit-address-family
+ !
+!
+!
+router bgp 100
+  bgp router-id 192.168.0.9
+  no synchronization
+! ibgp
+!
+! ebgp
+  !
+  neighbor 10.3.0.1 remote-as 1
+  neighbor 10.3.0.1 description eBGP to BDCASR
+!
+!
+ !
+ address-family ipv4
+  network 192.168.0.9 mask 255.255.255.255
+  network 10.3.0.0 mask 255.255.0.0
+  neighbor 10.3.0.1 activate
+  neighbor 10.3.0.1 send-community
+  neighbor 10.3.0.1 next-hop-self
+ exit-address-family
+!
+!
+ip route 10.3.0.0 255.255.0.0 Null0 254
+!
+end
+</entry>
+            <entry type="string" key="AutoNetkit.mgmt_ip"></entry>
+        </extensions>
+        <interface netPrefixLenV4="16" ipv4="10.3.0.2" name="GigabitEthernet0/1" id="0"/>
+    </node>
+    <node ipv4="192.168.0.34" location="526,278" subtype="IOSv" type="SIMPLE" name="HRouter2">
+        <extensions>
+            <entry type="Integer" key="AutoNetkit.ASN">11</entry>
+            <entry type="String" key="AutoNetkit.IGP">eigrp</entry>
+            <entry type="string" key="config">! IOS Config generated on 2015-08-17 20:14
+! by autonetkit_0.15.3
+!
+hostname HRouter2
+boot-start-marker
+boot-end-marker
+!
+no aaa new-model
+!
+!
+ip cef
+ipv6 unicast-routing
+ipv6 cef
+!
+!
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+no service config
+enable password cisco
+ip classless
+ip subnet-zero
+no ip domain lookup
+line vty 0 4
+ transport input ssh telnet
+ exec-timeout 720 0
+ password cisco
+ login
+line con 0
+ password cisco
+!
+cdp run
+!
+!
+interface Loopback0
+  description Loopback
+  ip address 192.168.0.34 255.255.255.255
+!
+interface GigabitEthernet0/0
+  description OOB Management
+  ! Configured on launch
+  no ip address
+  cdp enable
+  duplex auto
+  speed auto
+  no shutdown
+!
+interface GigabitEthernet0/1
+  description to Verizon
+  ip address 10.5.128.1 255.255.128.0
+  cdp enable
+  duplex auto
+  speed auto
+  no shutdown
+!
+interface GigabitEthernet0/2
+  description to HCore2
+  ip address 10.2.128.1 255.255.128.0
+  cdp enable
+  duplex auto
+  speed auto
+  no shutdown
+!
+!
+!
+router eigrp as11
+ !
+ address-family ipv4 unicast autonomous-system 11
+  !
+  topology base
+  exit-af-topology
+  network 10.2.128.0 0.0.127.255
+  network 192.168.0.34 0.0.0.0
+ exit-address-family
+ !
+!
+!
+router bgp 11
+  bgp router-id 192.168.0.34
+  no synchronization
+! ibgp
+  ! ibgp peers
+  !
+  neighbor 192.168.0.33 remote-as 11
+  neighbor 192.168.0.33 description iBGP peer HASA2
+  neighbor 192.168.0.33 update-source Loopback0
+  !
+  neighbor 192.168.0.35 remote-as 11
+  neighbor 192.168.0.35 description iBGP peer HCore2
+  neighbor 192.168.0.35 update-source Loopback0
+!
+! ebgp
+  !
+  neighbor 10.5.128.2 remote-as 65000
+  neighbor 10.5.128.2 description eBGP to Verizon
+!
+!
+ !
+ address-family ipv4
+  network 192.168.0.34 mask 255.255.255.255
+  network 10.2.0.0 mask 255.255.0.0
+  neighbor 192.168.0.33 activate
+  neighbor 192.168.0.33 next-hop-self
+  neighbor 192.168.0.35 activate
+  neighbor 192.168.0.35 next-hop-self
+  neighbor 10.5.128.2 activate
+  neighbor 10.5.128.2 send-community
+  neighbor 10.5.128.2 next-hop-self
+ exit-address-family
+!
+!
+ip route 10.2.0.0 255.255.0.0 Null0 254
+!
+end
+</entry>
+            <entry type="string" key="AutoNetkit.mgmt_ip"></entry>
+        </extensions>
+        <interface netPrefixLenV4="17" ipv4="10.5.128.1" name="GigabitEthernet0/1" id="0"/>
+        <interface netPrefixLenV4="17" ipv4="10.2.128.1" name="GigabitEthernet0/2" id="1"/>
+    </node>
+    <node ipv4="192.168.0.35" location="584,359" subtype="IOSv" type="SIMPLE" name="HCore2">
+        <extensions>
+            <entry type="Integer" key="AutoNetkit.ASN">11</entry>
+            <entry type="String" key="AutoNetkit.IGP">eigrp</entry>
+            <entry type="string" key="config">! IOS Config generated on 2015-08-17 20:14
+! by autonetkit_0.15.3
+!
+hostname HCore2
+boot-start-marker
+boot-end-marker
+!
+no aaa new-model
+!
+!
+ip cef
+ipv6 unicast-routing
+ipv6 cef
+!
+!
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+no service config
+enable password cisco
+ip classless
+ip subnet-zero
+no ip domain lookup
+line vty 0 4
+ transport input ssh telnet
+ exec-timeout 720 0
+ password cisco
+ login
+line con 0
+ password cisco
+!
+cdp run
+!
+!
+interface Loopback0
+  description Loopback
+  ip address 192.168.0.35 255.255.255.255
+!
+interface GigabitEthernet0/0
+  description OOB Management
+  ! Configured on launch
+  no ip address
+  cdp enable
+  duplex auto
+  speed auto
+  no shutdown
+!
+interface GigabitEthernet0/1
+  description to HRouter2
+  ip address 10.2.128.2 255.255.128.0
+  cdp enable
+  duplex auto
+  speed auto
+  no shutdown
+!
+interface GigabitEthernet0/2
+  description to HASA2
+  ip address 10.2.0.1 255.255.128.0
+  cdp enable
+  duplex auto
+  speed auto
+  no shutdown
+!
+!
+!
+router eigrp as11
+ !
+ address-family ipv4 unicast autonomous-system 11
+  !
+  topology base
+  exit-af-topology
+  network 10.2.0.0 0.0.127.255
+  network 10.2.128.0 0.0.127.255
+  network 192.168.0.35 0.0.0.0
+ exit-address-family
+ !
+!
+!
+router bgp 11
+  bgp router-id 192.168.0.35
+  no synchronization
+! ibgp
+  ! ibgp peers
+  !
+  neighbor 192.168.0.33 remote-as 11
+  neighbor 192.168.0.33 description iBGP peer HASA2
+  neighbor 192.168.0.33 update-source Loopback0
+  !
+  neighbor 192.168.0.34 remote-as 11
+  neighbor 192.168.0.34 description iBGP peer HRouter2
+  neighbor 192.168.0.34 update-source Loopback0
+!
+!
+ !
+ address-family ipv4
+  network 192.168.0.35 mask 255.255.255.255
+  neighbor 192.168.0.33 activate
+  neighbor 192.168.0.34 activate
+ exit-address-family
+!
+!
+!
+end
+</entry>
+            <entry type="string" key="AutoNetkit.mgmt_ip"></entry>
+        </extensions>
+        <interface netPrefixLenV4="17" ipv4="10.2.128.2" name="GigabitEthernet0/1" id="0"/>
+        <interface netPrefixLenV4="17" ipv4="10.2.0.1" name="GigabitEthernet0/2" id="1"/>
+    </node>
+    <node ipv4="192.168.0.33" location="729,359" subtype="IOSv" type="SIMPLE" name="HASA2">
+        <extensions>
+            <entry type="Integer" key="AutoNetkit.ASN">11</entry>
+            <entry type="String" key="AutoNetkit.IGP">eigrp</entry>
+            <entry type="string" key="config">! IOS Config generated on 2015-08-17 20:14
+! by autonetkit_0.15.3
+!
+hostname HASA2
+boot-start-marker
+boot-end-marker
+!
+no aaa new-model
+!
+!
+ip cef
+ipv6 unicast-routing
+ipv6 cef
+!
+!
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+no service config
+enable password cisco
+ip classless
+ip subnet-zero
+no ip domain lookup
+line vty 0 4
+ transport input ssh telnet
+ exec-timeout 720 0
+ password cisco
+ login
+line con 0
+ password cisco
+!
+cdp run
+!
+!
+interface Loopback0
+  description Loopback
+  ip address 192.168.0.33 255.255.255.255
+!
+interface GigabitEthernet0/0
+  description OOB Management
+  ! Configured on launch
+  no ip address
+  cdp enable
+  duplex auto
+  speed auto
+  no shutdown
+!
+interface GigabitEthernet0/1
+  description to HCore2
+  ip address 10.2.0.2 255.255.128.0
+  cdp enable
+  duplex auto
+  speed auto
+  no shutdown
+!
+!
+!
+router eigrp as11
+ !
+ address-family ipv4 unicast autonomous-system 11
+  !
+  topology base
+  exit-af-topology
+  network 10.2.0.0 0.0.127.255
+  network 192.168.0.33 0.0.0.0
+ exit-address-family
+ !
+!
+!
+router bgp 11
+  bgp router-id 192.168.0.33
+  no synchronization
+! ibgp
+  ! ibgp peers
+  !
+  neighbor 192.168.0.35 remote-as 11
+  neighbor 192.168.0.35 description iBGP peer HCore2
+  neighbor 192.168.0.35 update-source Loopback0
+  !
+  neighbor 192.168.0.34 remote-as 11
+  neighbor 192.168.0.34 description iBGP peer HRouter2
+  neighbor 192.168.0.34 update-source Loopback0
+!
+!
+ !
+ address-family ipv4
+  network 192.168.0.33 mask 255.255.255.255
+  neighbor 192.168.0.35 activate
+  neighbor 192.168.0.34 activate
+ exit-address-family
+!
+!
+!
+end
+</entry>
+            <entry type="string" key="AutoNetkit.mgmt_ip"></entry>
+        </extensions>
+        <interface netPrefixLenV4="17" ipv4="10.2.0.2" name="GigabitEthernet0/1" id="0"/>
+    </node>
+    <node ipv4="192.168.0.19" location="568,28" subtype="IOSv" type="SIMPLE" name="PALO">
+        <extensions>
+            <entry type="Integer" key="AutoNetkit.ASN">998</entry>
+            <entry type="String" key="AutoNetkit.IGP">ospf</entry>
+            <entry type="string" key="config">! IOS Config generated on 2015-08-17 20:14
+! by autonetkit_0.15.3
+!
+hostname PALO
+boot-start-marker
+boot-end-marker
+!
+no aaa new-model
+!
+!
+ip cef
+ipv6 unicast-routing
+ipv6 cef
+!
+!
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+no service config
+enable password cisco
+ip classless
+ip subnet-zero
+no ip domain lookup
+line vty 0 4
+ transport input ssh telnet
+ exec-timeout 720 0
+ password cisco
+ login
+line con 0
+ password cisco
+!
+cdp run
+!
+!
+interface Loopback0
+  description Loopback
+  ip address 192.168.0.19 255.255.255.255
+!
+interface GigabitEthernet0/0
+  description OOB Management
+  ! Configured on launch
+  no ip address
+  cdp enable
+  duplex auto
+  speed auto
+  no shutdown
+!
+interface GigabitEthernet0/1
+  description to 7k-AGG1
+  ip address 10.4.128.6 255.255.255.252
+  cdp enable
+  duplex auto
+  speed auto
+  no shutdown
+!
+!
+!
+router ospf 998
+  network 192.168.0.19 0.0.0.0 area 0
+  log-adjacency-changes
+  passive-interface Loopback0
+!
+!
+router bgp 998
+  bgp router-id 192.168.0.19
+  no synchronization
+! ibgp
+  ! ibgp peers
+  !
+  neighbor 192.168.0.17 remote-as 998
+  neighbor 192.168.0.17 description iBGP peer 7k-AGG1
+  neighbor 192.168.0.17 update-source Loopback0
+  !
+  neighbor 192.168.0.18 remote-as 998
+  neighbor 192.168.0.18 description iBGP peer DCASR
+  neighbor 192.168.0.18 update-source Loopback0
+!
+!
+ !
+ address-family ipv4
+  network 192.168.0.19 mask 255.255.255.255
+  neighbor 192.168.0.17 activate
+  neighbor 192.168.0.18 activate
+ exit-address-family
+!
+!
+!
+end
+</entry>
+            <entry type="string" key="AutoNetkit.mgmt_ip"></entry>
+        </extensions>
+        <interface netPrefixLenV4="30" ipv4="10.4.128.6" name="GigabitEthernet0/1" id="0"/>
+    </node>
+    <connection src="/virl:topology/virl:node[2]/virl:interface[1]" dst="/virl:topology/virl:node[1]/virl:interface[1]"/>
+    <connection src="/virl:topology/virl:node[2]/virl:interface[2]" dst="/virl:topology/virl:node[3]/virl:interface[1]"/>
+    <connection src="/virl:topology/virl:node[1]/virl:interface[2]" dst="/virl:topology/virl:node[4]/virl:interface[1]"/>
+    <connection src="/virl:topology/virl:node[4]/virl:interface[2]" dst="/virl:topology/virl:node[5]/virl:interface[1]"/>
+    <connection src="/virl:topology/virl:node[5]/virl:interface[2]" dst="/virl:topology/virl:node[6]/virl:interface[1]"/>
+    <connection src="/virl:topology/virl:node[7]/virl:interface[1]" dst="/virl:topology/virl:node[4]/virl:interface[3]"/>
+    <connection src="/virl:topology/virl:node[7]/virl:interface[2]" dst="/virl:topology/virl:node[8]/virl:interface[1]"/>
+    <connection src="/virl:topology/virl:node[8]/virl:interface[2]" dst="/virl:topology/virl:node[6]/virl:interface[2]"/>
+    <connection src="/virl:topology/virl:node[4]/virl:interface[4]" dst="/virl:topology/virl:node[8]/virl:interface[3]"/>
+    <connection src="/virl:topology/virl:node[9]/virl:interface[1]" dst="/virl:topology/virl:node[7]/virl:interface[3]"/>
+    <connection src="/virl:topology/virl:node[4]/virl:interface[5]" dst="/virl:topology/virl:node[10]/virl:interface[1]"/>
+    <connection src="/virl:topology/virl:node[10]/virl:interface[2]" dst="/virl:topology/virl:node[11]/virl:interface[1]"/>
+    <connection src="/virl:topology/virl:node[11]/virl:interface[2]" dst="/virl:topology/virl:node[12]/virl:interface[1]"/>
+    <connection src="/virl:topology/virl:node[6]/virl:interface[3]" dst="/virl:topology/virl:node[13]/virl:interface[1]"/>
+</topology>
