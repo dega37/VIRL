@@ -9,7 +9,7 @@
         <extensions>
             <entry type="string" key="AutoNetkit.mgmt_ip"></entry>
             <entry type="String" key="config">!
-! Last configuration change at 14:19:11 UTC Wed Sep 16 2015
+! Last configuration change at 18:25:17 UTC Wed Sep 16 2015
 !
 version 15.5
 service config
@@ -62,6 +62,12 @@ multilink bundle-name authenticated
 !
 !
 !
+crypto pki trustpoint TP-self-signed-680807978
+ enrollment selfsigned
+ subject-name cn=IOS-Self-Signed-Certificate-680807978
+ revocation-check none
+ rsakeypair TP-self-signed-680807978
+!
 crypto pki trustpoint TP-self-signed-3719177906
  enrollment selfsigned
  subject-name cn=IOS-Self-Signed-Certificate-3719177906
@@ -87,8 +93,9 @@ crypto pki trustpoint TP-self-signed-2752564573
  rsakeypair TP-self-signed-2752564573
 !
 !
-crypto pki certificate chain TP-self-signed-3719177906
+crypto pki certificate chain TP-self-signed-680807978
  certificate self-signed 01 nvram:IOS-Self-Sig#1.cer
+crypto pki certificate chain TP-self-signed-3719177906
 crypto pki certificate chain TP-self-signed-3371999795
 crypto pki certificate chain TP-self-signed-2490970413
 crypto pki certificate chain TP-self-signed-2752564573
@@ -99,7 +106,7 @@ crypto pki certificate chain TP-self-signed-2752564573
 !
 !
 !
-license udi pid CSR1000V sn 9D5SGUWRSBR
+license udi pid CSR1000V sn 9TQC8PACXR8
 license accept end user agreement
 license boot level ax
 !
@@ -142,7 +149,7 @@ interface Loopback0
 !
 interface GigabitEthernet1
  description OOB Management
- ip address 10.255.1.223 255.255.0.0
+ ip address 10.255.0.35 255.255.0.0
  shutdown
  negotiation auto
  cdp enable
@@ -253,7 +260,7 @@ end</entry>
         <extensions>
             <entry type="string" key="AutoNetkit.mgmt_ip"></entry>
             <entry type="String" key="config">!
-! Last configuration change at 14:19:10 UTC Wed Sep 16 2015
+! Last configuration change at 18:25:17 UTC Wed Sep 16 2015
 !
 version 15.5
 service config
@@ -306,6 +313,12 @@ multilink bundle-name authenticated
 !
 !
 !
+crypto pki trustpoint TP-self-signed-2833304132
+ enrollment selfsigned
+ subject-name cn=IOS-Self-Signed-Certificate-2833304132
+ revocation-check none
+ rsakeypair TP-self-signed-2833304132
+!
 crypto pki trustpoint TP-self-signed-244122545
  enrollment selfsigned
  subject-name cn=IOS-Self-Signed-Certificate-244122545
@@ -331,8 +344,9 @@ crypto pki trustpoint TP-self-signed-3166066487
  rsakeypair TP-self-signed-3166066487
 !
 !
-crypto pki certificate chain TP-self-signed-244122545
+crypto pki certificate chain TP-self-signed-2833304132
  certificate self-signed 01 nvram:IOS-Self-Sig#1.cer
+crypto pki certificate chain TP-self-signed-244122545
 crypto pki certificate chain TP-self-signed-818469856
 crypto pki certificate chain TP-self-signed-3664741513
 crypto pki certificate chain TP-self-signed-3166066487
@@ -343,7 +357,7 @@ crypto pki certificate chain TP-self-signed-3166066487
 !
 !
 !
-license udi pid CSR1000V sn 9EYMOMWR4JV
+license udi pid CSR1000V sn 9TCPETM54BA
 license accept end user agreement
 license boot level ax
 !
@@ -386,7 +400,7 @@ interface Loopback0
 !
 interface GigabitEthernet1
  description OOB Management
- ip address 10.255.1.222 255.255.0.0
+ ip address 10.255.0.34 255.255.0.0
  shutdown
  negotiation auto
  cdp enable
@@ -496,7 +510,7 @@ end</entry>
         <extensions>
             <entry type="string" key="AutoNetkit.mgmt_ip"></entry>
             <entry type="String" key="config">!Command: show running-config
-!Time: Wed Sep 16 14:19:57 2015
+!Time: Wed Sep 16 18:25:18 2015
 
 version 7.2(0)D1(1)
 power redundancy-mode redundant
@@ -559,7 +573,7 @@ interface mgmt0
   shutdown force
   description OOB Management
   vrf member management
-  ip address 10.255.1.215/16
+  ip address 10.255.0.40/16
 
 interface Ethernet2/1
   description to BDCWAGGA
@@ -586,12 +600,10 @@ interface Ethernet2/4
   description to BDCCoreB
   shutdown
   no switchport
-  mac-address 0000.0000.002c
 
 interface Ethernet2/5
   description Ethernet2/5
   no switchport
-  mac-address 0000.0000.002c
   no shutdown
 
 interface Ethernet2/6
@@ -1421,7 +1433,7 @@ router bgp 65502
         <extensions>
             <entry type="string" key="AutoNetkit.mgmt_ip"></entry>
             <entry type="String" key="config">!Command: show running-config
-!Time: Wed Sep 16 14:20:01 2015
+!Time: Wed Sep 16 18:25:22 2015
 
 version 7.2(0)D1(1)
 power redundancy-mode redundant
@@ -1508,7 +1520,7 @@ interface mgmt0
   shutdown force
   description OOB Management
   vrf member management
-  ip address 10.255.1.220/16
+  ip address 10.255.0.44/16
 
 interface Ethernet2/1
   description to CSCWAGGB
@@ -1523,7 +1535,6 @@ interface Ethernet2/2
   description to BDCWAGGA
   shutdown
   no switchport
-  mac-address 0000.0000.002b
   no ip redirects
   no ipv6 redirects
 
@@ -1541,7 +1552,6 @@ interface Ethernet2/4
   ip address 10.11.2.14/30
   no ipv6 redirects
   ip router eigrp 1
-  ip router eigrp 65502
   no shutdown
 
 interface Ethernet2/5
@@ -1551,27 +1561,26 @@ interface Ethernet2/5
   ip address 10.11.2.18/30
   no ipv6 redirects
   ip router eigrp 1
-  ip router eigrp 65502
   no shutdown
 
 interface Ethernet2/6
   description to BDCASRA
   no switchport
+  mac-address 0000.0000.002f
   no ip redirects
   ip address 10.11.2.57/30
   no ipv6 redirects
   ip router eigrp 1
-  ip router eigrp 65502
   no shutdown
 
 interface Ethernet2/7
   description to BDCASRB
   no switchport
+  mac-address 0000.0000.002f
   no ip redirects
   ip address 10.11.2.65/30
   no ipv6 redirects
   ip router eigrp 1
-  ip router eigrp 65502
   no shutdown
 
 interface Ethernet2/8
@@ -2359,7 +2368,6 @@ interface loopback0
   description Loopback
   ip address 10.11.0.4/32
   ip router eigrp 1
-  ip router eigrp 65502
 line console
 line vty
 boot kickstart bootflash:/titanium-d1-kickstart.7.2.0.D1.1.bin sup-1
@@ -2412,8 +2420,7 @@ router bgp 65502
     description BCDCASR1006B
     update-source loopback0
     address-family ipv4 unicast
-      route-reflector-client
-      next-hop-self</entry>
+      route-reflector-client</entry>
         </extensions>
         <interface name="Ethernet2/1" id="0"/>
         <interface name="Ethernet2/2" id="1"/>
@@ -2427,7 +2434,7 @@ router bgp 65502
         <extensions>
             <entry type="string" key="AutoNetkit.mgmt_ip"></entry>
             <entry type="String" key="config">!Command: show running-config
-!Time: Wed Sep 16 14:19:55 2015
+!Time: Wed Sep 16 18:25:19 2015
 
 version 7.2(0)D1(1)
 power redundancy-mode redundant
@@ -2490,7 +2497,7 @@ interface mgmt0
   shutdown force
   description OOB Management
   vrf member management
-  ip address 10.255.1.217/16
+  ip address 10.255.0.39/16
 
 interface Ethernet2/1
   description to BDCWAGGA
@@ -2510,19 +2517,16 @@ interface Ethernet2/3
   description to BDCCoreA
   shutdown
   no switchport
-  mac-address 0000.0000.002d
 
 interface Ethernet2/4
   description to BDCCoreA
   shutdown
   no switchport
-  mac-address 0000.0000.002d
 
 interface Ethernet2/5
   description Ethernet2/5
   shutdown
   no switchport
-  mac-address 0000.0000.002d
 
 interface Ethernet2/6
   description Ethernet2/6
@@ -3331,6 +3335,7 @@ router eigrp 1
 router bgp 65502
   router-id 10.11.0.2
   address-family ipv4 unicast
+    network 10.11.0.2/32
     network 10.11.0.22/32
     maximum-paths 8
     maximum-paths ibgp 8
@@ -3338,8 +3343,7 @@ router bgp 65502
     update-source loopback0
     address-family ipv4 unicast
   neighbor 10.11.0.4 remote-as 65502
-    update-source loopback0
-    address-family ipv4 unicast</entry>
+    update-source loopback0</entry>
         </extensions>
         <interface name="Ethernet2/1" id="0"/>
         <interface name="Ethernet2/2" id="1"/>
@@ -3351,999 +3355,1000 @@ router bgp 65502
     <node location="660,72" subtype="NX-OSv" type="SIMPLE" name="BDCWAGGA">
         <extensions>
             <entry type="string" key="AutoNetkit.mgmt_ip"></entry>
-            <entry type="String" key="config">!Command: show running-config
-!Time: Wed Sep 16 14:20:00 2015
-
-version 7.2(0)D1(1)
-power redundancy-mode redundant
-license grace-period
-
-hostname BDCWAGGA
-vdc BDCWAGGA id 1
-  limit-resource module-type m1 m1xl m2xl f2e 
-  allocate interface Ethernet2/1-48
-  allocate interface Ethernet3/1-48
-  allocate interface Ethernet4/1-48
-  limit-resource vlan minimum 16 maximum 4094
-  limit-resource vrf minimum 2 maximum 4096
-  limit-resource port-channel minimum 0 maximum 768
-  limit-resource u4route-mem minimum 96 maximum 96
-  limit-resource u6route-mem minimum 24 maximum 24
-  limit-resource m4route-mem minimum 58 maximum 58
-  limit-resource m6route-mem minimum 8 maximum 8
-
-feature telnet
-feature bgp
-feature eigrp
-feature bfd
-
-username admin password 5 $1$KuOSBsvW$Cy0TSD..gEBGBPjzpDgf51  role network-admin
-username adminbackup password 5 !  role network-operator
-username adminbackup passphrase  lifetime 99999 warntime 14 gracetime 3
-username cisco password 5 $1$Nk7ZkwH0$fyiRmMMfIheqE3BqvcL0C1  role network-operator
-username cisco role network-admin
-username cisco passphrase  lifetime 99999 warntime 14 gracetime 3
-username lab password 5 $1$buoy/oqy$.EXQz8rCn72ii8qtdldj00  role network-admin
-username lab passphrase  lifetime 99999 warntime 14 gracetime 3
-no password strength-check
-ip domain-lookup
-vlan dot1Q tag native
-system default switchport
-system jumbomtu 0
-no logging event trunk-status enable
-copp profile strict
-snmp-server user lab network-admin auth md5 0x5ceb414591539ee35159fca86fdfa101 priv 0x5ceb414591539ee35159fca86fdfa101 localizedkey
-snmp-server user admin network-admin auth md5 0x328945d53e05e8e7207f8c20b142f0b7 priv 0x328945d53e05e8e7207f8c20b142f0b7 localizedkey
-snmp-server user cisco network-admin 
-snmp-server user cisco network-operator
-snmp-server user admin auth md5 0x328945d53e05e8e7207f8c20b142f0b7 priv 0x328945d53e05e8e7207f8c20b142f0b7 localizedkey engineID 128:0:0:9:3:0:0:0:0:0:0
-rmon event 1 log trap public description FATAL(1) owner PMON@FATAL
-rmon event 2 log trap public description CRITICAL(2) owner PMON@CRITICAL
-rmon event 3 log trap public description ERROR(3) owner PMON@ERROR
-rmon event 4 log trap public description WARNING(4) owner PMON@WARNING
-rmon event 5 log trap public description INFORMATION(5) owner PMON@INFO
-snmp-server enable traps link
-snmp-server enable traps link cisco-xcvr-mon-status-chg
-
-ip route 10.1.0.0/16 Null0 254
-vlan 1
-
-ip prefix-list IGW_EBGP_Neighbors-In seq 10 permit 204.227.140.0/22 
-ip prefix-list IGW_EBGP_Neighbors-In seq 99 permit 198.51.100.0/24 
-ip as-path access-list 30 permit &quot;.*&quot;
-ip as-path access-list 70 deny &quot;.*&quot;
-route-map CSC_EB permit 10
-  description BCDCAS
-route-map CSC_EBGP_Neighbors-In permit 100
-  match as-path 30 
-route-map CSC_EBGP_Neighbors-Out permit 100
-  match as-path 30 
-  set metric 1 
-route-map EIGRPtoBGP permit 10
-  set metric 20 
-route-map IGW_EBGP_Neighbors-In permit 10
-  match ip address prefix-list IGW_EBGP_Neighbors-In 
-  set ip next-hop 10.11.4.20 
-route-map IGW_EBGP_Neighbors-Out permit 100
-  match as-path 70 
-route-map STATIC_ROUTES permit 10
-  description advertise static routes
-  match ip address STATIC_ROUTES 
-vrf context management
-hardware forwarding unicast trace
-
-
-interface mgmt0
-  shutdown force
-  description OOB Management
-  vrf member management
-  ip address 10.255.1.219/16
-
-interface Ethernet2/1
-  description to CSCWAGGA
-  no switchport
-  no ip redirects
-  ip address 10.3.12.10/30
-  no ipv6 redirects
-  ip router eigrp 1
-  no shutdown
-
-interface Ethernet2/2
-  description to BDCWAGGB
-  shutdown
-  no switchport
-  no ip redirects
-  no ipv6 redirects
-
-interface Ethernet2/3
-  description to BDCWAGGB
-  no switchport
-  ip address 10.11.2.69/30
-  ip router eigrp 1
-  no shutdown
-
-interface Ethernet2/4
-  description to BDCCoreA
-  no switchport
-  no ip redirects
-  ip address 10.11.2.6/30
-  no ipv6 redirects
-  ip router eigrp 1
-  ip router eigrp 65502
-  no shutdown
-
-interface Ethernet2/5
-  description to BDCCoreB
-  no switchport
-  no ip redirects
-  ip address 10.11.2.10/30
-  no ipv6 redirects
-  ip router eigrp 1
-  ip router eigrp 65502
-  no shutdown
-
-interface Ethernet2/6
-  description to BDCASRA
-  no switchport
-  no ip redirects
-  ip address 10.11.2.53/30
-  no ipv6 redirects
-  ip router eigrp 1
-  ip router eigrp 65502
-  no shutdown
-
-interface Ethernet2/7
-  description to BDCASRB
-  no switchport
-  no ip redirects
-  ip address 10.11.2.61/30
-  no ipv6 redirects
-  ip router eigrp 1
-  ip router eigrp 65502
-  no shutdown
-
-interface Ethernet2/8
-  shutdown
-  no switchport
-  mac-address 0000.0000.002a
-
-interface Ethernet2/9
-  shutdown
-  no switchport
-  mac-address 0000.0000.002a
-
-interface Ethernet2/10
-  shutdown
-  no switchport
-  mac-address 0000.0000.002a
-
-interface Ethernet2/11
-  shutdown
-  no switchport
-  mac-address 0000.0000.002a
-
-interface Ethernet2/12
-  shutdown
-  no switchport
-  mac-address 0000.0000.002a
-
-interface Ethernet2/13
-  shutdown
-  no switchport
-  mac-address 0000.0000.002a
-
-interface Ethernet2/14
-  shutdown
-  no switchport
-  mac-address 0000.0000.002a
-
-interface Ethernet2/15
-  shutdown
-  no switchport
-  mac-address 0000.0000.002a
-
-interface Ethernet2/16
-  shutdown
-  no switchport
-  mac-address 0000.0000.002a
-
-interface Ethernet2/17
-  shutdown
-  no switchport
-  mac-address 0000.0000.002a
-
-interface Ethernet2/18
-  shutdown
-  no switchport
-  mac-address 0000.0000.002a
-
-interface Ethernet2/19
-  shutdown
-  no switchport
-  mac-address 0000.0000.002a
-
-interface Ethernet2/20
-  shutdown
-  no switchport
-  mac-address 0000.0000.002a
-
-interface Ethernet2/21
-  shutdown
-  no switchport
-  mac-address 0000.0000.002a
-
-interface Ethernet2/22
-  shutdown
-  no switchport
-  mac-address 0000.0000.002a
-
-interface Ethernet2/23
-  shutdown
-  no switchport
-  mac-address 0000.0000.002a
-
-interface Ethernet2/24
-  shutdown
-  no switchport
-  mac-address 0000.0000.002a
-
-interface Ethernet2/25
-  shutdown
-  no switchport
-  mac-address 0000.0000.002a
-
-interface Ethernet2/26
-  shutdown
-  no switchport
-  mac-address 0000.0000.002a
-
-interface Ethernet2/27
-  shutdown
-  no switchport
-  mac-address 0000.0000.002a
-
-interface Ethernet2/28
-  shutdown
-  no switchport
-  mac-address 0000.0000.002a
-
-interface Ethernet2/29
-  shutdown
-  no switchport
-  mac-address 0000.0000.002a
-
-interface Ethernet2/30
-  shutdown
-  no switchport
-  mac-address 0000.0000.002a
-
-interface Ethernet2/31
-  shutdown
-  no switchport
-  mac-address 0000.0000.002a
-
-interface Ethernet2/32
-  shutdown
-  no switchport
-  mac-address 0000.0000.002a
-
-interface Ethernet2/33
-  shutdown
-  no switchport
-  mac-address 0000.0000.002a
-
-interface Ethernet2/34
-  shutdown
-  no switchport
-  mac-address 0000.0000.002a
-
-interface Ethernet2/35
-  shutdown
-  no switchport
-  mac-address 0000.0000.002a
-
-interface Ethernet2/36
-  shutdown
-  no switchport
-  mac-address 0000.0000.002a
-
-interface Ethernet2/37
-  shutdown
-  no switchport
-  mac-address 0000.0000.002a
-
-interface Ethernet2/38
-  shutdown
-  no switchport
-  mac-address 0000.0000.002a
-
-interface Ethernet2/39
-  shutdown
-  no switchport
-  mac-address 0000.0000.002a
-
-interface Ethernet2/40
-  shutdown
-  no switchport
-  mac-address 0000.0000.002a
-
-interface Ethernet2/41
-  shutdown
-  no switchport
-  mac-address 0000.0000.002a
-
-interface Ethernet2/42
-  shutdown
-  no switchport
-  mac-address 0000.0000.002a
-
-interface Ethernet2/43
-  shutdown
-  no switchport
-  mac-address 0000.0000.002a
-
-interface Ethernet2/44
-  shutdown
-  no switchport
-  mac-address 0000.0000.002a
-
-interface Ethernet2/45
-  shutdown
-  no switchport
-  mac-address 0000.0000.002a
-
-interface Ethernet2/46
-  shutdown
-  no switchport
-  mac-address 0000.0000.002a
-
-interface Ethernet2/47
-  shutdown
-  no switchport
-  mac-address 0000.0000.002a
-
-interface Ethernet2/48
-  shutdown
-  no switchport
-  mac-address 0000.0000.002a
-
-interface Ethernet3/1
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-  medium p2p
-
-interface Ethernet3/2
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-  medium p2p
-
-interface Ethernet3/3
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-  medium p2p
-
-interface Ethernet3/4
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-  medium p2p
-
-interface Ethernet3/5
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-  medium p2p
-
-interface Ethernet3/6
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-  medium p2p
-
-interface Ethernet3/7
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-  medium p2p
-
-interface Ethernet3/8
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-  medium p2p
-
-interface Ethernet3/9
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-  medium p2p
-
-interface Ethernet3/10
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-  medium p2p
-
-interface Ethernet3/11
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-  medium p2p
-
-interface Ethernet3/12
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-  medium p2p
-
-interface Ethernet3/13
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-  medium p2p
-
-interface Ethernet3/14
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-  medium p2p
-
-interface Ethernet3/15
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-  medium p2p
-
-interface Ethernet3/16
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-  medium p2p
-
-interface Ethernet3/17
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-  medium p2p
-
-interface Ethernet3/18
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-  medium p2p
-
-interface Ethernet3/19
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-  medium p2p
-
-interface Ethernet3/20
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-  medium p2p
-
-interface Ethernet3/21
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-  medium p2p
-
-interface Ethernet3/22
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-  medium p2p
-
-interface Ethernet3/23
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-  medium p2p
-
-interface Ethernet3/24
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-  medium p2p
-
-interface Ethernet3/25
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-  medium p2p
-
-interface Ethernet3/26
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-  medium p2p
-
-interface Ethernet3/27
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-  medium p2p
-
-interface Ethernet3/28
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-  medium p2p
-
-interface Ethernet3/29
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-  medium p2p
-
-interface Ethernet3/30
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-  medium p2p
-
-interface Ethernet3/31
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-  medium p2p
-
-interface Ethernet3/32
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-  medium p2p
-
-interface Ethernet3/33
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-  medium p2p
-
-interface Ethernet3/34
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-  medium p2p
-
-interface Ethernet3/35
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-  medium p2p
-
-interface Ethernet3/36
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-  medium p2p
-
-interface Ethernet3/37
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-  medium p2p
-
-interface Ethernet3/38
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-  medium p2p
-
-interface Ethernet3/39
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-  medium p2p
-
-interface Ethernet3/40
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-  medium p2p
-
-interface Ethernet3/41
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-  medium p2p
-
-interface Ethernet3/42
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-  medium p2p
-
-interface Ethernet3/43
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-  medium p2p
-
-interface Ethernet3/44
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-  medium p2p
-
-interface Ethernet3/45
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-  medium p2p
-
-interface Ethernet3/46
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-  medium p2p
-
-interface Ethernet3/47
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-  medium p2p
-
-interface Ethernet3/48
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-  medium p2p
-
-interface Ethernet4/1
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-  medium p2p
-
-interface Ethernet4/2
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-  medium p2p
-
-interface Ethernet4/3
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-  medium p2p
-
-interface Ethernet4/4
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-  medium p2p
-
-interface Ethernet4/5
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-  medium p2p
-
-interface Ethernet4/6
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-  medium p2p
-
-interface Ethernet4/7
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-  medium p2p
-
-interface Ethernet4/8
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-  medium p2p
-
-interface Ethernet4/9
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-  medium p2p
-
-interface Ethernet4/10
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-  medium p2p
-
-interface Ethernet4/11
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-  medium p2p
-
-interface Ethernet4/12
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-  medium p2p
-
-interface Ethernet4/13
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-  medium p2p
-
-interface Ethernet4/14
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-  medium p2p
-
-interface Ethernet4/15
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-  medium p2p
-
-interface Ethernet4/16
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-  medium p2p
-
-interface Ethernet4/17
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-  medium p2p
-
-interface Ethernet4/18
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-  medium p2p
-
-interface Ethernet4/19
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-  medium p2p
-
-interface Ethernet4/20
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-  medium p2p
-
-interface Ethernet4/21
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-  medium p2p
-
-interface Ethernet4/22
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-  medium p2p
-
-interface Ethernet4/23
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-  medium p2p
-
-interface Ethernet4/24
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-  medium p2p
-
-interface Ethernet4/25
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-  medium p2p
-
-interface Ethernet4/26
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-  medium p2p
-
-interface Ethernet4/27
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-  medium p2p
-
-interface Ethernet4/28
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-  medium p2p
-
-interface Ethernet4/29
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-  medium p2p
-
-interface Ethernet4/30
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-  medium p2p
-
-interface Ethernet4/31
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-  medium p2p
-
-interface Ethernet4/32
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-  medium p2p
-
-interface Ethernet4/33
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-  medium p2p
-
-interface Ethernet4/34
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-  medium p2p
-
-interface Ethernet4/35
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-  medium p2p
-
-interface Ethernet4/36
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-  medium p2p
-
-interface Ethernet4/37
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-  medium p2p
-
-interface Ethernet4/38
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-  medium p2p
-
-interface Ethernet4/39
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-  medium p2p
-
-interface Ethernet4/40
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-  medium p2p
-
-interface Ethernet4/41
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-  medium p2p
-
-interface Ethernet4/42
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-  medium p2p
-
-interface Ethernet4/43
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-  medium p2p
-
-interface Ethernet4/44
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-  medium p2p
-
-interface Ethernet4/45
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-  medium p2p
-
-interface Ethernet4/46
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-  medium p2p
-
-interface Ethernet4/47
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-  medium p2p
-
-interface Ethernet4/48
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-  medium p2p
-
-interface loopback0
-  description Loopback
-  ip address 10.11.0.3/32
-  ip router eigrp 1
-  ip router eigrp 65502
-line console
-line vty
-boot kickstart bootflash:/titanium-d1-kickstart.7.2.0.D1.1.bin sup-1
-boot system bootflash:/titanium-d1.7.2.0.D1.1.bin sup-1
-router eigrp 1
-  bfd
-  autonomous-system 1
-  router-id 10.11.0.3
-  address-family ipv4 unicast
-    default-information originate
-router bgp 65502
-  router-id 10.11.0.3
-  bestpath as-path multipath-relax
-  log-neighbor-changes
-  address-family ipv4 unicast
-    redistribute static route-map STATIC_ROUTES
-    redistribute eigrp 1 route-map EIGRPtoBGP
-    maximum-paths 8
-    maximum-paths ibgp 8
-  neighbor 10.3.12.9 remote-as 1
-    bfd
-    description CHSCSCWAGGA
-    address-family ipv4 unicast
-      route-map CSC_EBGP_Neighbors-In in
-      route-map CSC_EBGP_Neighbors-Out out
-  neighbor 10.11.0.1 remote-as 65502
-    description BDCCoreA
-    update-source loopback0
-    address-family ipv4 unicast
-      route-reflector-client
-      default-originate
-      next-hop-self
-  neighbor 10.11.0.2 remote-as 65502
-    description BDCCoreB
-    update-source loopback0
-    address-family ipv4 unicast
-      route-reflector-client
-      default-originate
-      next-hop-self
-  neighbor 10.11.0.4 remote-as 65502
-    description BCDCWAAG7kB
-    update-source loopback0
-    address-family ipv4 unicast
-      next-hop-self
-  neighbor 10.11.0.5 remote-as 65502
-    description BCDCASR1006A
-    update-source loopback0
-    address-family ipv4 unicast
-      route-reflector-client
-      next-hop-self
-  neighbor 10.11.0.6 remote-as 65502
-    description BCDCASR1006B
-    update-source loopback0
-    address-family ipv4 unicast
-      route-reflector-client
-      next-hop-self</entry>
+            <entry type="String" key="config">!Command: show running-config&#xD;
+!Time: Wed Sep 16 18:25:19 2015&#xD;
+&#xD;
+version 7.2(0)D1(1)&#xD;
+power redundancy-mode redundant&#xD;
+license grace-period&#xD;
+&#xD;
+hostname BDCWAGGA&#xD;
+vdc BDCWAGGA id 1&#xD;
+  limit-resource module-type m1 m1xl m2xl f2e &#xD;
+  allocate interface Ethernet2/1-48&#xD;
+  allocate interface Ethernet3/1-48&#xD;
+  allocate interface Ethernet4/1-48&#xD;
+  limit-resource vlan minimum 16 maximum 4094&#xD;
+  limit-resource vrf minimum 2 maximum 4096&#xD;
+  limit-resource port-channel minimum 0 maximum 768&#xD;
+  limit-resource u4route-mem minimum 96 maximum 96&#xD;
+  limit-resource u6route-mem minimum 24 maximum 24&#xD;
+  limit-resource m4route-mem minimum 58 maximum 58&#xD;
+  limit-resource m6route-mem minimum 8 maximum 8&#xD;
+&#xD;
+feature telnet&#xD;
+feature bgp&#xD;
+feature eigrp&#xD;
+feature bfd&#xD;
+&#xD;
+username admin password 5 $1$KuOSBsvW$Cy0TSD..gEBGBPjzpDgf51  role network-admin&#xD;
+username adminbackup password 5 !  role network-operator&#xD;
+username adminbackup passphrase  lifetime 99999 warntime 14 gracetime 3&#xD;
+username cisco password 5 $1$Nk7ZkwH0$fyiRmMMfIheqE3BqvcL0C1  role network-operator&#xD;
+username cisco role network-admin&#xD;
+username cisco passphrase  lifetime 99999 warntime 14 gracetime 3&#xD;
+username lab password 5 $1$buoy/oqy$.EXQz8rCn72ii8qtdldj00  role network-admin&#xD;
+username lab passphrase  lifetime 99999 warntime 14 gracetime 3&#xD;
+no password strength-check&#xD;
+ip domain-lookup&#xD;
+vlan dot1Q tag native&#xD;
+system default switchport&#xD;
+system jumbomtu 0&#xD;
+no logging event trunk-status enable&#xD;
+copp profile strict&#xD;
+snmp-server user lab network-admin auth md5 0x5ceb414591539ee35159fca86fdfa101 priv 0x5ceb414591539ee35159fca86fdfa101 localizedkey&#xD;
+snmp-server user admin network-admin auth md5 0x328945d53e05e8e7207f8c20b142f0b7 priv 0x328945d53e05e8e7207f8c20b142f0b7 localizedkey&#xD;
+snmp-server user cisco network-admin &#xD;
+snmp-server user cisco network-operator&#xD;
+snmp-server user admin auth md5 0x328945d53e05e8e7207f8c20b142f0b7 priv 0x328945d53e05e8e7207f8c20b142f0b7 localizedkey engineID 128:0:0:9:3:0:0:0:0:0:0&#xD;
+rmon event 1 log trap public description FATAL(1) owner PMON@FATAL&#xD;
+rmon event 2 log trap public description CRITICAL(2) owner PMON@CRITICAL&#xD;
+rmon event 3 log trap public description ERROR(3) owner PMON@ERROR&#xD;
+rmon event 4 log trap public description WARNING(4) owner PMON@WARNING&#xD;
+rmon event 5 log trap public description INFORMATION(5) owner PMON@INFO&#xD;
+snmp-server enable traps link&#xD;
+snmp-server enable traps link cisco-xcvr-mon-status-chg&#xD;
+&#xD;
+ip route 10.1.0.0/16 Null0 254&#xD;
+vlan 1&#xD;
+&#xD;
+ip prefix-list IGW_EBGP_Neighbors-In seq 10 permit 204.227.140.0/22 &#xD;
+ip prefix-list IGW_EBGP_Neighbors-In seq 99 permit 198.51.100.0/24 &#xD;
+ip as-path access-list 30 permit &quot;.*&quot;&#xD;
+ip as-path access-list 70 deny &quot;.*&quot;&#xD;
+route-map CSC_EB permit 10&#xD;
+  description BCDCAS&#xD;
+route-map CSC_EBGP_Neighbors-In permit 100&#xD;
+  match as-path 30 &#xD;
+route-map CSC_EBGP_Neighbors-Out permit 100&#xD;
+  match as-path 30 &#xD;
+  set metric 1 &#xD;
+route-map EIGRPtoBGP permit 10&#xD;
+  set metric 20 &#xD;
+route-map IGW_EBGP_Neighbors-In permit 10&#xD;
+  match ip address prefix-list IGW_EBGP_Neighbors-In &#xD;
+  set ip next-hop 10.11.4.20 &#xD;
+route-map IGW_EBGP_Neighbors-Out permit 100&#xD;
+  match as-path 70 &#xD;
+route-map STATIC_ROUTES permit 10&#xD;
+  description advertise static routes&#xD;
+  match ip address STATIC_ROUTES &#xD;
+vrf context management&#xD;
+hardware forwarding unicast trace&#xD;
+&#xD;
+&#xD;
+interface mgmt0&#xD;
+  shutdown force&#xD;
+  description OOB Management&#xD;
+  vrf member management&#xD;
+  ip address 10.255.0.46/16&#xD;
+&#xD;
+interface Ethernet2/1&#xD;
+  description to CSCWAGGA&#xD;
+  no switchport&#xD;
+  no ip redirects&#xD;
+  no mac-address&#xD;
+  ip address 10.3.12.10/30&#xD;
+  no ipv6 redirects&#xD;
+  ip router eigrp 1&#xD;
+  no shutdown&#xD;
+&#xD;
+interface Ethernet2/2&#xD;
+  description to BDCWAGGB&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  no mac-address&#xD;
+  no ip redirects&#xD;
+  no ipv6 redirects&#xD;
+&#xD;
+interface Ethernet2/3&#xD;
+  description to BDCWAGGB&#xD;
+  no switchport&#xD;
+  no mac-address&#xD;
+  ip address 10.11.2.69/30&#xD;
+  ip router eigrp 1&#xD;
+  no shutdown&#xD;
+&#xD;
+interface Ethernet2/4&#xD;
+  description to BDCCoreA&#xD;
+  no switchport&#xD;
+  no ip redirects&#xD;
+  no mac-address&#xD;
+  ip address 10.11.2.6/30&#xD;
+  no ipv6 redirects&#xD;
+  ip router eigrp 1&#xD;
+  no shutdown&#xD;
+&#xD;
+interface Ethernet2/5&#xD;
+  description to BDCCoreB&#xD;
+  no switchport&#xD;
+  no ip redirects&#xD;
+  no mac-address&#xD;
+  ip address 10.11.2.10/30&#xD;
+  no ipv6 redirects&#xD;
+  ip router eigrp 1&#xD;
+  no shutdown&#xD;
+&#xD;
+interface Ethernet2/6&#xD;
+  description to BDCASRA&#xD;
+  no switchport&#xD;
+  no mac-address&#xD;
+  no ip redirects&#xD;
+  ip address 10.11.2.53/30&#xD;
+  no ipv6 redirects&#xD;
+  ip router eigrp 1&#xD;
+  no shutdown&#xD;
+&#xD;
+interface Ethernet2/7&#xD;
+  description to BDCASRB&#xD;
+  no switchport&#xD;
+  no mac-address&#xD;
+  no ip redirects&#xD;
+  ip address 10.11.2.61/30&#xD;
+  no ipv6 redirects&#xD;
+  ip router eigrp 1&#xD;
+  no shutdown&#xD;
+&#xD;
+interface Ethernet2/8&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002a&#xD;
+&#xD;
+interface Ethernet2/9&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002a&#xD;
+&#xD;
+interface Ethernet2/10&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002a&#xD;
+&#xD;
+interface Ethernet2/11&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002a&#xD;
+&#xD;
+interface Ethernet2/12&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002a&#xD;
+&#xD;
+interface Ethernet2/13&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002a&#xD;
+&#xD;
+interface Ethernet2/14&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002a&#xD;
+&#xD;
+interface Ethernet2/15&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002a&#xD;
+&#xD;
+interface Ethernet2/16&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002a&#xD;
+&#xD;
+interface Ethernet2/17&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002a&#xD;
+&#xD;
+interface Ethernet2/18&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002a&#xD;
+&#xD;
+interface Ethernet2/19&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002a&#xD;
+&#xD;
+interface Ethernet2/20&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002a&#xD;
+&#xD;
+interface Ethernet2/21&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002a&#xD;
+&#xD;
+interface Ethernet2/22&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002a&#xD;
+&#xD;
+interface Ethernet2/23&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002a&#xD;
+&#xD;
+interface Ethernet2/24&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002a&#xD;
+&#xD;
+interface Ethernet2/25&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002a&#xD;
+&#xD;
+interface Ethernet2/26&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002a&#xD;
+&#xD;
+interface Ethernet2/27&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002a&#xD;
+&#xD;
+interface Ethernet2/28&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002a&#xD;
+&#xD;
+interface Ethernet2/29&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002a&#xD;
+&#xD;
+interface Ethernet2/30&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002a&#xD;
+&#xD;
+interface Ethernet2/31&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002a&#xD;
+&#xD;
+interface Ethernet2/32&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002a&#xD;
+&#xD;
+interface Ethernet2/33&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002a&#xD;
+&#xD;
+interface Ethernet2/34&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002a&#xD;
+&#xD;
+interface Ethernet2/35&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002a&#xD;
+&#xD;
+interface Ethernet2/36&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002a&#xD;
+&#xD;
+interface Ethernet2/37&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002a&#xD;
+&#xD;
+interface Ethernet2/38&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002a&#xD;
+&#xD;
+interface Ethernet2/39&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002a&#xD;
+&#xD;
+interface Ethernet2/40&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002a&#xD;
+&#xD;
+interface Ethernet2/41&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002a&#xD;
+&#xD;
+interface Ethernet2/42&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002a&#xD;
+&#xD;
+interface Ethernet2/43&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002a&#xD;
+&#xD;
+interface Ethernet2/44&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002a&#xD;
+&#xD;
+interface Ethernet2/45&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002a&#xD;
+&#xD;
+interface Ethernet2/46&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002a&#xD;
+&#xD;
+interface Ethernet2/47&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002a&#xD;
+&#xD;
+interface Ethernet2/48&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002a&#xD;
+&#xD;
+interface Ethernet3/1&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002f&#xD;
+  medium p2p&#xD;
+&#xD;
+interface Ethernet3/2&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002f&#xD;
+  medium p2p&#xD;
+&#xD;
+interface Ethernet3/3&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002f&#xD;
+  medium p2p&#xD;
+&#xD;
+interface Ethernet3/4&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002f&#xD;
+  medium p2p&#xD;
+&#xD;
+interface Ethernet3/5&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002f&#xD;
+  medium p2p&#xD;
+&#xD;
+interface Ethernet3/6&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002f&#xD;
+  medium p2p&#xD;
+&#xD;
+interface Ethernet3/7&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002f&#xD;
+  medium p2p&#xD;
+&#xD;
+interface Ethernet3/8&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002f&#xD;
+  medium p2p&#xD;
+&#xD;
+interface Ethernet3/9&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002f&#xD;
+  medium p2p&#xD;
+&#xD;
+interface Ethernet3/10&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002f&#xD;
+  medium p2p&#xD;
+&#xD;
+interface Ethernet3/11&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002f&#xD;
+  medium p2p&#xD;
+&#xD;
+interface Ethernet3/12&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002f&#xD;
+  medium p2p&#xD;
+&#xD;
+interface Ethernet3/13&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002f&#xD;
+  medium p2p&#xD;
+&#xD;
+interface Ethernet3/14&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002f&#xD;
+  medium p2p&#xD;
+&#xD;
+interface Ethernet3/15&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002f&#xD;
+  medium p2p&#xD;
+&#xD;
+interface Ethernet3/16&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002f&#xD;
+  medium p2p&#xD;
+&#xD;
+interface Ethernet3/17&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002f&#xD;
+  medium p2p&#xD;
+&#xD;
+interface Ethernet3/18&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002f&#xD;
+  medium p2p&#xD;
+&#xD;
+interface Ethernet3/19&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002f&#xD;
+  medium p2p&#xD;
+&#xD;
+interface Ethernet3/20&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002f&#xD;
+  medium p2p&#xD;
+&#xD;
+interface Ethernet3/21&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002f&#xD;
+  medium p2p&#xD;
+&#xD;
+interface Ethernet3/22&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002f&#xD;
+  medium p2p&#xD;
+&#xD;
+interface Ethernet3/23&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002f&#xD;
+  medium p2p&#xD;
+&#xD;
+interface Ethernet3/24&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002f&#xD;
+  medium p2p&#xD;
+&#xD;
+interface Ethernet3/25&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002f&#xD;
+  medium p2p&#xD;
+&#xD;
+interface Ethernet3/26&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002f&#xD;
+  medium p2p&#xD;
+&#xD;
+interface Ethernet3/27&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002f&#xD;
+  medium p2p&#xD;
+&#xD;
+interface Ethernet3/28&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002f&#xD;
+  medium p2p&#xD;
+&#xD;
+interface Ethernet3/29&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002f&#xD;
+  medium p2p&#xD;
+&#xD;
+interface Ethernet3/30&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002f&#xD;
+  medium p2p&#xD;
+&#xD;
+interface Ethernet3/31&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002f&#xD;
+  medium p2p&#xD;
+&#xD;
+interface Ethernet3/32&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002f&#xD;
+  medium p2p&#xD;
+&#xD;
+interface Ethernet3/33&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002f&#xD;
+  medium p2p&#xD;
+&#xD;
+interface Ethernet3/34&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002f&#xD;
+  medium p2p&#xD;
+&#xD;
+interface Ethernet3/35&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002f&#xD;
+  medium p2p&#xD;
+&#xD;
+interface Ethernet3/36&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002f&#xD;
+  medium p2p&#xD;
+&#xD;
+interface Ethernet3/37&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002f&#xD;
+  medium p2p&#xD;
+&#xD;
+interface Ethernet3/38&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002f&#xD;
+  medium p2p&#xD;
+&#xD;
+interface Ethernet3/39&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002f&#xD;
+  medium p2p&#xD;
+&#xD;
+interface Ethernet3/40&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002f&#xD;
+  medium p2p&#xD;
+&#xD;
+interface Ethernet3/41&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002f&#xD;
+  medium p2p&#xD;
+&#xD;
+interface Ethernet3/42&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002f&#xD;
+  medium p2p&#xD;
+&#xD;
+interface Ethernet3/43&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002f&#xD;
+  medium p2p&#xD;
+&#xD;
+interface Ethernet3/44&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002f&#xD;
+  medium p2p&#xD;
+&#xD;
+interface Ethernet3/45&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002f&#xD;
+  medium p2p&#xD;
+&#xD;
+interface Ethernet3/46&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002f&#xD;
+  medium p2p&#xD;
+&#xD;
+interface Ethernet3/47&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002f&#xD;
+  medium p2p&#xD;
+&#xD;
+interface Ethernet3/48&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002f&#xD;
+  medium p2p&#xD;
+&#xD;
+interface Ethernet4/1&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002f&#xD;
+  medium p2p&#xD;
+&#xD;
+interface Ethernet4/2&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002f&#xD;
+  medium p2p&#xD;
+&#xD;
+interface Ethernet4/3&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002f&#xD;
+  medium p2p&#xD;
+&#xD;
+interface Ethernet4/4&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002f&#xD;
+  medium p2p&#xD;
+&#xD;
+interface Ethernet4/5&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002f&#xD;
+  medium p2p&#xD;
+&#xD;
+interface Ethernet4/6&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002f&#xD;
+  medium p2p&#xD;
+&#xD;
+interface Ethernet4/7&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002f&#xD;
+  medium p2p&#xD;
+&#xD;
+interface Ethernet4/8&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002f&#xD;
+  medium p2p&#xD;
+&#xD;
+interface Ethernet4/9&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002f&#xD;
+  medium p2p&#xD;
+&#xD;
+interface Ethernet4/10&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002f&#xD;
+  medium p2p&#xD;
+&#xD;
+interface Ethernet4/11&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002f&#xD;
+  medium p2p&#xD;
+&#xD;
+interface Ethernet4/12&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002f&#xD;
+  medium p2p&#xD;
+&#xD;
+interface Ethernet4/13&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002f&#xD;
+  medium p2p&#xD;
+&#xD;
+interface Ethernet4/14&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002f&#xD;
+  medium p2p&#xD;
+&#xD;
+interface Ethernet4/15&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002f&#xD;
+  medium p2p&#xD;
+&#xD;
+interface Ethernet4/16&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002f&#xD;
+  medium p2p&#xD;
+&#xD;
+interface Ethernet4/17&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002f&#xD;
+  medium p2p&#xD;
+&#xD;
+interface Ethernet4/18&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002f&#xD;
+  medium p2p&#xD;
+&#xD;
+interface Ethernet4/19&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002f&#xD;
+  medium p2p&#xD;
+&#xD;
+interface Ethernet4/20&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002f&#xD;
+  medium p2p&#xD;
+&#xD;
+interface Ethernet4/21&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002f&#xD;
+  medium p2p&#xD;
+&#xD;
+interface Ethernet4/22&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002f&#xD;
+  medium p2p&#xD;
+&#xD;
+interface Ethernet4/23&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002f&#xD;
+  medium p2p&#xD;
+&#xD;
+interface Ethernet4/24&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002f&#xD;
+  medium p2p&#xD;
+&#xD;
+interface Ethernet4/25&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002f&#xD;
+  medium p2p&#xD;
+&#xD;
+interface Ethernet4/26&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002f&#xD;
+  medium p2p&#xD;
+&#xD;
+interface Ethernet4/27&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002f&#xD;
+  medium p2p&#xD;
+&#xD;
+interface Ethernet4/28&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002f&#xD;
+  medium p2p&#xD;
+&#xD;
+interface Ethernet4/29&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002f&#xD;
+  medium p2p&#xD;
+&#xD;
+interface Ethernet4/30&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002f&#xD;
+  medium p2p&#xD;
+&#xD;
+interface Ethernet4/31&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002f&#xD;
+  medium p2p&#xD;
+&#xD;
+interface Ethernet4/32&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002f&#xD;
+  medium p2p&#xD;
+&#xD;
+interface Ethernet4/33&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002f&#xD;
+  medium p2p&#xD;
+&#xD;
+interface Ethernet4/34&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002f&#xD;
+  medium p2p&#xD;
+&#xD;
+interface Ethernet4/35&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002f&#xD;
+  medium p2p&#xD;
+&#xD;
+interface Ethernet4/36&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002f&#xD;
+  medium p2p&#xD;
+&#xD;
+interface Ethernet4/37&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002f&#xD;
+  medium p2p&#xD;
+&#xD;
+interface Ethernet4/38&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002f&#xD;
+  medium p2p&#xD;
+&#xD;
+interface Ethernet4/39&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002f&#xD;
+  medium p2p&#xD;
+&#xD;
+interface Ethernet4/40&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002f&#xD;
+  medium p2p&#xD;
+&#xD;
+interface Ethernet4/41&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002f&#xD;
+  medium p2p&#xD;
+&#xD;
+interface Ethernet4/42&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002f&#xD;
+  medium p2p&#xD;
+&#xD;
+interface Ethernet4/43&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002f&#xD;
+  medium p2p&#xD;
+&#xD;
+interface Ethernet4/44&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002f&#xD;
+  medium p2p&#xD;
+&#xD;
+interface Ethernet4/45&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002f&#xD;
+  medium p2p&#xD;
+&#xD;
+interface Ethernet4/46&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002f&#xD;
+  medium p2p&#xD;
+&#xD;
+interface Ethernet4/47&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002f&#xD;
+  medium p2p&#xD;
+&#xD;
+interface Ethernet4/48&#xD;
+  shutdown&#xD;
+  no switchport&#xD;
+  mac-address 0000.0000.002f&#xD;
+  medium p2p&#xD;
+&#xD;
+interface loopback0&#xD;
+  description Loopback&#xD;
+  ip address 10.11.0.3/32&#xD;
+  ip router eigrp 1&#xD;
+line console&#xD;
+line vty&#xD;
+boot kickstart bootflash:/titanium-d1-kickstart.7.2.0.D1.1.bin sup-1&#xD;
+boot system bootflash:/titanium-d1.7.2.0.D1.1.bin sup-1&#xD;
+router eigrp 1&#xD;
+  bfd&#xD;
+  autonomous-system 1&#xD;
+  router-id 10.11.0.3&#xD;
+  address-family ipv4 unicast&#xD;
+    default-information originate&#xD;
+router bgp 65502&#xD;
+  router-id 10.11.0.3&#xD;
+  bestpath as-path multipath-relax&#xD;
+  log-neighbor-changes&#xD;
+  address-family ipv4 unicast&#xD;
+    redistribute static route-map STATIC_ROUTES&#xD;
+    redistribute eigrp 1 route-map EIGRPtoBGP&#xD;
+    maximum-paths 8&#xD;
+    maximum-paths ibgp 8&#xD;
+  neighbor 10.3.12.9 remote-as 1&#xD;
+    bfd&#xD;
+    description CHSCSCWAGGA&#xD;
+    address-family ipv4 unicast&#xD;
+      route-map CSC_EBGP_Neighbors-In in&#xD;
+      route-map CSC_EBGP_Neighbors-Out out&#xD;
+  neighbor 10.11.0.1 remote-as 65502&#xD;
+    description BDCCoreA&#xD;
+    update-source loopback0&#xD;
+    address-family ipv4 unicast&#xD;
+      route-reflector-client&#xD;
+      default-originate&#xD;
+      next-hop-self&#xD;
+  neighbor 10.11.0.2 remote-as 65502&#xD;
+    description BDCCoreB&#xD;
+    update-source loopback0&#xD;
+    address-family ipv4 unicast&#xD;
+      route-reflector-client&#xD;
+      default-originate&#xD;
+      next-hop-self&#xD;
+  neighbor 10.11.0.4 remote-as 65502&#xD;
+    description BCDCWAAG7kB&#xD;
+    update-source loopback0&#xD;
+    address-family ipv4 unicast&#xD;
+      next-hop-self&#xD;
+  neighbor 10.11.0.5 remote-as 65502&#xD;
+    description BCDCASR1006A&#xD;
+    update-source loopback0&#xD;
+    address-family ipv4 unicast&#xD;
+      route-reflector-client&#xD;
+      next-hop-self&#xD;
+  neighbor 10.11.0.6 remote-as 65502&#xD;
+    description BCDCASR1006B&#xD;
+    update-source loopback0&#xD;
+    address-family ipv4 unicast&#xD;
+      route-reflector-client</entry>
         </extensions>
         <interface name="Ethernet2/1" id="0"/>
         <interface name="Ethernet2/2" id="1"/>
@@ -4360,7 +4365,7 @@ router bgp 65502
             <entry type="string" key="AutoNetkit.mgmt_ip"></entry>
             <entry type="String" key="AutoNetkit.RR_cluster">CSC</entry>
             <entry type="String" key="config">!
-! Last configuration change at 13:42:25 UTC Wed Sep 16 2015
+! Last configuration change at 18:18:48 UTC Wed Sep 16 2015
 !
 version 15.5
 service timestamps debug datetime msec
@@ -4432,7 +4437,7 @@ interface Loopback1
 !
 interface GigabitEthernet0/0
  description OOB Management
- ip address 10.255.1.210 255.255.0.0
+ ip address 10.255.0.41 255.255.0.0
  shutdown
  duplex auto
  speed auto
@@ -4660,7 +4665,7 @@ end</entry>
             <entry type="string" key="AutoNetkit.mgmt_ip"></entry>
             <entry type="String" key="AutoNetkit.RR_cluster">CSC</entry>
             <entry type="String" key="config">!
-! Last configuration change at 13:40:38 UTC Wed Sep 16 2015
+! Last configuration change at 18:19:52 UTC Wed Sep 16 2015
 !
 version 15.5
 service timestamps debug datetime msec
@@ -4730,9 +4735,12 @@ interface Loopback0
 interface Loopback1
  ip address 10.5.0.195 255.255.255.255
 !
+interface Loopback2
+ ip address 2.2.2.2 255.255.255.255
+!
 interface GigabitEthernet0/0
  description OOB Management
- ip address 10.255.1.221 255.255.0.0
+ ip address 10.255.0.36 255.255.0.0
  shutdown
  duplex auto
  speed auto
@@ -4783,8 +4791,10 @@ interface GigabitEthernet0/6
 !
 !
 router eigrp 1
+ default-metric 1000000 10 255 1 1500
  network 10.3.1.0 0.0.0.255
  network 10.4.0.0 0.1.255.255
+ redistribute static route-map ZERO
  passive-interface default
  no passive-interface GigabitEthernet0/1
  no passive-interface GigabitEthernet0/2
@@ -4808,7 +4818,13 @@ ip forward-protocol nd
 !
 no ip http server
 no ip http secure-server
+ip route 0.0.0.0 0.0.0.0 Null0
 !
+!
+ip prefix-list ZERO seq 5 permit 0.0.0.0/0
+!
+route-map ZERO permit 10
+ match ip address prefix-list ZERO
 !
 !
 !
@@ -4870,7 +4886,7 @@ end</entry>
             <entry type="string" key="AutoNetkit.mgmt_ip"></entry>
             <entry type="String" key="AutoNetkit.RR_cluster">CSC</entry>
             <entry type="String" key="config">!
-! Last configuration change at 14:19:10 UTC Wed Sep 16 2015
+! Last configuration change at 18:25:17 UTC Wed Sep 16 2015
 !
 version 15.5
 service config
@@ -4931,6 +4947,12 @@ multilink bundle-name authenticated
 !
 !
 !
+crypto pki trustpoint TP-self-signed-1015439540
+ enrollment selfsigned
+ subject-name cn=IOS-Self-Signed-Certificate-1015439540
+ revocation-check none
+ rsakeypair TP-self-signed-1015439540
+!
 crypto pki trustpoint TP-self-signed-1139894
  enrollment selfsigned
  subject-name cn=IOS-Self-Signed-Certificate-1139894
@@ -4950,8 +4972,9 @@ crypto pki trustpoint TP-self-signed-3208842829
  rsakeypair TP-self-signed-3208842829
 !
 !
-crypto pki certificate chain TP-self-signed-1139894
+crypto pki certificate chain TP-self-signed-1015439540
  certificate self-signed 01 nvram:IOS-Self-Sig#1.cer
+crypto pki certificate chain TP-self-signed-1139894
 crypto pki certificate chain TP-self-signed-3926039060
 crypto pki certificate chain TP-self-signed-3208842829
 !
@@ -4961,7 +4984,7 @@ crypto pki certificate chain TP-self-signed-3208842829
 !
 !
 !
-license udi pid CSR1000V sn 9OYGO8OR1ZO
+license udi pid CSR1000V sn 95JEGZMX1XX
 license accept end user agreement
 license boot level ax
 !
@@ -5007,7 +5030,7 @@ interface Loopback1
 !
 interface GigabitEthernet1
  description OOB Management
- ip address 10.255.1.209 255.255.0.0
+ ip address 10.255.0.47 255.255.0.0
  shutdown
  negotiation auto
  cdp enable
@@ -5143,7 +5166,7 @@ end</entry>
             <entry type="string" key="AutoNetkit.mgmt_ip"></entry>
             <entry type="String" key="AutoNetkit.RR_cluster">CSC</entry>
             <entry type="String" key="config">!
-! Last configuration change at 13:38:34 UTC Wed Sep 16 2015
+! Last configuration change at 18:18:52 UTC Wed Sep 16 2015
 !
 version 15.5
 service timestamps debug datetime msec
@@ -5215,7 +5238,7 @@ interface Loopback1
 !
 interface GigabitEthernet0/0
  description OOB Management
- ip address 10.255.1.211 255.255.0.0
+ ip address 10.255.0.38 255.255.0.0
  shutdown
  duplex auto
  speed auto
@@ -5464,7 +5487,7 @@ end</entry>
             <entry type="string" key="AutoNetkit.mgmt_ip"></entry>
             <entry type="String" key="AutoNetkit.RR_cluster">CSC</entry>
             <entry type="String" key="config">!
-! Last configuration change at 14:18:22 UTC Wed Sep 16 2015
+! Last configuration change at 18:20:56 UTC Wed Sep 16 2015
 !
 version 15.5
 service timestamps debug datetime msec
@@ -5534,9 +5557,12 @@ interface Loopback0
 interface Loopback1
  ip address 10.5.0.194 255.255.255.255
 !
+interface Loopback2
+ ip address 1.1.1.1 255.255.255.255
+!
 interface GigabitEthernet0/0
  description OOB Management
- ip address 10.255.1.216 255.255.0.0
+ ip address 10.255.0.37 255.255.0.0
  shutdown
  duplex auto
  speed auto
@@ -5587,8 +5613,10 @@ interface GigabitEthernet0/6
 !
 !
 router eigrp 1
+ default-metric 1000000 10 255 1 1500
  network 10.3.1.0 0.0.0.255
  network 10.4.0.0 0.1.255.255
+ redistribute static route-map ZERO
  passive-interface default
  no passive-interface GigabitEthernet0/1
  no passive-interface GigabitEthernet0/2
@@ -5612,7 +5640,13 @@ ip forward-protocol nd
 !
 no ip http server
 no ip http secure-server
+ip route 0.0.0.0 0.0.0.0 Null0
 !
+!
+ip prefix-list ZERO seq 5 permit 0.0.0.0/0
+!
+route-map ZERO permit 10
+ match ip address prefix-list ZERO
 !
 !
 !
@@ -5674,7 +5708,7 @@ end</entry>
             <entry type="string" key="AutoNetkit.mgmt_ip"></entry>
             <entry type="String" key="AutoNetkit.RR_cluster">CSC</entry>
             <entry type="String" key="config">!
-! Last configuration change at 14:19:19 UTC Wed Sep 16 2015
+! Last configuration change at 18:25:27 UTC Wed Sep 16 2015
 !
 version 15.5
 service config
@@ -5735,6 +5769,12 @@ multilink bundle-name authenticated
 !
 !
 !
+crypto pki trustpoint TP-self-signed-1734109315
+ enrollment selfsigned
+ subject-name cn=IOS-Self-Signed-Certificate-1734109315
+ revocation-check none
+ rsakeypair TP-self-signed-1734109315
+!
 crypto pki trustpoint TP-self-signed-1389064081
  enrollment selfsigned
  subject-name cn=IOS-Self-Signed-Certificate-1389064081
@@ -5760,8 +5800,9 @@ crypto pki trustpoint TP-self-signed-655665323
  rsakeypair TP-self-signed-655665323
 !
 !
-crypto pki certificate chain TP-self-signed-1389064081
+crypto pki certificate chain TP-self-signed-1734109315
  certificate self-signed 01 nvram:IOS-Self-Sig#1.cer
+crypto pki certificate chain TP-self-signed-1389064081
 crypto pki certificate chain TP-self-signed-1962642655
 crypto pki certificate chain TP-self-signed-3701647450
 crypto pki certificate chain TP-self-signed-655665323
@@ -5772,7 +5813,7 @@ crypto pki certificate chain TP-self-signed-655665323
 !
 !
 !
-license udi pid CSR1000V sn 9A5VX7BDTA0
+license udi pid CSR1000V sn 9P96B8BAK93
 license accept end user agreement
 license boot level ax
 !
@@ -5818,7 +5859,7 @@ interface Loopback1
 !
 interface GigabitEthernet1
  description OOB Management
- ip address 10.255.1.212 255.255.0.0
+ ip address 10.255.0.48 255.255.0.0
  shutdown
  negotiation auto
  cdp enable
@@ -5956,7 +5997,7 @@ end</entry>
         <extensions>
             <entry type="string" key="AutoNetkit.mgmt_ip"></entry>
             <entry type="String" key="config">!
-! Last configuration change at 13:46:12 UTC Wed Sep 16 2015
+! Last configuration change at 18:21:51 UTC Wed Sep 16 2015
 !
 version 15.5
 service timestamps debug datetime msec
@@ -6025,7 +6066,7 @@ interface Loopback0
 !
 interface GigabitEthernet0/0
  description OOB Management
- ip address 10.255.1.213 255.255.0.0
+ ip address 10.255.0.42 255.255.0.0
  shutdown
  duplex auto
  speed auto
@@ -6129,7 +6170,7 @@ end</entry>
         <extensions>
             <entry type="string" key="AutoNetkit.mgmt_ip"></entry>
             <entry type="String" key="config">!
-! Last configuration change at 13:46:14 UTC Wed Sep 16 2015
+! Last configuration change at 18:21:42 UTC Wed Sep 16 2015
 !
 version 15.5
 service timestamps debug datetime msec
@@ -6198,7 +6239,7 @@ interface Loopback0
 !
 interface GigabitEthernet0/0
  description OOB Management
- ip address 10.255.1.218 255.255.0.0
+ ip address 10.255.0.45 255.255.0.0
  shutdown
  duplex auto
  speed auto
