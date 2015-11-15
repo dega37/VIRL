@@ -1,0 +1,1360 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<topology xmlns="http://www.cisco.com/VIRL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" schemaVersion="0.9" xsi:schemaLocation="http://www.cisco.com/VIRL https://raw.github.com/CiscoVIRL/schema/v0.9/virl.xsd">
+    <node ipv4="192.168.0.18" location="347,167" subtype="IOSv" type="SIMPLE" name="Ver2">
+        <extensions>
+            <entry type="String" key="AutoNetkit.IGP">eigrp</entry>
+            <entry type="Integer" key="AutoNetkit.ASN">13679</entry>
+            <entry type="string" key="config">! IOS Config generated on 2015-08-07 18:19
+! by autonetkit_0.15.3
+!
+hostname Ver2
+boot-start-marker
+boot-end-marker
+!
+no aaa new-model
+!
+!
+ip cef
+ipv6 unicast-routing
+ipv6 cef
+!
+!
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+no service config
+enable password cisco
+ip classless
+ip subnet-zero
+no ip domain lookup
+line vty 0 4
+ transport input ssh telnet
+ exec-timeout 720 0
+ password cisco
+ login
+line con 0
+ password cisco
+!
+no cdp run
+!
+!
+interface Loopback0
+  description Loopback
+  ip address 192.168.0.18 255.255.255.255
+!
+interface GigabitEthernet0/0
+  description OOB Management
+  ! Configured on launch
+  no ip address
+  duplex auto
+  speed auto
+  no shutdown
+!
+interface GigabitEthernet0/1
+  description to BD1
+  ip address 10.1.0.13 255.255.255.252
+  duplex auto
+  speed auto
+  no shutdown
+!
+interface GigabitEthernet0/2
+  description to BD2
+  ip address 10.1.0.25 255.255.255.252
+  duplex auto
+  speed auto
+  no shutdown
+!
+interface GigabitEthernet0/3
+  description to Ver1
+  ip address 10.0.0.2 255.255.0.0
+  duplex auto
+  speed auto
+  no shutdown
+!
+!
+!
+router eigrp as13679
+ !
+ address-family ipv4 unicast autonomous-system 13679
+  !
+  topology base
+  exit-af-topology
+  network 10.0.0.0 0.0.255.255
+  network 192.168.0.18 0.0.0.0
+ exit-address-family
+ !
+!
+!
+router bgp 13679
+  bgp router-id 192.168.0.18
+  no synchronization
+! ibgp
+  ! ibgp peers
+  !
+  neighbor 192.168.0.17 remote-as 13679
+  neighbor 192.168.0.17 description iBGP peer Ver1
+  neighbor 192.168.0.17 update-source Loopback0
+!
+! ebgp
+  !
+  neighbor 10.1.0.14 remote-as 65502
+  neighbor 10.1.0.14 description eBGP to BD1
+  !
+  neighbor 10.1.0.26 remote-as 65502
+  neighbor 10.1.0.26 description eBGP to BD2
+!
+!
+ !
+ address-family ipv4
+  network 192.168.0.18 mask 255.255.255.255
+  network 10.0.0.0 mask 255.255.0.0
+  neighbor 192.168.0.17 activate
+  neighbor 192.168.0.17 next-hop-self
+  neighbor 10.1.0.14 activate
+  neighbor 10.1.0.14 send-community
+  neighbor 10.1.0.14 next-hop-self
+  neighbor 10.1.0.26 activate
+  neighbor 10.1.0.26 send-community
+  neighbor 10.1.0.26 next-hop-self
+ exit-address-family
+!
+!
+ip route 10.0.0.0 255.255.0.0 Null0 254
+!
+end
+</entry>
+            <entry type="string" key="AutoNetkit.mgmt_ip"></entry>
+        </extensions>
+        <interface netPrefixLenV4="30" ipv4="10.1.0.13" name="GigabitEthernet0/1" id="0"/>
+        <interface netPrefixLenV4="30" ipv4="10.1.0.25" name="GigabitEthernet0/2" id="1"/>
+        <interface netPrefixLenV4="16" ipv4="10.0.0.2" name="GigabitEthernet0/3" id="2"/>
+    </node>
+    <node ipv4="192.168.0.14" location="352,273" subtype="IOSv" type="SIMPLE" name="ATT2">
+        <extensions>
+            <entry type="String" key="AutoNetkit.IGP">eigrp</entry>
+            <entry type="Integer" key="AutoNetkit.ASN">6500</entry>
+            <entry type="string" key="config">! IOS Config generated on 2015-08-07 18:19
+! by autonetkit_0.15.3
+!
+hostname ATT2
+boot-start-marker
+boot-end-marker
+!
+no aaa new-model
+!
+!
+ip cef
+ipv6 unicast-routing
+ipv6 cef
+!
+!
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+no service config
+enable password cisco
+ip classless
+ip subnet-zero
+no ip domain lookup
+line vty 0 4
+ transport input ssh telnet
+ exec-timeout 720 0
+ password cisco
+ login
+line con 0
+ password cisco
+!
+no cdp run
+!
+!
+interface Loopback0
+  description Loopback
+  ip address 192.168.0.14 255.255.255.255
+!
+interface GigabitEthernet0/0
+  description OOB Management
+  ! Configured on launch
+  no ip address
+  duplex auto
+  speed auto
+  no shutdown
+!
+interface GigabitEthernet0/1
+  description to BD2
+  ip address 10.1.0.21 255.255.255.252
+  duplex auto
+  speed auto
+  no shutdown
+!
+interface GigabitEthernet0/2
+  description to BD1
+  ip address 10.1.0.9 255.255.255.252
+  duplex auto
+  speed auto
+  no shutdown
+!
+interface GigabitEthernet0/3
+  description to ATT1
+  ip address 10.3.0.2 255.255.0.0
+  duplex auto
+  speed auto
+  no shutdown
+!
+!
+!
+router eigrp as6500
+ !
+ address-family ipv4 unicast autonomous-system 6500
+  !
+  topology base
+  exit-af-topology
+  network 192.168.0.14 0.0.0.0
+ exit-address-family
+ !
+!
+!
+router bgp 6500
+  bgp router-id 192.168.0.14
+  no synchronization
+! ibgp
+  ! ibgp peers
+  !
+  neighbor 192.168.0.13 remote-as 6500
+  neighbor 192.168.0.13 description iBGP peer ATT1
+  neighbor 192.168.0.13 update-source Loopback0
+!
+! ebgp
+  !
+  neighbor 10.1.0.10 remote-as 65502
+  neighbor 10.1.0.10 description eBGP to BD1
+  !
+  neighbor 10.1.0.22 remote-as 65502
+  neighbor 10.1.0.22 description eBGP to BD2
+!
+!
+ !
+ address-family ipv4
+  network 192.168.0.14 mask 255.255.255.255
+  network 10.3.0.0 mask 255.255.0.0
+  neighbor 192.168.0.13 activate
+  neighbor 192.168.0.13 next-hop-self
+  neighbor 10.1.0.10 activate
+  neighbor 10.1.0.10 send-community
+  neighbor 10.1.0.10 next-hop-self
+  neighbor 10.1.0.22 activate
+  neighbor 10.1.0.22 send-community
+  neighbor 10.1.0.22 next-hop-self
+ exit-address-family
+!
+!
+ip route 10.3.0.0 255.255.0.0 Null0 254
+!
+end
+</entry>
+            <entry type="string" key="AutoNetkit.mgmt_ip"></entry>
+        </extensions>
+        <interface netPrefixLenV4="30" ipv4="10.1.0.21" name="GigabitEthernet0/1" id="0"/>
+        <interface netPrefixLenV4="30" ipv4="10.1.0.9" name="GigabitEthernet0/2" id="1"/>
+        <interface netPrefixLenV4="16" ipv4="10.3.0.2" name="GigabitEthernet0/3" id="2"/>
+    </node>
+    <node ipv4="192.168.0.9" location="117,118" subtype="IOSv" type="SIMPLE" name="CC1">
+        <extensions>
+            <entry type="Integer" key="AutoNetkit.ASN">1</entry>
+            <entry type="String" key="AutoNetkit.IGP">eigrp</entry>
+            <entry type="string" key="config">! IOS Config generated on 2015-08-07 18:19
+! by autonetkit_0.15.3
+!
+hostname CC1
+boot-start-marker
+boot-end-marker
+!
+no aaa new-model
+!
+!
+ip cef
+ipv6 unicast-routing
+ipv6 cef
+!
+!
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+no service config
+enable password cisco
+ip classless
+ip subnet-zero
+no ip domain lookup
+line vty 0 4
+ transport input ssh telnet
+ exec-timeout 720 0
+ password cisco
+ login
+line con 0
+ password cisco
+!
+no cdp run
+!
+!
+interface Loopback0
+  description Loopback
+  ip address 192.168.0.9 255.255.255.255
+!
+interface GigabitEthernet0/0
+  description OOB Management
+  ! Configured on launch
+  no ip address
+  duplex auto
+  speed auto
+  no shutdown
+!
+interface GigabitEthernet0/1
+  description to BD1
+  ip address 10.1.128.1 255.255.255.252
+  duplex auto
+  speed auto
+  no shutdown
+!
+interface GigabitEthernet0/2
+  description to Ver1
+  ip address 10.2.0.1 255.255.255.252
+  duplex auto
+  speed auto
+  no shutdown
+!
+interface GigabitEthernet0/3
+  description to CC2
+  ip address 10.2.0.5 255.255.255.252
+  duplex auto
+  speed auto
+  no shutdown
+!
+!
+!
+router eigrp as1
+ !
+ address-family ipv4 unicast autonomous-system 1
+  !
+  topology base
+  exit-af-topology
+  network 10.2.0.4 0.0.0.3
+  network 192.168.0.9 0.0.0.0
+ exit-address-family
+ !
+!
+!
+router bgp 1
+  bgp router-id 192.168.0.9
+  no synchronization
+! ibgp
+  ! ibgp peers
+  !
+  neighbor 192.168.0.10 remote-as 1
+  neighbor 192.168.0.10 description iBGP peer CC2
+  neighbor 192.168.0.10 update-source Loopback0
+!
+! ebgp
+  !
+  neighbor 10.2.0.2 remote-as 13679
+  neighbor 10.2.0.2 description eBGP to Ver1
+  !
+  neighbor 10.1.128.2 remote-as 65502
+  neighbor 10.1.128.2 description eBGP to BD1
+!
+!
+ !
+ address-family ipv4
+  network 192.168.0.9 mask 255.255.255.255
+  network 10.2.0.0 mask 255.255.0.0
+  neighbor 192.168.0.10 activate
+  neighbor 192.168.0.10 next-hop-self
+  neighbor 10.2.0.2 activate
+  neighbor 10.2.0.2 send-community
+  neighbor 10.2.0.2 next-hop-self
+  neighbor 10.1.128.2 activate
+  neighbor 10.1.128.2 send-community
+  neighbor 10.1.128.2 next-hop-self
+ exit-address-family
+!
+!
+ip route 10.2.0.0 255.255.0.0 Null0 254
+!
+end
+</entry>
+            <entry type="string" key="AutoNetkit.mgmt_ip"></entry>
+        </extensions>
+        <interface netPrefixLenV4="30" ipv4="10.1.128.1" name="GigabitEthernet0/1" id="0"/>
+        <interface netPrefixLenV4="30" ipv4="10.2.0.1" name="GigabitEthernet0/2" id="1"/>
+        <interface netPrefixLenV4="30" ipv4="10.2.0.5" name="GigabitEthernet0/3" id="2"/>
+    </node>
+    <node ipv4="192.168.0.10" location="91,332" subtype="IOSv" type="SIMPLE" name="CC2">
+        <extensions>
+            <entry type="Integer" key="AutoNetkit.ASN">1</entry>
+            <entry type="String" key="AutoNetkit.IGP">eigrp</entry>
+            <entry type="string" key="config">! IOS Config generated on 2015-08-07 18:19
+! by autonetkit_0.15.3
+!
+hostname CC2
+boot-start-marker
+boot-end-marker
+!
+no aaa new-model
+!
+!
+ip cef
+ipv6 unicast-routing
+ipv6 cef
+!
+!
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+no service config
+enable password cisco
+ip classless
+ip subnet-zero
+no ip domain lookup
+line vty 0 4
+ transport input ssh telnet
+ exec-timeout 720 0
+ password cisco
+ login
+line con 0
+ password cisco
+!
+no cdp run
+!
+!
+interface Loopback0
+  description Loopback
+  ip address 192.168.0.10 255.255.255.255
+!
+interface GigabitEthernet0/0
+  description OOB Management
+  ! Configured on launch
+  no ip address
+  duplex auto
+  speed auto
+  no shutdown
+!
+interface GigabitEthernet0/1
+  description to BD2
+  ip address 10.1.0.29 255.255.255.252
+  duplex auto
+  speed auto
+  no shutdown
+!
+interface GigabitEthernet0/2
+  description to ATT1
+  ip address 10.2.128.1 255.255.255.252
+  duplex auto
+  speed auto
+  no shutdown
+!
+interface GigabitEthernet0/3
+  description to CC1
+  ip address 10.2.0.6 255.255.255.252
+  duplex auto
+  speed auto
+  no shutdown
+!
+!
+!
+router eigrp as1
+ !
+ address-family ipv4 unicast autonomous-system 1
+  !
+  topology base
+  exit-af-topology
+  network 10.2.0.4 0.0.0.3
+  network 192.168.0.10 0.0.0.0
+ exit-address-family
+ !
+!
+!
+router bgp 1
+  bgp router-id 192.168.0.10
+  no synchronization
+! ibgp
+  ! ibgp peers
+  !
+  neighbor 192.168.0.9 remote-as 1
+  neighbor 192.168.0.9 description iBGP peer CC1
+  neighbor 192.168.0.9 update-source Loopback0
+!
+! ebgp
+  !
+  neighbor 10.2.128.2 remote-as 6500
+  neighbor 10.2.128.2 description eBGP to ATT1
+  !
+  neighbor 10.1.0.30 remote-as 65502
+  neighbor 10.1.0.30 description eBGP to BD2
+!
+!
+ !
+ address-family ipv4
+  network 192.168.0.10 mask 255.255.255.255
+  network 10.2.0.0 mask 255.255.0.0
+  neighbor 192.168.0.9 activate
+  neighbor 192.168.0.9 next-hop-self
+  neighbor 10.2.128.2 activate
+  neighbor 10.2.128.2 send-community
+  neighbor 10.2.128.2 next-hop-self
+  neighbor 10.1.0.30 activate
+  neighbor 10.1.0.30 send-community
+  neighbor 10.1.0.30 next-hop-self
+ exit-address-family
+!
+!
+ip route 10.2.0.0 255.255.0.0 Null0 254
+!
+end
+</entry>
+            <entry type="string" key="AutoNetkit.mgmt_ip"></entry>
+        </extensions>
+        <interface netPrefixLenV4="30" ipv4="10.1.0.29" name="GigabitEthernet0/1" id="0"/>
+        <interface netPrefixLenV4="30" ipv4="10.2.128.1" name="GigabitEthernet0/2" id="1"/>
+        <interface netPrefixLenV4="30" ipv4="10.2.0.6" name="GigabitEthernet0/3" id="2"/>
+    </node>
+    <node ipv4="192.168.0.2" location="487,128" subtype="NX-OSv" type="SIMPLE" name="BD1">
+        <extensions>
+            <entry type="Integer" key="AutoNetkit.ASN">65502</entry>
+            <entry type="String" key="AutoNetkit.IGP">eigrp</entry>
+            <entry type="string" key="config">! NX-OSv Config generated on 2015-08-07 18:19
+! by autonetkit_0.15.3
+!
+version 6.2(1)
+license grace-period
+!
+hostname BD1
+vdc BD1 id 1
+  allocate interface Ethernet2/1-48
+  allocate interface Ethernet3/1-48
+  limit-resource vlan minimum 16 maximum 4094
+  limit-resource vrf minimum 2 maximum 4096
+  limit-resource port-channel minimum 0 maximum 768
+  limit-resource u4route-mem minimum 96 maximum 96
+  limit-resource u6route-mem minimum 24 maximum 24
+  limit-resource m4route-mem minimum 58 maximum 58
+  limit-resource m6route-mem minimum 8 maximum 8
+
+feature telnet
+
+feature eigrp
+feature bgp
+
+username adminbackup password 5 ! role network-operator
+username admin password 5 $1$KuOSBsvW$Cy0TSD..gEBGBPjzpDgf51 role network-admin
+username cisco password 5 $1$Nk7ZkwH0$fyiRmMMfIheqE3BqvcL0C1 role network-operator
+username cisco role network-admin
+username lab password 5 $1$buoy/oqy$.EXQz8rCn72ii8qtdldj00 role network-admin
+no password strength-check
+ip domain-lookup
+copp profile strict
+snmp-server user lab network-admin auth md5 0x5ceb414591539ee35159fca86fdfa101 priv 0x5ceb414591539ee35159fca86fdfa101 localizedkey
+snmp-server user admin network-admin auth md5 0x328945d53e05e8e7207f8c20b142f0b7 priv 0x328945d53e05e8e7207f8c20b142f0b7 localizedkey
+snmp-server user cisco network-operator auth md5 0x55b3c64a53fb95518e75358ee75e82e9 priv 0x55b3c64a53fb95518e75358ee75e82e9 localizedkey
+snmp-server user cisco network-admin
+rmon event 1 log trap public description FATAL(1) owner PMON@FATAL
+rmon event 2 log trap public description CRITICAL(2) owner PMON@CRITICAL
+rmon event 3 log trap public description ERROR(3) owner PMON@ERROR
+rmon event 4 log trap public description WARNING(4) owner PMON@WARNING
+rmon event 5 log trap public description INFORMATION(5) owner PMON@INFO
+
+ip route 10.1.0.0 255.255.0.0 Null0 254
+
+vlan 1
+
+vrf context management
+hardware forwarding unicast trace
+
+interface Loopback0
+  description Loopback
+  ip address 192.168.0.2/32
+  ip router eigrp 65502
+
+interface Ethernet2/1
+  description to BD2
+  ip address 10.1.128.9/30
+  ip router eigrp 65502
+  no mac-address
+  no shutdown
+
+interface Ethernet2/2
+  description to Ver2
+  ip address 10.1.0.14/30
+  no mac-address
+  no shutdown
+
+interface Ethernet2/3
+  description to ATT2
+  ip address 10.1.0.10/30
+  no mac-address
+  no shutdown
+
+interface Ethernet2/4
+  description to Dist1
+  ip address 10.1.128.5/30
+  ip router eigrp 65502
+  no mac-address
+  no shutdown
+
+interface Ethernet2/5
+  description to Dist2
+  ip address 10.1.0.5/30
+  ip router eigrp 65502
+  no mac-address
+  no shutdown
+
+interface Ethernet2/6
+  description to CC1
+  ip address 10.1.128.2/30
+  no mac-address
+  no shutdown
+
+interface mgmt0
+  description OOB Management
+  ! Configured on launch
+  no ip address
+  no mac-address
+  no shutdown
+  vrf member management
+
+
+line console
+line vty
+router eigrp 65502
+ autonomous-system 65502
+ router-id 192.168.0.2
+ address-family ipv4 unicast
+router bgp 65502
+  router-id 192.168.0.2
+  address-family ipv4 unicast
+    network 192.168.0.2/32
+    network 10.1.0.0/16
+  !
+! iBGP
+!
+! iBGP peers
+  !
+  neighbor 192.168.0.4 remote-as 65502
+    description iBGP peer BD2
+    update-source Loopback0
+    address-family ipv4 unicast
+      next-hop-self
+    !
+    !
+  !
+  neighbor 192.168.0.1 remote-as 65502
+    description iBGP peer Dist1
+    update-source Loopback0
+    address-family ipv4 unicast
+      next-hop-self
+    !
+    !
+  !
+  neighbor 192.168.0.3 remote-as 65502
+    description iBGP peer Dist2
+    update-source Loopback0
+    address-family ipv4 unicast
+      next-hop-self
+    !
+    !
+! eBGP peers
+  !
+  neighbor 10.1.128.1 remote-as 1
+    description eBGP peer CC1
+    address-family ipv4 unicast
+      send-community standard
+      next-hop-self
+  !
+  neighbor 10.1.0.9 remote-as 6500
+    description eBGP peer ATT2
+    address-family ipv4 unicast
+      send-community standard
+      next-hop-self
+  !
+  neighbor 10.1.0.13 remote-as 13679
+    description eBGP peer Ver2
+    address-family ipv4 unicast
+      send-community standard
+      next-hop-self
+        </entry>
+            <entry type="string" key="AutoNetkit.mgmt_ip"></entry>
+        </extensions>
+        <interface netPrefixLenV4="30" ipv4="10.1.128.9" name="Ethernet2/1" id="0"/>
+        <interface netPrefixLenV4="30" ipv4="10.1.0.14" name="Ethernet2/2" id="1"/>
+        <interface netPrefixLenV4="30" ipv4="10.1.0.10" name="Ethernet2/3" id="2"/>
+        <interface netPrefixLenV4="30" ipv4="10.1.128.5" name="Ethernet2/4" id="3"/>
+        <interface netPrefixLenV4="30" ipv4="10.1.0.5" name="Ethernet2/5" id="4"/>
+        <interface netPrefixLenV4="30" ipv4="10.1.128.2" name="Ethernet2/6" id="5"/>
+    </node>
+    <node ipv4="192.168.0.4" location="521,314" subtype="NX-OSv" type="SIMPLE" name="BD2">
+        <extensions>
+            <entry type="Integer" key="AutoNetkit.ASN">65502</entry>
+            <entry type="String" key="AutoNetkit.IGP">eigrp</entry>
+            <entry type="string" key="config">! NX-OSv Config generated on 2015-08-07 18:19
+! by autonetkit_0.15.3
+!
+version 6.2(1)
+license grace-period
+!
+hostname BD2
+vdc BD2 id 1
+  allocate interface Ethernet2/1-48
+  allocate interface Ethernet3/1-48
+  limit-resource vlan minimum 16 maximum 4094
+  limit-resource vrf minimum 2 maximum 4096
+  limit-resource port-channel minimum 0 maximum 768
+  limit-resource u4route-mem minimum 96 maximum 96
+  limit-resource u6route-mem minimum 24 maximum 24
+  limit-resource m4route-mem minimum 58 maximum 58
+  limit-resource m6route-mem minimum 8 maximum 8
+
+feature telnet
+
+feature eigrp
+feature bgp
+
+username adminbackup password 5 ! role network-operator
+username admin password 5 $1$KuOSBsvW$Cy0TSD..gEBGBPjzpDgf51 role network-admin
+username cisco password 5 $1$Nk7ZkwH0$fyiRmMMfIheqE3BqvcL0C1 role network-operator
+username cisco role network-admin
+username lab password 5 $1$buoy/oqy$.EXQz8rCn72ii8qtdldj00 role network-admin
+no password strength-check
+ip domain-lookup
+copp profile strict
+snmp-server user lab network-admin auth md5 0x5ceb414591539ee35159fca86fdfa101 priv 0x5ceb414591539ee35159fca86fdfa101 localizedkey
+snmp-server user admin network-admin auth md5 0x328945d53e05e8e7207f8c20b142f0b7 priv 0x328945d53e05e8e7207f8c20b142f0b7 localizedkey
+snmp-server user cisco network-operator auth md5 0x55b3c64a53fb95518e75358ee75e82e9 priv 0x55b3c64a53fb95518e75358ee75e82e9 localizedkey
+snmp-server user cisco network-admin
+rmon event 1 log trap public description FATAL(1) owner PMON@FATAL
+rmon event 2 log trap public description CRITICAL(2) owner PMON@CRITICAL
+rmon event 3 log trap public description ERROR(3) owner PMON@ERROR
+rmon event 4 log trap public description WARNING(4) owner PMON@WARNING
+rmon event 5 log trap public description INFORMATION(5) owner PMON@INFO
+
+ip route 10.1.0.0 255.255.0.0 Null0 254
+
+vlan 1
+
+vrf context management
+hardware forwarding unicast trace
+
+interface Loopback0
+  description Loopback
+  ip address 192.168.0.4/32
+  ip router eigrp 65502
+
+interface Ethernet2/1
+  description to BD1
+  ip address 10.1.128.10/30
+  ip router eigrp 65502
+  no mac-address
+  no shutdown
+
+interface Ethernet2/2
+  description to ATT2
+  ip address 10.1.0.22/30
+  no mac-address
+  no shutdown
+
+interface Ethernet2/3
+  description to Ver2
+  ip address 10.1.0.26/30
+  no mac-address
+  no shutdown
+
+interface Ethernet2/4
+  description to Dist2
+  ip address 10.1.0.18/30
+  ip router eigrp 65502
+  no mac-address
+  no shutdown
+
+interface Ethernet2/5
+  description to Dist1
+  ip address 10.1.128.14/30
+  ip router eigrp 65502
+  no mac-address
+  no shutdown
+
+interface Ethernet2/6
+  description to CC2
+  ip address 10.1.0.30/30
+  no mac-address
+  no shutdown
+
+interface mgmt0
+  description OOB Management
+  ! Configured on launch
+  no ip address
+  no mac-address
+  no shutdown
+  vrf member management
+
+
+line console
+line vty
+router eigrp 65502
+ autonomous-system 65502
+ router-id 192.168.0.4
+ address-family ipv4 unicast
+router bgp 65502
+  router-id 192.168.0.4
+  address-family ipv4 unicast
+    network 192.168.0.4/32
+    network 10.1.0.0/16
+  !
+! iBGP
+!
+! iBGP peers
+  !
+  neighbor 192.168.0.2 remote-as 65502
+    description iBGP peer BD1
+    update-source Loopback0
+    address-family ipv4 unicast
+      next-hop-self
+    !
+    !
+  !
+  neighbor 192.168.0.1 remote-as 65502
+    description iBGP peer Dist1
+    update-source Loopback0
+    address-family ipv4 unicast
+      next-hop-self
+    !
+    !
+  !
+  neighbor 192.168.0.3 remote-as 65502
+    description iBGP peer Dist2
+    update-source Loopback0
+    address-family ipv4 unicast
+      next-hop-self
+    !
+    !
+! eBGP peers
+  !
+  neighbor 10.1.0.29 remote-as 1
+    description eBGP peer CC2
+    address-family ipv4 unicast
+      send-community standard
+      next-hop-self
+  !
+  neighbor 10.1.0.21 remote-as 6500
+    description eBGP peer ATT2
+    address-family ipv4 unicast
+      send-community standard
+      next-hop-self
+  !
+  neighbor 10.1.0.25 remote-as 13679
+    description eBGP peer Ver2
+    address-family ipv4 unicast
+      send-community standard
+      next-hop-self
+        </entry>
+            <entry type="string" key="AutoNetkit.mgmt_ip"></entry>
+        </extensions>
+        <interface netPrefixLenV4="30" ipv4="10.1.128.10" name="Ethernet2/1" id="0"/>
+        <interface netPrefixLenV4="30" ipv4="10.1.0.22" name="Ethernet2/2" id="1"/>
+        <interface netPrefixLenV4="30" ipv4="10.1.0.26" name="Ethernet2/3" id="2"/>
+        <interface netPrefixLenV4="30" ipv4="10.1.0.18" name="Ethernet2/4" id="3"/>
+        <interface netPrefixLenV4="30" ipv4="10.1.128.14" name="Ethernet2/5" id="4"/>
+        <interface netPrefixLenV4="30" ipv4="10.1.0.30" name="Ethernet2/6" id="5"/>
+    </node>
+    <node ipv4="192.168.0.1" location="715,138" subtype="NX-OSv" type="SIMPLE" name="Dist1">
+        <extensions>
+            <entry type="Integer" key="AutoNetkit.ASN">65502</entry>
+            <entry type="String" key="AutoNetkit.IGP">eigrp</entry>
+            <entry type="string" key="config">! NX-OSv Config generated on 2015-08-07 18:19
+! by autonetkit_0.15.3
+!
+version 6.2(1)
+license grace-period
+!
+hostname Dist1
+vdc Dist1 id 1
+  allocate interface Ethernet2/1-48
+  allocate interface Ethernet3/1-48
+  limit-resource vlan minimum 16 maximum 4094
+  limit-resource vrf minimum 2 maximum 4096
+  limit-resource port-channel minimum 0 maximum 768
+  limit-resource u4route-mem minimum 96 maximum 96
+  limit-resource u6route-mem minimum 24 maximum 24
+  limit-resource m4route-mem minimum 58 maximum 58
+  limit-resource m6route-mem minimum 8 maximum 8
+
+feature telnet
+
+feature eigrp
+feature bgp
+
+username adminbackup password 5 ! role network-operator
+username admin password 5 $1$KuOSBsvW$Cy0TSD..gEBGBPjzpDgf51 role network-admin
+username cisco password 5 $1$Nk7ZkwH0$fyiRmMMfIheqE3BqvcL0C1 role network-operator
+username cisco role network-admin
+username lab password 5 $1$buoy/oqy$.EXQz8rCn72ii8qtdldj00 role network-admin
+no password strength-check
+ip domain-lookup
+copp profile strict
+snmp-server user lab network-admin auth md5 0x5ceb414591539ee35159fca86fdfa101 priv 0x5ceb414591539ee35159fca86fdfa101 localizedkey
+snmp-server user admin network-admin auth md5 0x328945d53e05e8e7207f8c20b142f0b7 priv 0x328945d53e05e8e7207f8c20b142f0b7 localizedkey
+snmp-server user cisco network-operator auth md5 0x55b3c64a53fb95518e75358ee75e82e9 priv 0x55b3c64a53fb95518e75358ee75e82e9 localizedkey
+snmp-server user cisco network-admin
+rmon event 1 log trap public description FATAL(1) owner PMON@FATAL
+rmon event 2 log trap public description CRITICAL(2) owner PMON@CRITICAL
+rmon event 3 log trap public description ERROR(3) owner PMON@ERROR
+rmon event 4 log trap public description WARNING(4) owner PMON@WARNING
+rmon event 5 log trap public description INFORMATION(5) owner PMON@INFO
+
+
+vlan 1
+
+vrf context management
+hardware forwarding unicast trace
+
+interface Loopback0
+  description Loopback
+  ip address 192.168.0.1/32
+  ip router eigrp 65502
+
+interface Ethernet2/1
+  description to BD1
+  ip address 10.1.128.6/30
+  ip router eigrp 65502
+  no mac-address
+  no shutdown
+
+interface Ethernet2/2
+  description to BD2
+  ip address 10.1.128.13/30
+  ip router eigrp 65502
+  no mac-address
+  no shutdown
+
+interface Ethernet2/3
+  description to Dist2
+  ip address 10.1.0.1/30
+  ip router eigrp 65502
+  no mac-address
+  no shutdown
+
+interface mgmt0
+  description OOB Management
+  ! Configured on launch
+  no ip address
+  no mac-address
+  no shutdown
+  vrf member management
+
+
+line console
+line vty
+router eigrp 65502
+ autonomous-system 65502
+ router-id 192.168.0.1
+ address-family ipv4 unicast
+router bgp 65502
+  router-id 192.168.0.1
+  address-family ipv4 unicast
+    network 192.168.0.1/32
+  !
+! iBGP
+!
+! iBGP peers
+  !
+  neighbor 192.168.0.2 remote-as 65502
+    description iBGP peer BD1
+    update-source Loopback0
+    address-family ipv4 unicast
+    !
+    !
+  !
+  neighbor 192.168.0.4 remote-as 65502
+    description iBGP peer BD2
+    update-source Loopback0
+    address-family ipv4 unicast
+    !
+    !
+  !
+  neighbor 192.168.0.3 remote-as 65502
+    description iBGP peer Dist2
+    update-source Loopback0
+    address-family ipv4 unicast
+    !
+    !
+        </entry>
+            <entry type="string" key="AutoNetkit.mgmt_ip"></entry>
+        </extensions>
+        <interface netPrefixLenV4="30" ipv4="10.1.128.6" name="Ethernet2/1" id="0"/>
+        <interface netPrefixLenV4="30" ipv4="10.1.128.13" name="Ethernet2/2" id="1"/>
+        <interface netPrefixLenV4="30" ipv4="10.1.0.1" name="Ethernet2/3" id="2"/>
+    </node>
+    <node ipv4="192.168.0.3" location="727,318" subtype="NX-OSv" type="SIMPLE" name="Dist2">
+        <extensions>
+            <entry type="Integer" key="AutoNetkit.ASN">65502</entry>
+            <entry type="String" key="AutoNetkit.IGP">eigrp</entry>
+            <entry type="string" key="config">! NX-OSv Config generated on 2015-08-07 18:19
+! by autonetkit_0.15.3
+!
+version 6.2(1)
+license grace-period
+!
+hostname Dist2
+vdc Dist2 id 1
+  allocate interface Ethernet2/1-48
+  allocate interface Ethernet3/1-48
+  limit-resource vlan minimum 16 maximum 4094
+  limit-resource vrf minimum 2 maximum 4096
+  limit-resource port-channel minimum 0 maximum 768
+  limit-resource u4route-mem minimum 96 maximum 96
+  limit-resource u6route-mem minimum 24 maximum 24
+  limit-resource m4route-mem minimum 58 maximum 58
+  limit-resource m6route-mem minimum 8 maximum 8
+
+feature telnet
+
+feature eigrp
+feature bgp
+
+username adminbackup password 5 ! role network-operator
+username admin password 5 $1$KuOSBsvW$Cy0TSD..gEBGBPjzpDgf51 role network-admin
+username cisco password 5 $1$Nk7ZkwH0$fyiRmMMfIheqE3BqvcL0C1 role network-operator
+username cisco role network-admin
+username lab password 5 $1$buoy/oqy$.EXQz8rCn72ii8qtdldj00 role network-admin
+no password strength-check
+ip domain-lookup
+copp profile strict
+snmp-server user lab network-admin auth md5 0x5ceb414591539ee35159fca86fdfa101 priv 0x5ceb414591539ee35159fca86fdfa101 localizedkey
+snmp-server user admin network-admin auth md5 0x328945d53e05e8e7207f8c20b142f0b7 priv 0x328945d53e05e8e7207f8c20b142f0b7 localizedkey
+snmp-server user cisco network-operator auth md5 0x55b3c64a53fb95518e75358ee75e82e9 priv 0x55b3c64a53fb95518e75358ee75e82e9 localizedkey
+snmp-server user cisco network-admin
+rmon event 1 log trap public description FATAL(1) owner PMON@FATAL
+rmon event 2 log trap public description CRITICAL(2) owner PMON@CRITICAL
+rmon event 3 log trap public description ERROR(3) owner PMON@ERROR
+rmon event 4 log trap public description WARNING(4) owner PMON@WARNING
+rmon event 5 log trap public description INFORMATION(5) owner PMON@INFO
+
+
+vlan 1
+
+vrf context management
+hardware forwarding unicast trace
+
+interface Loopback0
+  description Loopback
+  ip address 192.168.0.3/32
+  ip router eigrp 65502
+
+interface Ethernet2/1
+  description to BD2
+  ip address 10.1.0.17/30
+  ip router eigrp 65502
+  no mac-address
+  no shutdown
+
+interface Ethernet2/2
+  description to BD1
+  ip address 10.1.0.6/30
+  ip router eigrp 65502
+  no mac-address
+  no shutdown
+
+interface Ethernet2/3
+  description to Dist1
+  ip address 10.1.0.2/30
+  ip router eigrp 65502
+  no mac-address
+  no shutdown
+
+interface mgmt0
+  description OOB Management
+  ! Configured on launch
+  no ip address
+  no mac-address
+  no shutdown
+  vrf member management
+
+
+line console
+line vty
+router eigrp 65502
+ autonomous-system 65502
+ router-id 192.168.0.3
+ address-family ipv4 unicast
+router bgp 65502
+  router-id 192.168.0.3
+  address-family ipv4 unicast
+    network 192.168.0.3/32
+  !
+! iBGP
+!
+! iBGP peers
+  !
+  neighbor 192.168.0.2 remote-as 65502
+    description iBGP peer BD1
+    update-source Loopback0
+    address-family ipv4 unicast
+    !
+    !
+  !
+  neighbor 192.168.0.4 remote-as 65502
+    description iBGP peer BD2
+    update-source Loopback0
+    address-family ipv4 unicast
+    !
+    !
+  !
+  neighbor 192.168.0.1 remote-as 65502
+    description iBGP peer Dist1
+    update-source Loopback0
+    address-family ipv4 unicast
+    !
+    !
+        </entry>
+            <entry type="string" key="AutoNetkit.mgmt_ip"></entry>
+        </extensions>
+        <interface netPrefixLenV4="30" ipv4="10.1.0.17" name="Ethernet2/1" id="0"/>
+        <interface netPrefixLenV4="30" ipv4="10.1.0.6" name="Ethernet2/2" id="1"/>
+        <interface netPrefixLenV4="30" ipv4="10.1.0.2" name="Ethernet2/3" id="2"/>
+    </node>
+    <node ipv4="192.168.0.17" location="231,170" subtype="IOSv" type="SIMPLE" name="Ver1">
+        <extensions>
+            <entry type="Integer" key="AutoNetkit.ASN">13679</entry>
+            <entry type="String" key="AutoNetkit.IGP">eigrp</entry>
+            <entry type="string" key="config">! IOS Config generated on 2015-08-07 18:19
+! by autonetkit_0.15.3
+!
+hostname Ver1
+boot-start-marker
+boot-end-marker
+!
+no aaa new-model
+!
+!
+ip cef
+ipv6 unicast-routing
+ipv6 cef
+!
+!
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+no service config
+enable password cisco
+ip classless
+ip subnet-zero
+no ip domain lookup
+line vty 0 4
+ transport input ssh telnet
+ exec-timeout 720 0
+ password cisco
+ login
+line con 0
+ password cisco
+!
+no cdp run
+!
+!
+interface Loopback0
+  description Loopback
+  ip address 192.168.0.17 255.255.255.255
+!
+interface GigabitEthernet0/0
+  description OOB Management
+  ! Configured on launch
+  no ip address
+  duplex auto
+  speed auto
+  no shutdown
+!
+interface GigabitEthernet0/1
+  description to CC1
+  ip address 10.2.0.2 255.255.255.252
+  duplex auto
+  speed auto
+  no shutdown
+!
+interface GigabitEthernet0/2
+  description to Ver2
+  ip address 10.0.0.1 255.255.0.0
+  duplex auto
+  speed auto
+  no shutdown
+!
+!
+!
+router eigrp as13679
+ !
+ address-family ipv4 unicast autonomous-system 13679
+  !
+  topology base
+  exit-af-topology
+  network 10.0.0.0 0.0.255.255
+  network 192.168.0.17 0.0.0.0
+ exit-address-family
+ !
+!
+!
+router bgp 13679
+  bgp router-id 192.168.0.17
+  no synchronization
+! ibgp
+  ! ibgp peers
+  !
+  neighbor 192.168.0.18 remote-as 13679
+  neighbor 192.168.0.18 description iBGP peer Ver2
+  neighbor 192.168.0.18 update-source Loopback0
+!
+! ebgp
+  !
+  neighbor 10.2.0.1 remote-as 1
+  neighbor 10.2.0.1 description eBGP to CC1
+!
+!
+ !
+ address-family ipv4
+  network 192.168.0.17 mask 255.255.255.255
+  network 10.0.0.0 mask 255.255.0.0
+  neighbor 192.168.0.18 activate
+  neighbor 192.168.0.18 next-hop-self
+  neighbor 10.2.0.1 activate
+  neighbor 10.2.0.1 send-community
+  neighbor 10.2.0.1 next-hop-self
+ exit-address-family
+!
+!
+ip route 10.0.0.0 255.255.0.0 Null0 254
+!
+end
+</entry>
+            <entry type="string" key="AutoNetkit.mgmt_ip"></entry>
+        </extensions>
+        <interface netPrefixLenV4="30" ipv4="10.2.0.2" name="GigabitEthernet0/1" id="0"/>
+        <interface netPrefixLenV4="16" ipv4="10.0.0.1" name="GigabitEthernet0/2" id="1"/>
+    </node>
+    <node ipv4="192.168.0.13" location="232,273" subtype="IOSv" type="SIMPLE" name="ATT1">
+        <extensions>
+            <entry type="Integer" key="AutoNetkit.ASN">6500</entry>
+            <entry type="string" key="config">! IOS Config generated on 2015-08-07 18:19
+! by autonetkit_0.15.3
+!
+hostname ATT1
+boot-start-marker
+boot-end-marker
+!
+no aaa new-model
+!
+!
+ip cef
+ipv6 unicast-routing
+ipv6 cef
+!
+!
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+no service config
+enable password cisco
+ip classless
+ip subnet-zero
+no ip domain lookup
+line vty 0 4
+ transport input ssh telnet
+ exec-timeout 720 0
+ password cisco
+ login
+line con 0
+ password cisco
+!
+no cdp run
+!
+!
+interface Loopback0
+  description Loopback
+  ip address 192.168.0.13 255.255.255.255
+!
+interface GigabitEthernet0/0
+  description OOB Management
+  ! Configured on launch
+  no ip address
+  duplex auto
+  speed auto
+  no shutdown
+!
+interface GigabitEthernet0/1
+  description to CC2
+  ip address 10.2.128.2 255.255.255.252
+  duplex auto
+  speed auto
+  no shutdown
+!
+interface GigabitEthernet0/2
+  description to ATT2
+  ip address 10.3.0.1 255.255.0.0
+  duplex auto
+  speed auto
+  no shutdown
+!
+!
+!
+router ospf 6500
+  network 192.168.0.13 0.0.0.0 area 0
+  log-adjacency-changes
+  passive-interface Loopback0
+!
+!
+router bgp 6500
+  bgp router-id 192.168.0.13
+  no synchronization
+! ibgp
+  ! ibgp peers
+  !
+  neighbor 192.168.0.14 remote-as 6500
+  neighbor 192.168.0.14 description iBGP peer ATT2
+  neighbor 192.168.0.14 update-source Loopback0
+!
+! ebgp
+  !
+  neighbor 10.2.128.1 remote-as 1
+  neighbor 10.2.128.1 description eBGP to CC2
+!
+!
+ !
+ address-family ipv4
+  network 192.168.0.13 mask 255.255.255.255
+  network 10.3.0.0 mask 255.255.0.0
+  neighbor 192.168.0.14 activate
+  neighbor 192.168.0.14 next-hop-self
+  neighbor 10.2.128.1 activate
+  neighbor 10.2.128.1 send-community
+  neighbor 10.2.128.1 next-hop-self
+ exit-address-family
+!
+!
+ip route 10.3.0.0 255.255.0.0 Null0 254
+!
+end
+</entry>
+            <entry type="string" key="AutoNetkit.mgmt_ip"></entry>
+        </extensions>
+        <interface netPrefixLenV4="30" ipv4="10.2.128.2" name="GigabitEthernet0/1" id="0"/>
+        <interface netPrefixLenV4="16" ipv4="10.3.0.1" name="GigabitEthernet0/2" id="1"/>
+    </node>
+    <connection src="/virl:topology/virl:node[5]/virl:interface[1]" dst="/virl:topology/virl:node[6]/virl:interface[1]"/>
+    <connection src="/virl:topology/virl:node[5]/virl:interface[2]" dst="/virl:topology/virl:node[1]/virl:interface[1]"/>
+    <connection src="/virl:topology/virl:node[6]/virl:interface[2]" dst="/virl:topology/virl:node[2]/virl:interface[1]"/>
+    <connection src="/virl:topology/virl:node[1]/virl:interface[2]" dst="/virl:topology/virl:node[6]/virl:interface[3]"/>
+    <connection src="/virl:topology/virl:node[2]/virl:interface[2]" dst="/virl:topology/virl:node[5]/virl:interface[3]"/>
+    <connection src="/virl:topology/virl:node[5]/virl:interface[4]" dst="/virl:topology/virl:node[7]/virl:interface[1]"/>
+    <connection src="/virl:topology/virl:node[6]/virl:interface[4]" dst="/virl:topology/virl:node[8]/virl:interface[1]"/>
+    <connection src="/virl:topology/virl:node[5]/virl:interface[5]" dst="/virl:topology/virl:node[8]/virl:interface[2]"/>
+    <connection src="/virl:topology/virl:node[6]/virl:interface[5]" dst="/virl:topology/virl:node[7]/virl:interface[2]"/>
+    <connection src="/virl:topology/virl:node[5]/virl:interface[6]" dst="/virl:topology/virl:node[3]/virl:interface[1]"/>
+    <connection src="/virl:topology/virl:node[6]/virl:interface[6]" dst="/virl:topology/virl:node[4]/virl:interface[1]"/>
+    <connection src="/virl:topology/virl:node[3]/virl:interface[3]" dst="/virl:topology/virl:node[4]/virl:interface[3]"/>
+    <connection src="/virl:topology/virl:node[7]/virl:interface[3]" dst="/virl:topology/virl:node[8]/virl:interface[3]"/>
+    <connection src="/virl:topology/virl:node[3]/virl:interface[2]" dst="/virl:topology/virl:node[9]/virl:interface[1]"/>
+    <connection src="/virl:topology/virl:node[4]/virl:interface[2]" dst="/virl:topology/virl:node[10]/virl:interface[1]"/>
+    <connection src="/virl:topology/virl:node[9]/virl:interface[2]" dst="/virl:topology/virl:node[1]/virl:interface[3]"/>
+    <connection src="/virl:topology/virl:node[10]/virl:interface[2]" dst="/virl:topology/virl:node[2]/virl:interface[3]"/>
+</topology>
